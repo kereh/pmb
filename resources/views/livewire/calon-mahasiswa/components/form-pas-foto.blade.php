@@ -30,7 +30,7 @@
                                 <div class="position-relative d-flex justify-content-center align-items-center h-full w-full"
                                     wire:transition>
                                     @if ($pasFotoPreview || $uploadedPasFoto)
-                                        <img class="rounded-4 w-full h-full object-fit-fill"
+                                        <img class="rounded-4 w-full h-full object-fit-fill shadow"
                                             style="width: 175px; height: 200px;"
                                             src="{{ $pasFotoPreview ?? $uploadedPasFoto }}" alt="">
                                     @endif

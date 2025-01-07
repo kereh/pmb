@@ -5,72 +5,110 @@ namespace App\Livewire\CalonMahasiswa\Components;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 
+use App\Models\Data;
+use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
+
 class FormData extends Component {
     #[Validate('required', message: 'NIK Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'NIK Harus Berisi Angka')]
     #[Validate('digits:16', message: 'NIK tidak valid')]
-    #[Validate('unique:data_mahasiswa,nik', message: 'NIK sudah terpakai')]
+    #[Validate('unique:data,nik', message: 'NIK sudah terpakai')]
     public $nik;
+
     #[Validate('required', message: 'NISN Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'NISN Harus Berisi Angka')]
     #[Validate('digits:10', message: 'NISN tidak valid')]
-    #[Validate('unique:data_mahasiswa,nisn', message: 'NISN sudah terpakai')]
+    #[Validate('unique:data,nisn', message: 'NISN sudah terpakai')]
     public $nisn;
+
     #[Validate('required', message: 'Nama Ibu Kandung Tidak Boleh Kosong')]
     #[Validate('string', message: 'Nama Hanya Berisi Huruf')]
     #[Validate('max:100', message: 'Nama Tidak Boleh Lebih Dari 100 karakter')]
-    public $namaIbuKandung;
+    public $nama_ibu_kandung;
+
     #[Validate('required', message: 'Tanggal Lahir Tidak Boleh Kosong')]
-    public $tanggalLahir;
+    public $tanggal_lahir;
+
     #[Validate('required', message: 'Tempat Lahir Tidak Boleh Kosong')]
-    public $tempatLahir;
+    public $tempat_lahir;
+
     #[Validate('required', message: 'Alamat Lahir Tidak Boleh Kosong')]
     public $alamat;
+
     #[Validate('required', message: 'Nomor Hp Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'Nomor Hp Harus Berisi Angka')]
-    public $nomorHp;
+    public $nomor_hp;
+
     #[Validate('required', message: 'Jenis Kelamin Tidak Boleh Kosong')]
-    public $jenisKelamin;
+    public $jenis_kelamin;
+
     #[Validate('required', message: 'Pendidikan Terakhir Tidak Boleh Kosong')]
-    public $pendidikanTerakhir;
+    public $pendidikan_terakhir;
+
     #[Validate('required', message: 'Agama Tidak Boleh Kosong')]
     public $agama;
+
     #[Validate('required', message: 'Kewarganegaraan Tidak Boleh Kosong')]
-    public $kewargaNegaraan;
+    public $kewarganegaraan;
+
     #[Validate('required', message: 'Program Studi Tidak Boleh Kosong')]
-    public $programStudiId;
+    public $program_studi_id;
+
+    #[Validate('required', message: 'Nama Tidak Boleh Kosong')]
+    public $nama;
 
     public $user;
     public $uploadedPasFoto;
     public $uploadedIjazah;
     public $uploadedKip;
-
-    public $biayaPendaftaran;
     public $programStudi;
+    public $biayaPendaftaran;
     public $data;
-    public $submited = false;
+    public $submited;
 
-    public function mount($user, $uploadedPasFoto, $uploadedIjazah, $uploadedKip) {
+    public function mount($user, $uploadedPasFoto, $uploadedIjazah, $uploadedKip, $submited) {
         $this->user = $user;
         $this->uploadedPasFoto = $uploadedPasFoto;
         $this->uploadedIjazah = $uploadedIjazah;
         $this->uploadedKip = $uploadedKip;
+        $this->submited = $submited;
+        $this->nama = $this->user->nama;
+    }
+
+    public function store() {
+        $validated = $this->validate();
+        $validated['user_id'] = $this->user->id;
+        $validated['pas_foto'] = $this->uploadedPasFoto;
+        $validated['ijazah_atau_skl'] = $this->uploadedIjazah;
+        $validated['kip'] = $this->uploadedKip;
+
+        Data::create($validated);
+
+        session()->flash('status', [
+            'type' => 'alert-success', 
+            'message' => 'Data Berhasil Disubmit!'
+            ]
+        );
+
+        $this->submited = true;
+
+        $this->dispatch('submit')->to(CalonMahasiswaDashboardData::class);
     }
 
     public function changeProgramStudiSelected($value) {
-        $this->programStudiId = $value;
+        $this->program_studi_id = $value;
     }
     
     public function changeJenisKelaminSelected($value) {
-        $this->jenisKelamin = $value;
+        $this->jenis_kelamin = $value;
     }
     
     public function changePendidikanTerakhirSelected($value) {
-        $this->pendidikanTerakhir = $value;
+        $this->pendidikan_terakhir = $value;
     }
     
     public function changeKewargaNegaraanSelected($value) {
-        $this->kewargaNegaraan = $value;
+        $this->kewarganegaraan = $value;
     }
     
     public function changeAgamaSelected($value) {

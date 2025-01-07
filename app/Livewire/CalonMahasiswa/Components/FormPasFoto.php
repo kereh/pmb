@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
 
 class FormPasFoto extends Component {
 
@@ -37,6 +38,6 @@ class FormPasFoto extends Component {
             'message' => 'Pas Foto Berhasil Diupload!'
         ]);
 
-        $this->dispatch('pasFoto');
+        $this->dispatch('pasFoto')->to(CalonMahasiswaDashboardData::class);;
     }
 }
