@@ -1,10 +1,3 @@
-@php
-    $fetch = $this->fetch();
-    $user = $fetch['user'];
-    $programStudi = $fetch['program_studi'];
-    $biayaPendaftaran = $fetch['biaya_pendaftaran'];
-@endphp
-
 <div>
     <x-slot:title>{{ $title }}</x-slot:title>
     <div class="page-heading">
@@ -25,10 +18,10 @@
         </div>
     </div>
     <div class="page-content">
-        <livewire:calon-mahasiswa.components.form-pas-foto :user="$user" :uploadedPasFoto="$uploadedPasFoto" />
-        <livewire:calon-mahasiswa.components.form-dokumen :user="$user" :uploadedIjazah="$uploadedIjazah" :uploadedKip="$uploadedKip"
+        <livewire:calon-mahasiswa.components.form-pas-foto :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" />
+        <livewire:calon-mahasiswa.components.form-dokumen :user="$this->user" :uploadedIjazah="$uploadedIjazah" :uploadedKip="$uploadedKip"
             :uploadedData="$uploadedData" />
-        <livewire:calon-mahasiswa.components.form-data :user="$user" :uploadedPasFoto="$uploadedPasFoto" :uploadedIjazah="$uploadedIjazah"
-            :uploadedKip="$uploadedKip" :programStudi="$programStudi" :biayaPendaftaran="$biayaPendaftaran" />
+        <livewire:calon-mahasiswa.components.form-data :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" :uploadedIjazah="$uploadedIjazah"
+            :uploadedKip="$uploadedKip" :programStudi="$this->programStudi" :biayaPendaftaran="$this->biayaPendaftaran" />
     </div>
 </div>

@@ -66,8 +66,8 @@
                                 </button>
                             </div>
                             @if ($uploadedKip)
-                                <p class="mt-3">Kartu KIP yang sudah diupload :
-                                    <a href="{{ $uploadedKip }}" target="_blank">Lihat
+                                <p class="mt-3">KIP yang sudah diupload :
+                                    <a href="{{ $uploadedKip }}" class="badge bg-success" target="_blank">Lihat
                                         Disini</a>
                                 </p>
                             @endif

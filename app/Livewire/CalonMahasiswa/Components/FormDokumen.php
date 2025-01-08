@@ -2,12 +2,10 @@
 
 namespace App\Livewire\CalonMahasiswa\Components;
 
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Storage;
-
-use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
 use Livewire\Attributes\Reactive;
 
 class FormDokumen extends Component {
@@ -54,7 +52,7 @@ class FormDokumen extends Component {
             'message' => 'Ijazah Berhasil Diupload'
         ]);
 
-        $this->dispatch('ijazah')->to(CalonMahasiswaDashboardData::class);
+        $this->dispatch('ijazah', val: $this->uploadedIjazah);
     }
 
     public function saveKip() {
@@ -74,7 +72,7 @@ class FormDokumen extends Component {
                 'message' => 'KIP Berhasil Diupload'
             ]);
 
-            $this->dispatch('kip')->to(CalonMahasiswaDashboardData::class);
+            $this->dispatch('kip', val: $this->uploadedKip);
         }
 
         return;

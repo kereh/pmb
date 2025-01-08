@@ -29,7 +29,9 @@ class FormPasFoto extends Component {
 
     public function save() {
         $this->validate();
+        
         $this->pasFotoUpload->storeAs(path: 'pas_foto', name: $this->user->id . ".png",);
+
         $this->uploadedPasFoto = Storage::url('pas_foto/' . $this->user->id . '.png');
         $this->pasFotoPreview = $this->pasFotoUpload->temporaryUrl();
 
@@ -38,6 +40,6 @@ class FormPasFoto extends Component {
             'message' => 'Pas Foto Berhasil Diupload!'
         ]);
 
-        $this->dispatch('pasFoto')->to(CalonMahasiswaDashboardData::class);;
+        $this->dispatch('pas_foto', val: $this->uploadedPasFoto);
     }
 }

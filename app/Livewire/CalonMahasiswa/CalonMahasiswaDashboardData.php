@@ -22,23 +22,21 @@ class CalonMahasiswaDashboardData extends Component {
     public $uploadedData = false;
 
     public function mount() {
-        $checkUploadedPasFoto = Storage::exists('pas_foto/' . $this->fetch['user']->id . '.png');
-        $checkUploadedIjazah = Storage::exists('ijazah/' . $this->fetch['user']->id . '.pdf');
-        $checkUploadedKip = Storage::exists('kip/' . $this->fetch['user']->id . '.pdf');
-        $checkUploadedData = $this->fetch['user']->data;
+        $checkUploadedPasFoto = Storage::exists('pas_foto/' . $this->user->id . '.png');
+        $checkUploadedIjazah = Storage::exists('ijazah/' . $this->user->id . '.pdf');
+        $checkUploadedKip = Storage::exists('kip/' . $this->user->id . '.pdf');
+        $checkUploadedData = $this->user()->data()->first();
 
-        // dd($checkUploadedData);
-        
         $this->uploadedPasFoto = $checkUploadedPasFoto
-            ? Storage::url('pas_foto/' . $this->fetch['user']->id . '.png')
+            ? Storage::url('pas_foto/' . $this->user->id . '.png')
             : null;
 
         $this->uploadedIjazah = $checkUploadedIjazah
-            ? Storage::url('ijazah/' . $this->fetch['user']->id . '.pdf')
+            ? Storage::url('ijazah/' . $this->user->id . '.pdf')
             : null;
 
         $this->uploadedKip = $checkUploadedKip
-            ? Storage::url('kip/' . $this->fetch['user']->id . '.pdf')
+            ? Storage::url('kip/' . $this->user->id . '.pdf')
             : null;
 
         $this->uploadedData = $checkUploadedData
@@ -47,31 +45,37 @@ class CalonMahasiswaDashboardData extends Component {
     }
 
     #[Computed()]
-    public function fetch() {
-        return [
-            'user' => Auth::user(),
-            'program_studi' => ProgramStudi::all(),
-            'biaya_pendaftaran' => BiayaPendaftaran::first(),
-        ];
+    public function user() {
+        return Auth::user();
     }
 
-    #[On('pasFoto')]
-    public function updatePasFoto() {
-        $this->uploadedPasFoto = Storage::url('pas_foto/' . $this->fetch['user']->id . '.png');
+    #[Computed()]
+    public function program_studi() {
+        return ProgramStudi::all();
+    }
+
+    #[Computed()]
+    public function biaya_pendaftaran() {
+        return BiayaPendaftaran::first();
+    }
+
+    #[On('pas_foto')]
+    public function pasFotoListener($val) {
+        $this->uploadedPasFoto = $val;
     }
 
     #[On('ijazah')]
-    public function updateIjazah() {
-        $this->uploadedIjazah = Storage::url('ijazah/' . $this->fetch['user']->id . '.pdf');
+    public function ijazahListener($val) {
+        $this->uploadedIjazah = $val;
     }
 
     #[On('kip')]
-    public function updateKip() {
-        $this->uploadedKip = Storage::url('kip/' . $this->fetch['user']->id . '.pdf');
+    public function kipListener($val) {
+        $this->uploadedKip = $val;
     }
 
     #[On('data-submited')]
-    public function changeSubmited() {
+    public function submitListener() {
         $this->uploadedData = !$this->uploadedData;
     }
 }

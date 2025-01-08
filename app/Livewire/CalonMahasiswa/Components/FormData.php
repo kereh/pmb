@@ -4,11 +4,16 @@ namespace App\Livewire\CalonMahasiswa\Components;
 
 use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Attributes\Reactive;
+use Illuminate\Support\Str;
 
-use App\Models\Data;
-use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
+use App\CreatePaymentTrait;
+use App\createPaymentDTO;
+use App\Models\Payments;
 
 class FormData extends Component {
+    use CreatePaymentTrait;
+
     #[Validate('required', message: 'NIK Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'NIK Harus Berisi Angka')]
     #[Validate('digits:16', message: 'NIK harus terdiri dari 16 digit')]
@@ -57,12 +62,18 @@ class FormData extends Component {
     #[Validate('required', message: 'Nama Tidak Boleh Kosong')]
     public $nama;
 
+    #[Reactive]
+    public $uploadedPasFoto;
+    
+    #[Reactive]
+    public $uploadedIjazah;
+    
+    #[Reactive]
+    public $uploadedKip;
+    
     public $user;
     public $programStudi;
     public $biayaPendaftaran;
-    public $uploadedPasFoto;
-    public $uploadedIjazah;
-    public $uploadedKip;
 
     public function mount($user, $uploadedPasFoto, $uploadedIjazah, $uploadedKip) {
         $this->user = $user;
@@ -74,14 +85,32 @@ class FormData extends Component {
 
     public function store() {
         $validated = $this->validate();
+        $validated['user_id'] = $this->user->id;
         $validated['pas_foto'] = $this->uploadedPasFoto;
         $validated['ijazah_atau_skl'] = $this->uploadedIjazah;
         $validated['kip'] = $this->uploadedKip;
 
-        $data = Data::create($validated);
+        $this->user->data()->create($validated);
+        
+        $orderId = Str::uuid();
 
-        $this->user->data_id = $data->id;
-        $this->user->save();
+        $paymentData = new createPaymentDTO(
+            order_id: $orderId,
+            gross_amount: (int)$this->biayaPendaftaran->biaya,
+            first_name: $this->user->nama,
+            email: $this->user->email,
+            phone: $this->user->data->nomor_hp,
+            address: $this->user->data->alamat,
+        );
+
+        $snapToken = $this->createPayment($paymentData);
+
+        Payments::create([
+            'user_id' => $this->user->id,
+            'order_id' => $orderId,
+            'snap_token' => $snapToken,
+            'price' => $this->biayaPendaftaran->biaya,
+        ]);
 
         session()->flash('status', [
             'type' => 'alert-success', 
@@ -89,8 +118,10 @@ class FormData extends Component {
             ]
         );
 
-        $this->dispatch('data-submited')->to(CalonMahasiswaDashboardData::class);
+        $this->dispatch('submited');
     }
+
+    public function payment() {}
 
     public function changeProgramStudiSelected($value) {
         $this->program_studi_id = $value;

@@ -17,9 +17,8 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignId('role_id')->references('id')->on('roles')->cascadeOnDelete();
-            $table->foreignUuid('data_id')->nullable()->references('id')->on('data')->cascadeOnDelete();
-            $table->foreignId('seleksi_id')->nullable()->references('id')->on('seleksi')->cascadeOnDelete();
+            $table->foreignId('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->foreignId('seleksi_id')->nullable()->references('id')->on('seleksi')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,7 +31,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignUuid('user_id')->nullable()->references('id')->on('users')->index();
+            $table->foreignUuid('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

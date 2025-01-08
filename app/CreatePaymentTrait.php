@@ -3,7 +3,18 @@
 namespace App;
 
 use Midtrans\Snap;
-use App\DTO\createPaymentDTO;
+use Illuminate\Support\Str;
+
+class createPaymentDTO {
+    public function __construct(
+        public string $order_id,
+        public int $gross_amount,
+        public string $first_name,
+        public string $email,
+        public string $phone,
+        public string $address,
+    ) {}
+}
 
 trait CreatePaymentTrait
 {
@@ -23,7 +34,7 @@ trait CreatePaymentTrait
             ),
             "item_details" => array(
                 array(
-                    "id" => $paymentData->gross_amount_id,
+                    "id" => Str::uuid(),
                     "price" => $paymentData->gross_amount,
                     "name" => "Biaya Pendaftaran",
                     "quantity" => 1,

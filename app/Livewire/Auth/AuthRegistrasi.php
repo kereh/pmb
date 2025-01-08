@@ -51,6 +51,7 @@ class AuthRegistrasi extends Component {
             'username' => $this->username,
             'password' => $this->password,
             'role_id' => 2,
+            'seleksi_id' => 1,
         ];
 
         $this->create($data);

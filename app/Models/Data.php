@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Data extends Model {
     use HasUuids;
 
     protected $fillable = [
+        'user_id',
         'nik',
         'nisn',
         'pas_foto',
@@ -29,8 +29,8 @@ class Data extends Model {
         'kip',
     ];
 
-    public function users(): HasOne {
-        return $this->hasOne(User::class, 'data_id');
+    public function users(): BelongsTo {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function program_studi(): BelongsTo {

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('data', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->string('nik')->unique();
             $table->string('nisn')->unique();
             $table->string('pas_foto');

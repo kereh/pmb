@@ -29,7 +29,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'data_id',
         'seleksi_id',
     ];
 
@@ -64,8 +63,8 @@ class User extends Authenticatable
         return $this->belongsTo(Seleksi::class, 'seleksi_id');
     }
 
-    public function data(): BelongsTo {
-        return $this->belongsTo(Data::class, 'data_id');
+    public function data(): HasOne {
+        return $this->hasOne(Data::class, 'user_id');
     }
 
     public function payment(): HasOne {
