@@ -8,6 +8,7 @@ use App\Livewire\Auth\AuthLogin;
 use App\Livewire\Auth\AuthRegistrasi;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardHome;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
+use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardPembayaran;
 
 // auth routes
 Route::middleware(['guestOnly'])->group(function () {
@@ -25,6 +26,7 @@ Route::middleware(['loggedInOnly:calon_mahasiswa'])->group(function () {
     Route::prefix('calon')->group(function () {
         Route::get('/', CalonMahasiswaDashboardHome::class)->name('calon_mahasiswa');
         Route::get('/data', CalonMahasiswaDashboardData::class)->name('calon_mahasiswa.data');
+        Route::get('/pembayaran', CalonMahasiswaDashboardPembayaran::class)->name('calon_mahasiswa.pembayaran');
     });
 });
 

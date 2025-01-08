@@ -17,7 +17,7 @@
     <div class="page-content container">
         <div class="row">
             <section class="section col-12">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header">
                         <h4 class="card-title">Informasi</h4>
                     </div>
@@ -52,11 +52,11 @@
 
                 {{-- status jurusan pilihan --}}
                 <livewire:calon-mahasiswa.components.status-card color="{{ $this->user->data ? 'green' : 'red' }}"
-                    icon="iconly-boldPaper" text="Program Studi"
+                    icon="iconly-boldWork" text="Program Studi"
                     data="{{ $this->user->data->program_studi->nama ?? 'Belum Memilih' }}" />
 
                 {{-- status penerimaan --}}
-                <livewire:calon-mahasiswa.components.status-card color="red" icon="iconly-boldBookmark"
+                <livewire:calon-mahasiswa.components.status-card color="red" icon="iconly-boldInfo-Circle"
                     text="Status Penerimaan" data="Tahap Seleksi" />
             </div>
         </section>

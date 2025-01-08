@@ -11,13 +11,13 @@ use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
 class FormData extends Component {
     #[Validate('required', message: 'NIK Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'NIK Harus Berisi Angka')]
-    #[Validate('digits:16', message: 'NIK tidak valid')]
+    #[Validate('digits:16', message: 'NIK harus terdiri dari 16 digit')]
     #[Validate('unique:data,nik', message: 'NIK sudah terpakai')]
     public $nik;
 
     #[Validate('required', message: 'NISN Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'NISN Harus Berisi Angka')]
-    #[Validate('digits:10', message: 'NISN tidak valid')]
+    #[Validate('digits:10', message: 'NISN harus terdiri dari 10 digit')]
     #[Validate('unique:data,nisn', message: 'NISN sudah terpakai')]
     public $nisn;
 
@@ -58,31 +58,30 @@ class FormData extends Component {
     public $nama;
 
     public $user;
+    public $programStudi;
+    public $biayaPendaftaran;
     public $uploadedPasFoto;
     public $uploadedIjazah;
     public $uploadedKip;
-    public $programStudi;
-    public $biayaPendaftaran;
-    public $data;
-    public $submited;
 
-    public function mount($user, $uploadedPasFoto, $uploadedIjazah, $uploadedKip, $submited) {
+    public function mount($user, $uploadedPasFoto, $uploadedIjazah, $uploadedKip) {
         $this->user = $user;
         $this->uploadedPasFoto = $uploadedPasFoto;
         $this->uploadedIjazah = $uploadedIjazah;
         $this->uploadedKip = $uploadedKip;
-        $this->submited = $submited;
         $this->nama = $this->user->nama;
     }
 
     public function store() {
         $validated = $this->validate();
-        $validated['user_id'] = $this->user->id;
         $validated['pas_foto'] = $this->uploadedPasFoto;
         $validated['ijazah_atau_skl'] = $this->uploadedIjazah;
         $validated['kip'] = $this->uploadedKip;
 
-        Data::create($validated);
+        $data = Data::create($validated);
+
+        $this->user->data_id = $data->id;
+        $this->user->save();
 
         session()->flash('status', [
             'type' => 'alert-success', 
@@ -90,9 +89,7 @@ class FormData extends Component {
             ]
         );
 
-        $this->submited = true;
-
-        $this->dispatch('submit')->to(CalonMahasiswaDashboardData::class);
+        $this->dispatch('data-submited')->to(CalonMahasiswaDashboardData::class);
     }
 
     public function changeProgramStudiSelected($value) {

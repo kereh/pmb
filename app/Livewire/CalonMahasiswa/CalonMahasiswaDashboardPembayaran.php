@@ -7,12 +7,12 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class CalonMahasiswaDashboardHome extends Component {
+class CalonMahasiswaDashboardPembayaran extends Component {
     #[Layout('components.layouts.layout-calon-mahasiswa')]
-    public $title = 'Dashboard';
+    public $title = 'Pembayaran';
 
     #[Computed()]
     public function user() {
-        return Auth::user()->load(['data', 'payment']);
+        return Auth::user()->load('data');
     }
 }

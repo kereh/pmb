@@ -37,7 +37,7 @@ function initTheme() {
     }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("livewire:navigated", () => {
     const toggler = document.getElementById("toggle-dark");
     const theme = localStorage.getItem(THEME_KEY);
 

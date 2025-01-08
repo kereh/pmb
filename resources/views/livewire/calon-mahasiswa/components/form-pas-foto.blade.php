@@ -1,7 +1,7 @@
 <section class="section">
-    <div class="card">
+    <div class="card shadow">
         <div class="card-header">
-            <h3 class="card-title">Upload Pas Foto</h3>
+            <h4 class="card-title">Upload Pas Foto</h4>
             <p class="card-subtitle w-100 w-lg-75">Pas foto ukuran
                 3x4 dengan latar warna merah atau biru, menggunakan kemeja, maks ukuran file:
                 1MB dengan format PNG.

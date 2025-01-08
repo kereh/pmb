@@ -25,10 +25,10 @@
         </div>
     </div>
     <div class="page-content">
-        <livewire:calon-mahasiswa.components.form-pas-foto :user="$user" :uploadedPasFoto="$uploadedPasFoto" :submited="$uploadedData" />
+        <livewire:calon-mahasiswa.components.form-pas-foto :user="$user" :uploadedPasFoto="$uploadedPasFoto" />
         <livewire:calon-mahasiswa.components.form-dokumen :user="$user" :uploadedIjazah="$uploadedIjazah" :uploadedKip="$uploadedKip"
-            :submited="$uploadedData" />
+            :uploadedData="$uploadedData" />
         <livewire:calon-mahasiswa.components.form-data :user="$user" :uploadedPasFoto="$uploadedPasFoto" :uploadedIjazah="$uploadedIjazah"
-            :uploadedKip="$uploadedKip" :programStudi="$programStudi" :biayaPendaftaran="$biayaPendaftaran" :submited="$uploadedData" />
+            :uploadedKip="$uploadedKip" :programStudi="$programStudi" :biayaPendaftaran="$biayaPendaftaran" />
     </div>
 </div>

@@ -8,6 +8,7 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Storage;
 
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
+use Livewire\Attributes\Reactive;
 
 class FormDokumen extends Component {
 
@@ -23,14 +24,19 @@ class FormDokumen extends Component {
     #[Validate('mimes:pdf', message: 'File harus dalam bentuk PDF')]
     public $uploadKip;
 
+    #[Reactive]
+    public $uploadedData;
+    
     public $uploadedIjazah;
     public $uploadedKip;
     public $user;
-    public $submited;
+    
 
-    public function mount($user, $submited) {
+    public function mount($user, $uploadedData, $uploadedKip, $uploadedIjazah) {
         $this->user = $user;
-        $this->submited = $submited;
+        $this->uploadedData = $uploadedData;
+        $this->uploadedIjazah = $uploadedIjazah;
+        $this->uploadedKip = $uploadedKip;
     }
 
     public function saveIjazah() {

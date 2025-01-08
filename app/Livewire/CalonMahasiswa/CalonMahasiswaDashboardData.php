@@ -14,18 +14,20 @@ use App\Models\ProgramStudi;
 
 class CalonMahasiswaDashboardData extends Component {
     #[Layout('components.layouts.layout-calon-mahasiswa')]
-    public $title = 'Data Calon Mahasiswa';
+    public $title = 'Data';
 
     public $uploadedPasFoto;
     public $uploadedIjazah;
     public $uploadedKip;
-    public $uploadedData;
+    public $uploadedData = false;
 
     public function mount() {
         $checkUploadedPasFoto = Storage::exists('pas_foto/' . $this->fetch['user']->id . '.png');
         $checkUploadedIjazah = Storage::exists('ijazah/' . $this->fetch['user']->id . '.pdf');
         $checkUploadedKip = Storage::exists('kip/' . $this->fetch['user']->id . '.pdf');
-        $checkUploadedData = Auth::user()->data;
+        $checkUploadedData = $this->fetch['user']->data;
+
+        // dd($checkUploadedData);
         
         $this->uploadedPasFoto = $checkUploadedPasFoto
             ? Storage::url('pas_foto/' . $this->fetch['user']->id . '.png')
@@ -47,7 +49,7 @@ class CalonMahasiswaDashboardData extends Component {
     #[Computed()]
     public function fetch() {
         return [
-            'user' => Auth::user()->load(['roles','data','payment'])->first(),
+            'user' => Auth::user(),
             'program_studi' => ProgramStudi::all(),
             'biaya_pendaftaran' => BiayaPendaftaran::first(),
         ];
@@ -68,8 +70,8 @@ class CalonMahasiswaDashboardData extends Component {
         $this->uploadedKip = Storage::url('kip/' . $this->fetch['user']->id . '.pdf');
     }
 
-    #[On('submited')]
-    public function updateSubmited() {
-        $this->uploadedData = true;
+    #[On('data-submited')]
+    public function changeSubmited() {
+        $this->uploadedData = !$this->uploadedData;
     }
 }

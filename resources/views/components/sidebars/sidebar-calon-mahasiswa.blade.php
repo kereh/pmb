@@ -56,25 +56,25 @@
                 <li class="sidebar-title">Menu</li>
 
                 <li class="sidebar-item {{ request()->routeIs('calon_mahasiswa') ? 'active' : '' }}">
-                    <a href="{{ route('calon_mahasiswa') }}" class="sidebar-link">
+                    <a href="{{ route('calon_mahasiswa') }}" class="sidebar-link" wire:navigate>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item {{ request()->routeIs('calon_mahasiswa.data') ? 'active' : '' }}">
-                    <a href="{{ route('calon_mahasiswa.data') }}" class="sidebar-link">
+                    <a href="{{ route('calon_mahasiswa.data') }}" class="sidebar-link" wire:navigate>
                         <i class="bi bi-journals"></i>
                         <span>Data</span>
                     </a>
                 </li>
 
-                {{-- <li class="sidebar-item {{ request()->routeIs('mahasiswa.pembayaran') ? 'active' : '' }}">
-                    <a href="{{ route('mahasiswa.pembayaran') }}" class="sidebar-link" wire:navigate>
+                <li class="sidebar-item {{ request()->routeIs('calon_mahasiswa.pembayaran') ? 'active' : '' }}">
+                    <a href="{{ route('calon_mahasiswa.pembayaran') }}" class="sidebar-link" wire:navigate>
                         <i class="bi bi-credit-card"></i>
                         <span>Pembayaran</span>
                     </a>
-                </li> --}}
+                </li>
 
                 <li class="sidebar-item">
                     <a href="https://chat.whatsapp.com/KAAux4EZqrnH9pBlwlqg7W" class="sidebar-link" target="_blank">
