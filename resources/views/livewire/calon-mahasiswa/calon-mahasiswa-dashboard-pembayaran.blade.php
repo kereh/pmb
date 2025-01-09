@@ -15,72 +15,106 @@
         </div>
     </div>
     <div class="page-content">
-        <section class="section">
-            @if ($this->user->data)
-                <div class="d-flex w-100 justify-content-center">
-                    <div class="card shadow w-100 w-md-50">
-                        <div class="card-header">
-                            <h4 class="card-title">Detail Pembayaran</h4>
-                            <p class="text-subtitle">Dibawah ini adalah detail pembayaran.</p>
+        @if ($this->user->data)
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4 class="card-title">Detail Pembayaran</h4>
+                    <p class="text-subtitle">Dibawah ini adalah detail pembayaran. Bukti pembayaran akan dikirim ke email
+                        pendaftar</p>
+                    @if ($status = Session::get('statusPayment'))
+                        <div class="alert {{ $status['type'] }} alert-dismissible show fade">
+                            <i class="bi {{ $status['icon'] }}"></i>
+                            {{ $status['message'] }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
                         </div>
-                        <div class="card-body">
-                            <div class="row col-12 table-responsive">
-                                <table class="table table-borderless mb-0">
-                                    <tbody>
-                                        <tr>
-                                            <td>Nama Pendaftar</td>
-                                            <td>:</td>
-                                            <td>{{ $this->user->nama }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Email Pendaftar</td>
-                                            <td>:</td>
-                                            <td>{{ $this->user->email }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kontak</td>
-                                            <td>:</td>
-                                            <td>{{ $this->user->data->nomor_hp }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Program Studi</td>
-                                            <td>:</td>
-                                            <td>{{ $this->user->data->program_studi->nama }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Biaya Pendaftaran</td>
-                                            <td>:</td>
-                                            <td>Rp.
-                                                {{ number_format($this->biaya_pendaftaran->biaya, 0, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Status Pembayaran</td>
-                                            <td>:</td>
-                                            <td>{{ $this->user->payment->status ?? $this->user->payment }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="row mt-5 d-flex justify-content-end">
-                                    <button class="btn btn-primary w-auto">Lanjutkan</button>
-                                </div>
-                            </div>
+                    @elseif ($this->user->payment->status)
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle"></i>
+                            Pembayaran Berhasil! Silahkan cek email anda <strong>{{ $this->user->email }}</strong>
                         </div>
-                    </div>
+                    @endif
                 </div>
-            @else
-                <div class="card shadow">
-                    <div class="card-header">
-                        <h4 class="card-title">Peringatan</h4>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-3">
+                            <tbody>
+                                <tr>
+                                    <td>Order ID</td>
+                                    <td>:</td>
+                                    <td>{{ $this->user->payment->order_id }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Nama Pendaftar</td>
+                                    <td>:</td>
+                                    <td>{{ $this->user->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email Pendaftar</td>
+                                    <td>:</td>
+                                    <td>{{ $this->user->email }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Kontak</td>
+                                    <td>:</td>
+                                    <td>{{ $this->user->data->nomor_hp }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Program Studi</td>
+                                    <td>:</td>
+                                    <td>{{ $this->user->data->program_studi->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Biaya Pendaftaran</td>
+                                    <td>:</td>
+                                    <td>Rp.
+                                        {{ number_format($this->biaya_pendaftaran->biaya, 0, ',', '.') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Status Pembayaran</td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="badge {{ $this->user->payment->status ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $this->user->payment->status ? 'Lunas' : 'Belum Lunas' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card-body">
-                        <p class="text-danger">Anda belum mengisi data! Silahkan lengkapi data <a
-                                href="{{ route('calon_mahasiswa.data') }}" wire:navigate>disini</a> sebelum melakukan
-                            pembayaran</p>
-                    </div>
+                    @if (!$this->user->payment->status)
+                        <div class="container row d-flex justify-content-start">
+                            <button class="btn btn-primary w-auto" id="pay-button">Lanjutkan</button>
+                        </div>
+                    @endif
                 </div>
-            @endif
-        </section>
+            </div>
+        @else
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4 class="card-title">Peringatan</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-danger">Anda belum mengisi data! Silahkan lengkapi data <a
+                            href="{{ route('calon_mahasiswa.data') }}" wire:navigate>disini</a> sebelum melakukan
+                        pembayaran</p>
+                </div>
+            </div>
+        @endif
     </div>
-</div>
+    <script type="text/javascript">
+        document.getElementById('pay-button').onclick = function() {
+            const payButton = document.getElementById('pay-button');
+            payButton.disabled = true;
+
+            snap.pay('{{ $this->user->payment->snap_token ?? '' }}', {
+                onSuccess: () => {
+                    window.location.href =
+                        "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payment->order_id ?? '') }}";
+                },
+            });
+        };
+    </script>
 </div>

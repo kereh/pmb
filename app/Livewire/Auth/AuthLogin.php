@@ -25,7 +25,7 @@ class AuthLogin extends Component {
         if (Auth::attempt($validated, $this->remember)) {
 
             if (Auth::user()->roles->role == 'admin') {
-                return $this->redirectRoute('admin');
+                return $this->redirect('/admin');
             }           
 
             return $this->redirectRoute('calon_mahasiswa');

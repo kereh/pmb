@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
 
         DB::table('seleksi')->insert([
             ['status' => 'Tahap Seleksi'],
-            ['status' => 'Tidak Lulus'],
-            ['status' => 'Lulus'],
+            ['status' => 'Tidak Diterima'],
+            ['status' => 'Diterima'],
         ]);
 
         DB::table('biaya_pendaftaran')->insert([

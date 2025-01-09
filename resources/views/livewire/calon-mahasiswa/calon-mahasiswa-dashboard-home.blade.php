@@ -56,8 +56,9 @@
                     data="{{ $this->user->data->program_studi->nama ?? 'Belum Memilih' }}" />
 
                 {{-- status penerimaan --}}
-                <livewire:calon-mahasiswa.components.status-card color="red" icon="iconly-boldInfo-Circle"
-                    text="Status Penerimaan" data="Tahap Seleksi" />
+                <livewire:calon-mahasiswa.components.status-card
+                    color="{{ $this->user->seleksi->status == 'Diterima' ? 'green' : 'red' }}"
+                    icon="iconly-boldInfo-Circle" text="Status Penerimaan" data="{{ $this->user->seleksi->status }}" />
             </div>
         </section>
     </div>

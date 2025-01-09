@@ -6,10 +6,10 @@ use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Livewire\Attributes\Reactive;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 use App\CreatePaymentTrait;
 use App\createPaymentDTO;
-use App\Models\Payments;
 
 class FormData extends Component {
     use CreatePaymentTrait;
@@ -89,34 +89,37 @@ class FormData extends Component {
         $validated['pas_foto'] = $this->uploadedPasFoto;
         $validated['ijazah_atau_skl'] = $this->uploadedIjazah;
         $validated['kip'] = $this->uploadedKip;
-
-        $this->user->data()->create($validated);
         
-        $orderId = Str::uuid();
+        DB::transaction(function () use ($validated) {
 
-        $paymentData = new createPaymentDTO(
-            order_id: $orderId,
-            gross_amount: (int)$this->biayaPendaftaran->biaya,
-            first_name: $this->user->nama,
-            email: $this->user->email,
-            phone: $this->user->data->nomor_hp,
-            address: $this->user->data->alamat,
-        );
+            $this->user->data()->create($validated);
 
-        $snapToken = $this->createPayment($paymentData);
-
-        $this->user->payment()->create([
-            'user_id' => $this->user->id,
-            'order_id' => $orderId,
-            'snap_token' => $snapToken,
-            'price' => $this->biayaPendaftaran->biaya,
-        ]);
-
-        session()->flash('status', [
-            'type' => 'alert-success', 
-            'message' => 'Data Berhasil Disubmit!'
-            ]
-        );
+            $orderId = Str::uuid();
+    
+            $paymentData = new createPaymentDTO(
+                order_id: $orderId,
+                gross_amount: (int)$this->biayaPendaftaran->biaya,
+                first_name: $this->user->nama,
+                email: $this->user->email,
+                phone: $this->user->data->nomor_hp,
+                address: $this->user->data->alamat,
+            );
+    
+            $snapToken = $this->createPayment($paymentData);
+    
+            $this->user->payment()->create([
+                'user_id' => $this->user->id,
+                'order_id' => $orderId,
+                'snap_token' => $snapToken,
+                'price' => $this->biayaPendaftaran->biaya,
+            ]);
+    
+            session()->flash('status', [
+                'type' => 'alert-success', 
+                'message' => 'Data Berhasil Disubmit!'
+                ]
+            );
+        });
 
         $this->dispatch('submited');
     }
