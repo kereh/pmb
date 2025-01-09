@@ -4,7 +4,13 @@
             <div id="auth-left">
                 <h1 class="auth-title">Lupa Password</h1>
                 <p class="auth-subtitle mb-5">Input your email and we will send you reset password link.</p>
-
+                @if ($status = Session::get('status'))
+                    <div class="alert alert-dismissible {{ $status['type'] }} show fade">
+                        <i class="bi bi-check-circle"></i>
+                        {{ $status['message'] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <form action="{{ route('auth.kirim-link') }}" method="POST">
                     @csrf
                     <div class="form-group position-relative has-icon-left mb-4">

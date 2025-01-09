@@ -1,12 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ResetPasswordController;
-use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Auth\AuthLogin;
 use App\Livewire\Auth\AuthRegistrasi;
+use App\Livewire\Auth\AuthLupaPassword;
+use App\Livewire\Auth\AuthUpdatePassword;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardHome;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardPembayaran;
@@ -16,10 +18,8 @@ Route::middleware(['guestOnly'])->group(function () {
     Route::redirect('/', '/login');
     Route::get('/login', AuthLogin::class)->name('auth.login');
     Route::get('/registrasi', AuthRegistrasi::class)->name('auth.registrasi');
-    Route::get('/lupa-password', [ResetPasswordController::class, 'index'])->name('auth.lupa');
-    Route::get('/lupa-password/reset/{token}', [ResetPasswordController::class, 'reset'])->name('password.reset');
-    Route::post('/lupa-password', [ResetPasswordController::class, 'send'])->name('auth.kirim-link'); 
-    Route::post('/lupa-password/update', [ResetPasswordController::class, 'update'])->name('password.update');
+    Route::get('/lupa-password', AuthLupaPassword::class)->name('password.request');
+    Route::get('/lupa-password/update/{token}', AuthUpdatePassword::class)->name('password.reset');
 });
 
 // calon mahasiswa routes

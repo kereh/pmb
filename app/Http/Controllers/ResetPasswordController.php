@@ -25,15 +25,20 @@ class ResetPasswordController extends Controller {
         $status = Password::sendResetLink($validated);
 
         return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+            ? back()->with('status', [
+                'type' => 'alert-success',
+                'message' => 'Reset Password link berhasil dikirim!'
+            ])
+            : back()->with('status', [
+                'type' => 'alert-danger',
+                'message' => 'Reset Password link gagal dikirim! Coba lagi nanti.'
+            ]);
     }
 
     public function update(Request $request) {
-        $validated = $request->validate([
-            'email' => 'required|email:dns',
-            'password' => 'required|min:8|confirmed',
-        ]);
+        $validated = $request->validate(['password' => 'required|min:4|confirmed', 'token' => 'required']);
+
+        // dd($validated);
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
