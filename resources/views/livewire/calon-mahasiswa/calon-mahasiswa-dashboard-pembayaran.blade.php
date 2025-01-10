@@ -92,16 +92,9 @@
                 </div>
             </div>
         @else
-            <div class="card shadow">
-                <div class="card-header">
-                    <h4 class="card-title">Peringatan</h4>
-                </div>
-                <div class="card-body">
-                    <p class="text-danger">Anda belum mengisi data! Silahkan lengkapi data <a
-                            href="{{ route('calon_mahasiswa.data') }}" wire:navigate>disini</a> sebelum melakukan
-                        pembayaran</p>
-                </div>
-            </div>
+            <div class="alert shadow alert-danger">Anda harus melengkapi data terlebih dahulu sebelum melakukan
+                pembayaran. Untuk melengkapi data klik <a href="{{ route('calon_mahasiswa.data') }}"
+                    wire:navigate>DISINI</a></div>
         @endif
     </div>
     <script type="text/javascript">
