@@ -8,7 +8,7 @@ use App\Http\Controllers\PaymentController;
 use App\Livewire\Auth\AuthLogin;
 use App\Livewire\Auth\AuthRegistrasi;
 use App\Livewire\Auth\AuthLupaPassword;
-use App\Livewire\Auth\AuthUpdatePassword;
+use App\Livewire\Auth\AuthResetPassword;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardHome;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardPembayaran;
@@ -19,8 +19,9 @@ Route::middleware(['guestOnly'])->group(function () {
     Route::get('/login', AuthLogin::class)->name('auth.login');
     Route::get('/registrasi', AuthRegistrasi::class)->name('auth.registrasi');
     Route::get('/lupa-password', AuthLupaPassword::class)->name('password.request');
-    Route::get('/lupa-password/update/{token}', AuthUpdatePassword::class)->name('password.reset');
+    Route::get('/lupa-password/{token}', AuthResetPassword::class)->name('password.reset');
 });
+
 
 // calon mahasiswa routes
 Route::middleware(['loggedInOnly:calon_mahasiswa'])->group(function () {

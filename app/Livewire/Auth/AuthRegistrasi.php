@@ -30,7 +30,6 @@ class AuthRegistrasi extends Component {
 
     #[Validate('required', message: 'Password harus diisi!')]
     #[Validate('min:4', message: 'Password minimal 4 karakter!')]
-    #[Validate('max:50', message: 'Password tidak boleh lebih dari 50 karakter!')]
     #[Validate('confirmed', message: 'Password yang dimasukan tidak sama!')]
     public $password;
 

@@ -7,8 +7,7 @@
 
             <!-- Flash Message -->
             @if ($status = Session::get('status'))
-                <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
-                    class="alert alert-dismissible {{ $status['type'] }} show fade">
+                <div class="alert alert-dismissible {{ $status['type'] }} show fade">
                     <i class="bi bi-check-circle"></i>
                     {{ $status['message'] }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
@@ -30,10 +29,10 @@
                         </small>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5"
-                    wire:loading.attr="disabled">
-                    <span wire:loading.remove>Kirim Link</span>
-                    <span wire:loading>Mengirim...</span>
+                <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" wire:loading.attr="disabled"
+                    wire:target="send">
+                    <span wire:loading.remove wire:target="send">Kirim Link</span>
+                    <span wire:loading wire:target="send">Mengirim...</span>
                 </button>
             </form>
 

@@ -50,7 +50,7 @@
                 <div class="text-center mt-5 text-lg fs-4">
                     <p class="text-gray-600">Belum punya akun? <a href="{{ route('auth.registrasi') }}"
                             class="font-bold" wire:navigate>Buat sekarang</a></p>
-                    <p><a class="font-bold" href="{{ route('auth.lupa') }}" wire:navigate>Lupa password</a></p>
+                    <p><a class="font-bold" href="{{ route('password.request') }}" wire:navigate>Lupa password</a></p>
                 </div>
             </div>
         </div>

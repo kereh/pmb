@@ -18,9 +18,11 @@ class Guest
         if ($request->user()) {
             if ($request->user()->roles->role != 'admin') {
                 return redirect()->route('calon_mahasiswa');
+            } else {
+                return redirect('/admin');
             }
-            return redirect('/admin');
         }
+        
         return $next($request);
     }
 }
