@@ -98,16 +98,18 @@
         @endif
     </div>
     <script type="text/javascript">
-        document.getElementById('pay-button').onclick = function() {
-            const payButton = document.getElementById('pay-button');
-            payButton.disabled = true;
+        document.addEventListener('livewire:navigated', function() {
+            document.getElementById('pay-button').onclick = function() {
+                const payButton = document.getElementById('pay-button');
+                payButton.disabled = true;
 
-            snap.pay('{{ $this->user->payment->snap_token ?? '' }}', {
-                onSuccess: () => {
-                    window.location.href =
-                        "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payment->order_id ?? '') }}";
-                },
-            });
-        };
+                snap.pay('{{ $this->user->payment->snap_token ?? '' }}', {
+                    onSuccess: () => {
+                        window.location.href =
+                            "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payment->order_id ?? '') }}";
+                    },
+                });
+            };
+        });
     </script>
 </div>

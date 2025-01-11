@@ -11,13 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-use Filament\Panel;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasName;
-
 use App\Models\Roles;
 
-class User extends Authenticatable implements FilamentUser, HasName {
+class User extends Authenticatable {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasUuids;
 
@@ -57,18 +53,6 @@ class User extends Authenticatable implements FilamentUser, HasName {
             'password' => 'hashed',
         ];
     }
-
-    // filament
-
-    public function canAccessPanel(Panel $panel): bool {
-        return $panel->auth()->user()->roles->role == 'admin';
-    }
-
-    public function getFilamentName(): string {
-        return "{$this->nama}";
-    }
-
-    // relations
 
     public function roles(): BelongsTo {
         return $this->belongsTo(Roles::class, 'role_id');

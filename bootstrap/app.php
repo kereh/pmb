@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'guestOnly' => App\Http\Middleware\Guest::class,
-            'loggedInOnly' => App\Http\Middleware\LoggedIn::class,
+            'loggedIn' => App\Http\Middleware\LoggedIn::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
