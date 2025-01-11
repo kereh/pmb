@@ -56,7 +56,8 @@
                     {{-- KIP --}}
                     <div class="col-12 w-100 w-lg-75">
                         <div class="form-group">
-                            <p>Kartu KIP (kosongkan jika tidak punya)</p>
+                            <label>Kartu KIP</label>
+                            <small class="text-danger">*Kosongkan jika tidak punya</small>
                             <div class="input-group">
                                 <input type="file" class="form-control @error('uploadKip') is-invalid @enderror"
                                     wire:model.blur="uploadKip" {{ $uploadedData ? 'disabled' : '' }}>

@@ -10,16 +10,14 @@ class MidtransServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
-    public function register(): void
-    {
+    public function register(): void {
         //
     }
 
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
+    public function boot(): void {
         // midtrans
         Config::$serverKey = config('midtrans.serverKey');
         Config::$isProduction = config('midtrans.isProduction');

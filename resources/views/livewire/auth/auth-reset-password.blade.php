@@ -26,7 +26,7 @@
                 <input type="hidden" name="token" value="{{ $token }}">
                 <div class="form-group position-relative has-icon-left mb-4">
                     <input type="email" class="form-control form-control-xl @error('email') is-invalid @enderror"
-                        placeholder="Email" wire:model.blur="email">
+                        placeholder="Email" wire:model="email">
                     <div class="form-control-icon">
                         <i class="bi bi-shield-lock"></i>
                     </div>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="form-group position-relative has-icon-left mb-4">
                     <input type="password" class="form-control form-control-xl"
-                        placeholder="Konfirmasi Password Baru" wire:model.blur="password_confirmation">
+                        placeholder="Konfirmasi Password Baru" wire:model="password_confirmation">
                     <div class="form-control-icon">
                         <i class="bi bi-shield-lock"></i>
                     </div>

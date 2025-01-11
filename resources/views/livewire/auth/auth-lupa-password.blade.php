@@ -18,7 +18,7 @@
             <!-- Form -->
             <form wire:submit.prevent="send">
                 <div class="form-group position-relative has-icon-left mb-4">
-                    <input type="email" wire:model.blur="email"
+                    <input type="email" wire:model="email"
                         class="form-control form-control-xl @error('email') is-invalid @enderror" placeholder="Email">
                     <div class="form-control-icon">
                         <i class="bi bi-envelope"></i>

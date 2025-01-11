@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
                 'seleksi_id' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:m:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:m:s'),
-            ]
+            ],
         ]);
     }
 }

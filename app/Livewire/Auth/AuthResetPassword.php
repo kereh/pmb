@@ -18,7 +18,7 @@ class AuthResetPassword extends Component  {
     public $token;
 
     #[Validate('required', message: 'Email tidak boleh kosong!')]
-    #[Validate('email', message: 'Email tidak valid!')]
+    #[Validate('email:dns', message: 'Email tidak valid!')]
     public $email;
 
     #[Validate('required', message: 'Password harus diisi!')]
@@ -40,20 +40,24 @@ class AuthResetPassword extends Component  {
 
             function ($user, $password) {
                 $user->forceFill(['password' => Hash::make($password)])->save();
-                Auth::login($user);
             }
         );
 
         if ($status === Password::PASSWORD_RESET) {
             session()->flash('status', [
                 'type' => 'alert-success',
-                'message' => 'Password Berhasil Diperbarui!. SIlahkan Refresh Halaman ini',
+                'message' => 'Password Berhasil Diperbarui!',
             ]);
+
+            return $this->redirectRoute('auth.login');
+
         } else {
             session()->flash('status', [
                 'type' => 'alert-danger',
                 'message' => 'Password Gagal Diperbarui',
             ]);
+
+            return $this->redirectRoute('auth.login');
         }
 
         $this->reset();

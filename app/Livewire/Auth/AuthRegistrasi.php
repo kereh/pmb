@@ -60,6 +60,8 @@ class AuthRegistrasi extends Component {
             'message' => 'Registrasi berhasil',
         ]);
 
+        $this->reset();
+
         return $this->redirect('login');
     }
 }
