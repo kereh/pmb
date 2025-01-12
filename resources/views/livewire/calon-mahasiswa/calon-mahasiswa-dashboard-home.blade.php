@@ -47,7 +47,7 @@
                 @else
                     <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa.pembayaran"
                         color="{{ $this->user->payment->status ? 'green' : 'red' }}" icon="iconly-boldWallet"
-                        text="Status Pembayaran" data="{{ $this->user->payment->status ? 'Lunas' : 'Belum' }}" />
+                        text="Status Pembayaran" data="{{ $this->user->payment->status ? 'Lunas' : 'Belum Lunas' }}" />
                 @endif
 
                 {{-- status jurusan pilihan --}}

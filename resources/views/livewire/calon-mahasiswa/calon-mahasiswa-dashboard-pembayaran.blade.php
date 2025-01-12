@@ -23,7 +23,7 @@
                         pendaftar</p>
                     @if ($status = Session::get('statusPayment'))
                         <div class="alert {{ $status['type'] }} alert-dismissible show fade">
-                            <i class="bi {{ $status['icon'] }}"></i>
+                            <i class="bi bi-check-circle"></i>
                             {{ $status['message'] }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
@@ -33,6 +33,11 @@
                             <i class="bi bi-check-circle"></i>
                             Pembayaran Berhasil! Silahkan cek email anda <strong>{{ $this->user->email }}</strong>
                         </div>
+                    @elseif ($isExpired)
+                        <div class="alert alert-warning">
+                            <i class="bi bi-x-circle"></i>
+                            ID Pembayaran kadaluarsa! Silahkan perbarui!</strong>
+                        </div>
                     @endif
                 </div>
                 <div class="card-body">
@@ -40,7 +45,7 @@
                         <table class="table table-borderless mb-3">
                             <tbody>
                                 <tr>
-                                    <td>Order ID</td>
+                                    <td>ID Pembayaran</td>
                                     <td>:</td>
                                     <td>{{ $this->user->payment->order_id }}</td>
                                 </tr>
@@ -76,8 +81,8 @@
                                     <td>:</td>
                                     <td>
                                         <span
-                                            class="badge {{ $this->user->payment->status ? 'bg-success' : 'bg-danger' }}">
-                                            {{ $this->user->payment->status ? 'Lunas' : 'Belum Lunas' }}
+                                            class="badge {{ $this->user->payment->status ? 'bg-success' : ($isExpired ? 'bg-warning' : 'bg-danger') }}">
+                                            {{ $this->user->payment->status ? 'Lunas' : ($isExpired ? 'Expired' : 'Belum Lunas') }}
                                         </span>
                                     </td>
                                 </tr>
@@ -85,9 +90,23 @@
                         </table>
                     </div>
                     @if (!$this->user->payment->status)
-                        <div class="container row d-flex justify-content-start">
-                            <button class="btn btn-primary w-auto" id="pay-button">Lanjutkan</button>
-                        </div>
+                        @if ($isExpired)
+                            <div class="container row d-flex justify-content-end">
+                                <button class="btn btn-warning w-auto" wire:click="update" wire:target="update"
+                                    wire:loading.attr="disabled">
+                                    <span wire:loading.remove wire:target="update">
+                                        Perbarui Pembayaran
+                                    </span>
+                                    <span wire:loading wire:target="update">
+                                        Mohon Tunggu...
+                                    </span>
+                                </button>
+                            </div>
+                        @else
+                            <div class="container row d-flex justify-content-end">
+                                <button class="btn btn-primary w-auto" id="pay-button">Lanjutkan</button>
+                            </div>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -99,17 +118,20 @@
     </div>
     <script type="text/javascript">
         document.addEventListener('livewire:navigated', function() {
-            document.getElementById('pay-button').onclick = function() {
-                const payButton = document.getElementById('pay-button');
-                payButton.disabled = true;
+            const payButton = document.getElementById('pay-button');
+            if (payButton) {
+                document.getElementById('pay-button').onclick = function() {
+                    const payButton = document.getElementById('pay-button');
+                    payButton.disabled = true;
 
-                snap.pay('{{ $this->user->payment->snap_token ?? '' }}', {
-                    onSuccess: () => {
-                        window.location.href =
-                            "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payment->order_id ?? '') }}";
-                    },
-                });
-            };
+                    snap.pay('{{ $this->user->payment->snap_token ?? '' }}', {
+                        onSuccess: () => {
+                            window.location.href =
+                                "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payment->order_id ?? '') }}";
+                        },
+                    });
+                };
+            }
         });
     </script>
 </div>
