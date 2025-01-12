@@ -35,7 +35,7 @@ Route::middleware(['loggedIn:calon_mahasiswa'])->prefix('calon')->group(function
 // admin routes
 Route::middleware(['loggedIn:admin'])->prefix('admin')->group(function () {
     Route::get('/', AdminDashboardHome::class)->name('admin');
-    Route::get('/calon', AdminDashboardCalon::class)->name('admin.calon');
+    Route::get('/calon', AdminDashboardCalon::class)->name('admin.calon_mahasiswa');
 });
 
 // logout

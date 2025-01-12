@@ -47,11 +47,10 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-title">Management Pengguna</li>
-                <li class="sidebar-item {{ request()->routeIs('admin') ? 'active' : '' }}">
-                    <a href="{{ route('admin') }}" class="sidebar-link" wire:navigate>
+                <li class="sidebar-item {{ request()->routeIs('admin.calon_mahasiswa') ? 'active' : '' }}">
+                    <a href="{{ route('admin.calon_mahasiswa') }}" class="sidebar-link" wire:navigate>
                         <i class="bi bi-people-fill"></i>
-                        <span>List Calon Mahasiswa</span>
+                        <span>Calon Mahasiswa</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

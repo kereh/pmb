@@ -15,6 +15,10 @@
     <link rel="stylesheet" crossorigin href="{{ asset('assets/compiled/css/app-dark.css') }}" />
     <link rel="stylesheet" crossorigin href="{{ asset('assets/compiled/css/iconly.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/extensions/flatpickr/flatpickr.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" />
+    <link rel="stylesheet" crossorigin href="{{ asset('assets/compiled/css/table-datatable-jquery.css') }}" />
+
     @vite('resources/js/app.js')
 </head>
 
@@ -33,7 +37,10 @@
     <script src="{{ asset('assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('assets/static/js/pages/date-picker.js') }}"></script>
     <script src="{{ asset('assets/extensions/dayjs/dayjs.min.js') }}"></script>
-    <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/static/js/pages/datatables.js') }}"></script>
 </body>
 
 </html>
