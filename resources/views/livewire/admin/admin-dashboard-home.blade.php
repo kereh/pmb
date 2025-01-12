@@ -16,7 +16,7 @@
     </div>
     <div class="page-content">
         <div class="row">
-            <livewire:admin.components.admin-chart :seriesData="$seriesData" :timestamps="$timestamps" />
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate, tempora!
         </div>
     </div>
 </div>

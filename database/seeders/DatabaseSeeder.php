@@ -65,6 +65,17 @@ class DatabaseSeeder extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:m:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:m:s'),
             ],
+            [
+                'id' => Str::uuid(),
+                'nama' => 'Dustin Immanuel',
+                'email' => 'dustin@gmail.com',
+                'username' => 'dustin',
+                'password' => Hash::make('dustin'),
+                'role_id' => 2,
+                'seleksi_id' => 1,
+                'created_at' => Carbon::now()->format('Y-m-d H:m:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:m:s'),
+            ],
         ]);
     }
 }
