@@ -15,7 +15,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @enderror
-                <form class="form" wire:submit="store">
+                <form class="form" wire:submit.prevent="store">
                     <div class="row d-flex flex-columns flex-lg-row align-items-center mt-4">
                         <div class="col-md-6 col-12">
                             <div class="form-group">
@@ -190,9 +190,15 @@
                     <div class="row d-flex flex-columns flex-lg-row align-items-center row-gap-5">
                         <div class="col-12 d-flex justify-content-end mt-3">
                             <button type="submit" class="btn btn-primary me-1 mb-1"
-                                {{ $user->data ? 'disabled' : '' }} wire:confirm="">Submit</button>
+                                {{ $user->data ? 'disabled' : '' }} wire:target="store"
+                                wire:loading.attr="disabled">
+                                <span wire:loading.remove wire:target="store">Submit</span>
+                                <span wire:loading wire:target="store">Menyimpan data...</span>
+                            </button>
                             <button type="reset" class="btn btn-danger me-1 mb-1"
-                                {{ $user->data ? 'disabled' : '' }}>Reset</button>
+                                {{ $user->data ? 'disabled' : '' }}>
+                                Reset
+                            </button>
                         </div>
                     </div>
                 </form>

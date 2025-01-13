@@ -14,6 +14,7 @@
                         <th>Program Studi</th>
                         <th>Status Seleksi</th>
                         <th>Status Pembayaran</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,16 +30,25 @@
                             <td>{{ strtoupper($calon->nama) }}</td>
                             <td>
                                 @isset($calon->data->program_studi->nama)
-                                    {{ $calon->data->program_studi->nama }}
+                                    <span>{{ $calon->data->program_studi->nama }}</span>
                                 @else
-                                    <span class="badge bg-danger">Data Belum Lengkap</span>
+                                    <span>Data Belum Lengkap</span>
                                 @endisset
                             </td>
                             <td>
-                                <span
-                                    class="badge {{ $calon->seleksi->id == 1 ? 'bg-warning' : ($calon->seleksi->id == 2 ? 'bg-danger' : 'bg-success') }}">{{ $calon->seleksi->status }}</span>
+                                <span>{{ $calon->seleksi->status }}</span>
                             </td>
-                            <td>{{ $calon->payment->status ?? 'belum lengkap' }}</td>
+                            <td>
+                                @if (!$calon->payment ?? !$calon->payment->status)
+                                    <span>Belum Lunas</span>
+                                @else
+                                    <span>Lunas</span>
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-danger">Hapus</button>
+                                <button class="btn btn-info">Detail</button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

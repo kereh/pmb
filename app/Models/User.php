@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,9 +11,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
+
 use App\Models\Roles;
 
-class User extends Authenticatable {
+class User extends Authenticatable implements FilamentUser, HasName {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasUuids;
 
@@ -53,6 +56,14 @@ class User extends Authenticatable {
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getFilamentName(): string {
+        return "{$this->nama}";
+    }
+
+    public function canAccessPanel(Panel $panel): bool {
+        return $panel->auth()->user()->roles->role == 'admin';
     }
 
     public function roles(): BelongsTo {

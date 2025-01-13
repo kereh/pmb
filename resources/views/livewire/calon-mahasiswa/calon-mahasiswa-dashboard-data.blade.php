@@ -16,6 +16,12 @@
                 sesuai ketentuan yang ditetapkan panitia
             </p>
         </div>
+        @if ($uploadedData)
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle"></i>
+                Data anda sudah lengkap. Tidak dapat diubah lagi.
+            </div>
+        @endif
     </div>
     <div class="page-content">
         <livewire:calon-mahasiswa.components.form-pas-foto :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" />

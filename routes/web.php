@@ -11,8 +11,8 @@ use App\Livewire\Auth\AuthResetPassword;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardHome;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardPembayaran;
-use App\Livewire\Admin\AdminDashboardHome;
-use App\Livewire\Admin\AdminDashboardCalon;
+// use App\Livewire\Admin\AdminDashboardHome;
+// use App\Livewire\Admin\AdminDashboardCalon;
 
 // auth routes
 Route::middleware(['guestOnly'])->group(function () {
@@ -33,10 +33,10 @@ Route::middleware(['loggedIn:calon_mahasiswa'])->prefix('calon')->group(function
 });
 
 // admin routes
-Route::middleware(['loggedIn:admin'])->prefix('admin')->group(function () {
-    Route::get('/', AdminDashboardHome::class)->name('admin');
-    Route::get('/calon', AdminDashboardCalon::class)->name('admin.calon_mahasiswa');
-});
+// Route::middleware(['loggedIn:admin'])->prefix('admin')->group(function () {
+//     Route::get('/', AdminDashboardHome::class)->name('admin');
+//     Route::get('/calon', AdminDashboardCalon::class)->name('admin.calon_mahasiswa');
+// });
 
 // logout
 Route::middleware(['auth'])->group(function () {
