@@ -20,6 +20,7 @@ class BiayaPendaftaranResource extends Resource
     protected static ?string $model = BiayaPendaftaran::class;
     protected static ?string $navigationIcon = 'heroicon-o-wallet';
     protected static ?int $navigationSort = 4;
+    protected static ?string $slug = 'biaya-pendaftaran';
 
     public static function form(Form $form): Form
     {

@@ -54,7 +54,13 @@ class DataResource extends Resource
                     ->label('Program Studi'),
                 TextColumn::make('users.payment.status')
                     ->label('Status Pembayaran')
-                    ->getStateUsing(fn ($record) => $record->users->payment->status == 0 ? 'Belum Lunas' : 'Lunas')
+                    ->getStateUsing(function ($record) {
+                        if (!$record->users->payment) {
+                            return 'Belum Lunas';
+                        }
+
+                        return $record->users->payment->status == 1 ? 'Lunas' : 'Belum Lunas';
+                    })
                     ->badge()
                     ->colors([
                         'success' => 'Lunas',
