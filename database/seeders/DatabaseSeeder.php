@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -16,30 +15,90 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::table('roles')->insert([
-            ['role' => 'admin'],
-            ['role' => 'calon_mahasiswa'],
+            [
+                'role' => 'admin', 
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s')
+            ],
+            [
+                'role' => 'calon_mahasiswa',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
         ]);
 
         DB::table('program_studi')->insert([
-            ['nama' => 'S1 Teknik Informatika'],
-            ['nama' => 'S1 Sipil'],
-            ['nama' => 'S1 Akuntansi'],
-            ['nama' => 'S1 Agribisnis'],
-            ['nama' => 'S1 Manajemen'],
-            ['nama' => 'S1 Ilmu Komunikasi'],
-            ['nama' => 'S1 Ilmu Keperawatan'],  
-            ['nama' => 'D4 Keperawatan Anestesiologi'],
-            ['nama' => 'Profesi Ners'],
+            [
+                'nama' => 'S1 Teknik Informatika',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'nama' => 'S1 Sipil',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'nama' => 'S1 Akuntansi', 
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'nama' => 'S1 Agribisnis',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'nama' => 'S1 Manajemen',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'nama' => 'S1 Ilmu Komunikasi',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'nama' => 'S1 Ilmu Keperawatan',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],  
+            [
+                'nama' => 'D4 Keperawatan Anestesiologi',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'nama' => 'Profesi Ners',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
         ]);
 
         DB::table('seleksi')->insert([
-            ['status' => 'Tahap Seleksi'],
-            ['status' => 'Tidak Diterima'],
-            ['status' => 'Diterima'],
+            [
+                'status' => 'Tahap Seleksi',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'status' => 'Tidak Diterima',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
+            [
+                'status' => 'Diterima',
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
         ]);
 
         DB::table('biaya_pendaftaran')->insert([
-            ['biaya' => '150000'],
+            [
+                'biaya' => '150000', 
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
+            ],
         ]);
 
         DB::table('users')->insert([
@@ -51,8 +110,8 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('admin'),
                 'role_id' => 1,
                 'seleksi_id' => null,
-                'created_at' => Carbon::now()->format('Y-m-d H:m:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:m:s'),
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
             [
                 'id' => Str::uuid(),
@@ -62,8 +121,8 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('kereh'),
                 'role_id' => 2,
                 'seleksi_id' => 1,
-                'created_at' => Carbon::now()->format('Y-m-d H:m:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:m:s'),
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
             [
                 'id' => Str::uuid(),
@@ -73,8 +132,8 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('dustin'),
                 'role_id' => 2,
                 'seleksi_id' => 1,
-                'created_at' => Carbon::now()->format('Y-m-d H:m:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:m:s'),
+                'created_at' => now()->format('Y-m-d H:m:s'),
+                'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
         ]);
     }

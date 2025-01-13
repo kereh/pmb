@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('biaya_pendaftaran', function (Blueprint $table) {
             $table->id();
             $table->string('biaya');
+            $table->timestamps();
         });
     }
 

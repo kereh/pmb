@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('seleksi', function (Blueprint $table) {
             $table->id()->primary();
             $table->string('status');
+            $table->timestamps();
         });
     }
 
