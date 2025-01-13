@@ -18,8 +18,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class RolesResource extends Resource
 {
     protected static ?string $model = Roles::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';
+    protected static ?string $navigationGroup = 'Admin & Calon Mahasiswa';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
