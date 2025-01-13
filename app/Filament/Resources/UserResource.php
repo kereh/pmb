@@ -10,6 +10,7 @@ use App\Models\Roles;
 use App\Models\Seleksi;
 
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -17,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -26,34 +28,53 @@ class UserResource extends Resource {
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('nama'),
-                TextInput::make('email'),
-                TextInput::make('username'),
-                TextInput::make('password')->password()->revealable(),
-                Select::make('role_id')
-                    ->options(Roles::all()->pluck('role', 'id'))
-                    ->label('Role'),
-                Select::make('seleksi_id')
-                    ->options(Seleksi::all()->pluck('status', 'id'))
-                    ->label('Seleksi Status')
-            ]);
+        return $form->schema([
+            TextInput::make('nama'),
+            TextInput::make('email'),
+            TextInput::make('username'),
+            TextInput::make('password')->password()->revealable(),
+            Select::make('role_id')
+                ->relationship('roles', 'role')
+                ->label('Role'),
+            Select::make('seleksi_id')
+                ->relationship('seleksi', 'status')
+                ->label('Seleksi Status')
+        ])->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label('ID Pengguna')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('nama')
                     ->label('Nama Pengguna')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('email')
-                    ->label('Email Pengguna'),
+                    ->label('Email Pengguna')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('username')
-                    ->label('Username'),
+                    ->label('Username')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('roles.role')
-                    ->label('Role'),
+                    ->label('Role')
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('created_at')
+                    ->label('Mendaftar')
+                    ->sortable()
+                    ->toggleable()
+                    ->dateTime(),
             ])
             ->filters([
                 //
