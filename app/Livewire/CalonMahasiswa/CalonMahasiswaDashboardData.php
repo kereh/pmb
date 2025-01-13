@@ -22,21 +22,21 @@ class CalonMahasiswaDashboardData extends Component {
     public $uploadedData = false;
 
     public function mount() {
-        $checkUploadedPasFoto = Storage::exists('pas_foto/' . $this->user->id . '.png');
-        $checkUploadedIjazah = Storage::exists('ijazah/' . $this->user->id . '.pdf');
-        $checkUploadedKip = Storage::exists('kip/' . $this->user->id . '.pdf');
+        $checkUploadedPasFoto = Storage::disk('public')->exists('pas_foto/' . $this->user->id . '.png');
+        $checkUploadedIjazah = Storage::disk('public')->exists('ijazah/' . $this->user->id . '.pdf');
+        $checkUploadedKip = Storage::disk('public')->exists('kip/' . $this->user->id . '.pdf');
         $checkUploadedData = $this->user()->data()->first();
 
         $this->uploadedPasFoto = $checkUploadedPasFoto
-            ? Storage::url('pas_foto/' . $this->user->id . '.png')
+            ? Storage::disk('public')->url('pas_foto/' . $this->user->id . '.png')
             : null;
 
         $this->uploadedIjazah = $checkUploadedIjazah
-            ? Storage::url('ijazah/' . $this->user->id . '.pdf')
+            ? Storage::disk('public')->url('ijazah/' . $this->user->id . '.pdf')
             : null;
 
         $this->uploadedKip = $checkUploadedKip
-            ? Storage::url('kip/' . $this->user->id . '.pdf')
+            ? Storage::disk('public')->url('kip/' . $this->user->id . '.pdf')
             : null;
 
         $this->uploadedData = $checkUploadedData

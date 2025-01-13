@@ -30,9 +30,9 @@ class FormPasFoto extends Component {
     public function save() {
         $this->validate();
         
-        $this->pasFotoUpload->storeAs(path: 'pas_foto', name: $this->user->id . ".png",);
+        $this->pasFotoUpload->storeAs('pas_foto', $this->user->id . '.png', 'public');
 
-        $this->uploadedPasFoto = Storage::url('pas_foto/' . $this->user->id . '.png');
+        $this->uploadedPasFoto = Storage::disk('public')->url('pas_foto/' . $this->user->id . '.png');
         $this->pasFotoPreview = $this->pasFotoUpload->temporaryUrl();
 
         session()->flash('statusPasFoto', [

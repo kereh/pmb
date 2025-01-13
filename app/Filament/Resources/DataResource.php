@@ -5,10 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DataResource\Pages;
 use App\Filament\Resources\DataResource\RelationManagers;
 use App\Models\Data;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -31,13 +34,17 @@ class DataResource extends Resource
     {
         return $table
             ->columns([
-                //
+                ImageColumn::make('pas_foto')
+                    ->disk('public')
+                    ->square(),
+                TextColumn::make('users.nama'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

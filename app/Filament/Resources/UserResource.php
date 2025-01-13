@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Models\User;
 use App\Models\Roles;
@@ -14,6 +13,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -28,18 +28,19 @@ class UserResource extends Resource {
 
     public static function form(Form $form): Form
     {
-        return $form->schema([
-            TextInput::make('nama'),
-            TextInput::make('email'),
-            TextInput::make('username'),
-            TextInput::make('password')->password()->revealable(),
-            Select::make('role_id')
-                ->relationship('roles', 'role')
-                ->label('Role'),
-            Select::make('seleksi_id')
-                ->relationship('seleksi', 'status')
-                ->label('Seleksi Status')
-        ])->columns(3);
+        return $form
+            ->schema([
+                TextInput::make('nama'),
+                TextInput::make('email'),
+                TextInput::make('username'),
+                TextInput::make('password')->password()->revealable(),
+                Select::make('role_id')
+                    ->relationship('roles', 'role')
+                    ->label('Role'),
+                Select::make('seleksi_id')
+                    ->relationship('seleksi', 'status')
+                    ->label('Seleksi Status')
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

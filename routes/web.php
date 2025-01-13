@@ -24,7 +24,7 @@ Route::middleware(['guestOnly'])->group(function () {
 });
 
 // calon mahasiswa routes
-Route::middleware(['loggedIn:calon_mahasiswa'])->prefix('calon')->group(function () {
+Route::middleware(['loggedIn:calon'])->prefix('calon')->group(function () {
     Route::get('/', CalonMahasiswaDashboardHome::class)->name('calon_mahasiswa');
     Route::get('/data', CalonMahasiswaDashboardData::class)->name('calon_mahasiswa.data');
     Route::get('/pembayaran', CalonMahasiswaDashboardPembayaran::class)->name('calon_mahasiswa.pembayaran');

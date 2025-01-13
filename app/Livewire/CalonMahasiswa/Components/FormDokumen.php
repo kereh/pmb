@@ -40,12 +40,9 @@ class FormDokumen extends Component {
     public function saveIjazah() {
         $this->validateOnly('uploadIjazah');
 
-        $this->uploadIjazah->storeAs(
-            path: 'ijazah', 
-            name: $this->user->id . ".pdf"
-        );
+        $this->uploadIjazah->storeAs('ijazah', $this->user->id . '.pdf', 'public');
 
-        $this->uploadedIjazah = Storage::url('ijazah/'. $this->user->id . '.pdf');
+        $this->uploadedIjazah = Storage::disk('public')->url('ijazah/'. $this->user->id . '.pdf');
 
         session()->flash('statusDokumen', [
             'type' => 'alert-success',
@@ -60,12 +57,9 @@ class FormDokumen extends Component {
 
             $this->validateOnly('uploadKip');
     
-            $this->uploadKip->storeAs(
-                path: 'kip', 
-                name: $this->user->id . ".pdf"
-            );
+            $this->uploadIjazah->storeAs('kip', $this->user->id . '.pdf', 'public');
     
-            $this->uploadedKip = Storage::url('kip/'. $this->user->id . '.pdf');
+            $this->uploadedKip = Storage::disk('public')->url('kip/'. $this->user->id . '.pdf');
     
             session()->flash('statusDokumen', [
                 'type' => 'alert-success',
