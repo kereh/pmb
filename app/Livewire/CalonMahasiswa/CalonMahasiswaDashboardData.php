@@ -2,7 +2,6 @@
 
 namespace App\Livewire\CalonMahasiswa;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -22,21 +21,23 @@ class CalonMahasiswaDashboardData extends Component {
     public $uploadedData = false;
 
     public function mount() {
-        $checkUploadedPasFoto = Storage::disk('public')->exists('pas_foto/' . $this->user->id . '.png');
-        $checkUploadedIjazah = Storage::disk('public')->exists('ijazah/' . $this->user->id . '.pdf');
-        $checkUploadedKip = Storage::disk('public')->exists('kip/' . $this->user->id . '.pdf');
-        $checkUploadedData = $this->user()->data()->first();
+        $user = $this->user;
+        
+        $checkUploadedPasFoto = Storage::disk('public')->exists('pas_foto/' . $user->id . '.png');
+        $checkUploadedIjazah = Storage::disk('public')->exists('ijazah/' . $user->id . '.pdf');
+        $checkUploadedKip = Storage::disk('public')->exists('kip/' . $user->id . '.pdf');
+        $checkUploadedData = $user->data;
 
         $this->uploadedPasFoto = $checkUploadedPasFoto
-            ? Storage::disk('public')->url('pas_foto/' . $this->user->id . '.png')
+            ? Storage::disk('public')->url('pas_foto/' . $user->id . '.png')
             : null;
 
         $this->uploadedIjazah = $checkUploadedIjazah
-            ? Storage::disk('public')->url('ijazah/' . $this->user->id . '.pdf')
+            ? Storage::disk('public')->url('ijazah/' . $user->id . '.pdf')
             : null;
 
         $this->uploadedKip = $checkUploadedKip
-            ? Storage::disk('public')->url('kip/' . $this->user->id . '.pdf')
+            ? Storage::disk('public')->url('kip/' . $user->id . '.pdf')
             : null;
 
         $this->uploadedData = $checkUploadedData
@@ -46,7 +47,7 @@ class CalonMahasiswaDashboardData extends Component {
 
     #[Computed()]
     public function user() {
-        return Auth::user();
+        return auth()->user()->load('data');
     }
 
     #[Computed()]

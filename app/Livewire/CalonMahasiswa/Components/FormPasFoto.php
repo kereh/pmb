@@ -19,11 +19,13 @@ class FormPasFoto extends Component {
     public $pasFotoUpload;
     public $pasFotoPreview;
     public $uploadedPasFoto;
+    public $uploadedData;
     public $user;
 
-    public function mount($user, $uploadedPasFoto) {
+    public function mount($user, $uploadedPasFoto, $uploadedData) {
         $this->user = $user;
         $this->uploadedPasFoto = $uploadedPasFoto;
+        $this->uploadedData = $uploadedData;
     }
 
     public function save() {

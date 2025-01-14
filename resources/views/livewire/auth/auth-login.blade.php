@@ -16,7 +16,7 @@
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text"
                             class="form-control form-control-xl @error('username') is-invalid @enderror"
-                            placeholder="Username" wire:model="username">
+                            placeholder="Username" wire:model.defer="username">
                         <div class="form-control-icon">
                             <i class="bi bi-person"></i>
                         </div>
@@ -29,7 +29,7 @@
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="password"
                             class="form-control form-control-xl @error('password') is-invalid @enderror"
-                            placeholder="Password" wire:model="password">
+                            placeholder="Password" wire:model.defer="password">
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>
                         </div>
@@ -40,7 +40,7 @@
                         @enderror
                     </div>
                     <div class="form-check form-check-lg d-flex align-items-end">
-                        <input class="form-check-input me-2" type="checkbox" id="remember" wire:model="remember">
+                        <input class="form-check-input me-2" type="checkbox" id="remember" wire:model.defer="remember">
                         <label class="form-check-label text-gray-600" for="remember">
                             Ingat saya
                         </label>

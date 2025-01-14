@@ -13,6 +13,6 @@ class CalonMahasiswaDashboardHome extends Component {
 
     #[Computed()]
     public function user() {
-        return Auth::user()->load(['data', 'payment']);
+        return auth()->user()->load(['data', 'payment', 'seleksi']);
     }
 }

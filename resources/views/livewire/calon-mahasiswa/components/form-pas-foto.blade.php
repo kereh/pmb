@@ -41,15 +41,15 @@
                     <div class="col-12">
                         <div class="form-group w-100 d-flex justify-content-center">
                             <input class="form-control w-100 w-md-50" type="file" wire:model="pasFotoUpload"
-                                {{ $uploadedPasFoto ? 'disabled' : '' }}>
+                                {{ $uploadedData ? 'disabled' : '' }}>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 d-flex justify-content-end mt-4">
                     <button wire:click="save" class="btn btn-primary me-1 mb-1"
-                        {{ $uploadedPasFoto ? 'disabled' : '' }}>Submit</button>
+                        {{ $uploadedData ? 'disabled' : '' }}>Submit</button>
                     <button type="reset" class="btn btn-danger me-1 mb-1"
-                        {{ $uploadedPasFoto ? 'disabled' : '' }}>Reset</button>
+                        {{ $uploadedData ? 'disabled' : '' }}>Reset</button>
                 </div>
             </section>
         </div>

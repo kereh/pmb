@@ -24,7 +24,7 @@
         @endif
     </div>
     <div class="page-content">
-        <livewire:calon-mahasiswa.components.form-pas-foto :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" />
+        <livewire:calon-mahasiswa.components.form-pas-foto :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" :uploadedData="$uploadedData" />
         <livewire:calon-mahasiswa.components.form-dokumen :user="$this->user" :uploadedIjazah="$uploadedIjazah" :uploadedKip="$uploadedKip"
             :uploadedData="$uploadedData" />
         <livewire:calon-mahasiswa.components.form-data :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" :uploadedIjazah="$uploadedIjazah"

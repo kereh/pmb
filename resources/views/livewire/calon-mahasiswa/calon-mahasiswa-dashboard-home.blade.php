@@ -1,3 +1,7 @@
+@php
+    $user = $this->user();
+@endphp
+
 <div>
     <x-slot:title>{{ $title }}</x-slot:title>
     <div class="page-heading">
@@ -5,7 +9,7 @@
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
                     <h3>
-                        Hi, {{ $this->user->nama }}
+                        Hi, {{ $user->nama }}
                     </h3>
                     <p class="text-subtitle text-muted">
                         Selamat datang di aplikasi PMB UNSRIT
@@ -37,28 +41,28 @@
             <div class="row">
                 {{-- kelengkapan berkas --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa.data"
-                    color="{{ $this->user->data ? 'green' : 'red' }}" icon="iconly-boldFolder" text="kelengkapan Berkas"
-                    data="{{ $this->user->data ? 'Lengkap' : 'Belum Lengkap' }}" />
+                    color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldFolder" text="kelengkapan Berkas"
+                    data="{{ $user->data ? 'Lengkap' : 'Belum Lengkap' }}" />
 
                 {{-- status transaksi --}}
-                @if (!$this->user->payment)
+                @if (!$user->payment)
                     <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa.pembayaran" color="red"
                         icon="iconly-boldWallet" text="Status Pembayaran" data="Belum Lunas" />
                 @else
                     <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa.pembayaran"
-                        color="{{ $this->user->payment->status ? 'green' : 'red' }}" icon="iconly-boldWallet"
-                        text="Status Pembayaran" data="{{ $this->user->payment->status ? 'Lunas' : 'Belum Lunas' }}" />
+                        color="{{ $user->payment->status ? 'green' : 'red' }}" icon="iconly-boldWallet"
+                        text="Status Pembayaran" data="{{ $user->payment->status ? 'Lunas' : 'Belum Lunas' }}" />
                 @endif
 
                 {{-- status jurusan pilihan --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
-                    color="{{ $this->user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi"
-                    data="{{ $this->user->data->program_studi->nama ?? 'Belum Memilih' }}" />
+                    color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi"
+                    data="{{ $user->data->program_studi->nama ?? 'Belum Memilih' }}" />
 
                 {{-- status penerimaan --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
-                    color="{{ $this->user->seleksi->status == 'Diterima' ? 'green' : 'red' }}"
-                    icon="iconly-boldInfo-Circle" text="Status Penerimaan" data="{{ $this->user->seleksi->status }}" />
+                    color="{{ $user->seleksi->status == 'Diterima' ? 'green' : 'red' }}" icon="iconly-boldInfo-Circle"
+                    text="Status Penerimaan" data="{{ $user->seleksi->status }}" />
             </div>
         </section>
     </div>

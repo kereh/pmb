@@ -22,7 +22,7 @@
                                 <label class="form-label @error('nik') is-invalid @enderror">NIK</label>
                                 <input type="text" class="form-control @error('nik') is-invalid @enderror"
                                     placeholder="{{ $user->data ? $user->data->nik : 'Nomor Induk Kependudukan' }}"
-                                    wire:model.blur="nik" {{ $user->data ? 'disabled' : '' }}>
+                                    wire:model.defer="nik" {{ $user->data ? 'disabled' : '' }}>
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
@@ -30,14 +30,14 @@
                                 <label class="form-label @error('nisn') is-invalid @enderror">NISN</label>
                                 <input type="text" class="form-control @error('nisn') is-invalid @enderror"
                                     placeholder="{{ $user->data ? $user->data->nisn : 'Nomor Induk Siswa Nasional' }}"
-                                    wire:model.blur="nisn" {{ $user->data ? 'disabled' : '' }}>
+                                    wire:model.defer="nisn" {{ $user->data ? 'disabled' : '' }}>
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label class="form-label">Nama Lengkap</label>
                                 <input type="text" class="form-control" value="{{ $user->nama }}"
-                                    wire:model.blur="nama" disabled>
+                                    wire:model.defer="nama" disabled>
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
@@ -47,7 +47,7 @@
                                 <input
                                     type="text"class="form-control @error('nama_ibu_kandung') is-invalid @enderror"
                                     placeholder="{{ $user->data ? $user->data->nama_ibu_kandung : '' }}"
-                                    wire:model.blur="nama_ibu_kandung" {{ $user->data ? 'disabled' : '' }}>
+                                    wire:model.defer="nama_ibu_kandung" {{ $user->data ? 'disabled' : '' }}>
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
@@ -56,7 +56,7 @@
                                     Lahir</label>
                                 <input type="text"
                                     class="form-control mb-3 flatpickr-no-config flatpickr-input @error('tanggal_lahir') is-invalid @enderror"
-                                    readonly="readonly" wire:model.blur="tanggal_lahir"
+                                    readonly="readonly" wire:model.defer="tanggal_lahir"
                                     placeholder="{{ $user->data ? $user->data->tanggal_lahir : 'Masukan Tanggal Lahir' }}"
                                     {{ $user->data ? 'disabled' : '' }}>
                             </div>
@@ -68,14 +68,14 @@
                                 <input type="text"
                                     class="form-control @error('tempat_lahir') is-invalid @enderror"
                                     placeholder="{{ $user->data ? $user->data->tempat_lahir : '' }}"
-                                    wire:model.blur="tempat_lahir" {{ $user->data ? 'disabled' : '' }}>
+                                    wire:model.defer="tempat_lahir" {{ $user->data ? 'disabled' : '' }}>
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
                             <div class="form-group mb-3">
                                 <label class="form-label @error('alamat') is-invalid @enderror">Alamat</label>
                                 <textarea class="form-control @error('alamat') is-invalid @enderror"
-                                    placeholder="{{ $user->data ? $user->data->alamat : '' }}" rows="3" wire:model.blur="alamat"
+                                    placeholder="{{ $user->data ? $user->data->alamat : '' }}" rows="3" wire:model.defer="alamat"
                                     {{ $user->data ? 'disabled' : '' }}></textarea>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                                 <label class="form-label @error('nomor_hp') is-invalid @enderror">Nomor
                                     Handphone</label>
                                 <input type="text" class="form-control @error('nomor_hp') is-invalid @enderror"
-                                    wire:model.blur="nomor_hp"
+                                    wire:model.defer="nomor_hp"
                                     placeholder="{{ $user->data ? $user->data->nomor_hp : '' }}"
                                     {{ $user->data ? 'disabled' : '' }}>
                             </div>

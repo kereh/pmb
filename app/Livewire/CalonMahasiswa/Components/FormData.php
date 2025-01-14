@@ -17,13 +17,13 @@ class FormData extends Component {
     #[Validate('required', message: 'NIK Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'NIK Harus Berisi Angka')]
     #[Validate('digits:16', message: 'NIK harus terdiri dari 16 digit')]
-    #[Validate('unique:data,nik', message: 'NIK sudah terpakai')]
+    #[Validate('unique:data', message: 'NIK sudah terpakai')]
     public $nik;
 
     #[Validate('required', message: 'NISN Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'NISN Harus Berisi Angka')]
     #[Validate('digits:10', message: 'NISN harus terdiri dari 10 digit')]
-    #[Validate('unique:data,nisn', message: 'NISN sudah terpakai')]
+    #[Validate('unique:data', message: 'NISN sudah terpakai')]
     public $nisn;
 
     #[Validate('required', message: 'Nama Ibu Kandung Tidak Boleh Kosong')]
@@ -95,7 +95,7 @@ class FormData extends Component {
         
         DB::transaction(function () use ($validated) {
 
-            $this->user->data()->create($validated);
+            $this->user->data->create($validated);
 
             $orderId = Str::uuid();
     
@@ -110,7 +110,7 @@ class FormData extends Component {
     
             $snapToken = $this->createPayment($paymentData);
     
-            $this->user->payment()->create([
+            $this->user->payment->create([
                 'user_id' => $this->user->id,
                 'order_id' => $orderId,
                 'snap_token' => $snapToken,

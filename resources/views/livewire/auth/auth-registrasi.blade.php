@@ -8,7 +8,7 @@
                 <form wire:submit.prevent="store">
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text" class="form-control form-control-xl @error('email') is-invalid @enderror"
-                            placeholder="Email" wire:model="email">
+                            placeholder="Email" wire:model.defer="email">
                         <div class="form-control-icon">
                             <i class="bi bi-envelope"></i>
                         </div>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text" class="form-control form-control-xl @error('nama') is-invalid @enderror"
-                            placeholder="Nama Lengkap" wire:model="nama">
+                            placeholder="Nama Lengkap" wire:model.defer="nama">
                         <div class="form-control-icon">
                             <i class="bi bi-person"></i>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text"
                             class="form-control form-control-xl @error('username') is-invalid @enderror"
-                            placeholder="Username" wire:model="username">
+                            placeholder="Username" wire:model.defer="username">
                         <div class="form-control-icon">
                             <i class="bi bi-file-person"></i>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="password"
                             class="form-control form-control-xl @error('password') is-invalid @enderror"
-                            placeholder="Password" wire:model="password">
+                            placeholder="Password" wire:model.defer="password">
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>
                         </div>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="password" class="form-control form-control-xl" placeholder="Confirm Password"
-                            wire:model="password_confirmation">
+                            wire:model.defer="password_confirmation">
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>
                         </div>
