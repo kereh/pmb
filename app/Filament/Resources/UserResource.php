@@ -2,43 +2,75 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\UserExporter;
+
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Models\User;
-use App\Models\Roles;
-use App\Models\Seleksi;
 
-use Filament\Forms;
-use Filament\Forms\Components\Section;
+use Filament\Resources\Resource;
+
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Resource;
+
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource {
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'Admin & Calon Mahasiswa';
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('nama'),
-                TextInput::make('email'),
-                TextInput::make('username'),
-                TextInput::make('password')->password()->revealable(),
+                TextInput::make('nama')
+                    ->minLength(3)
+                    ->string()
+                    ->required()
+                    ->validationMessages([
+                        'string' => ':attribute tidak boleh berisi angka!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                TextInput::make('email')
+                    ->email()
+                    ->unique(ignoreRecord: true)
+                    ->required()
+                    ->validationMessages([
+                        'unique' => ':attribute sudah digunakan!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                TextInput::make('username')
+                    ->minLength(4)
+                    ->unique(ignoreRecord: true)
+                    ->required()
+                    ->validationMessages([
+                        'unique' => ':attribute sudah digunakan!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                TextInput::make('password')
+                    ->password()
+                    ->revealable()
+                    ->minLength(4)
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn ($livewire) => ($livewire instanceof CreateRecord))
+                    ->validationMessages([
+                        'min:4' => ':attribute minimal 4 karakter!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
                 Select::make('role_id')
                     ->relationship('roles', 'role')
-                    ->label('Role'),
+                    ->label('Role')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
                 Select::make('seleksi_id')
                     ->relationship('seleksi', 'status')
                     ->label('Seleksi Status')
@@ -48,6 +80,10 @@ class UserResource extends Resource {
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('roles.role')
+                    ->label('Role')
+            ])
             ->columns([
                 TextColumn::make('id')
                     ->label('ID Pengguna')
@@ -90,14 +126,19 @@ class UserResource extends Resource {
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\ExportBulkAction::make()
+                        ->exporter(UserExporter::class),
+                ])
             ])
             ->defaultSort('created_at');
     }
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            RelationManagers\DataRelationManager::class,
+            RelationManagers\PaymentRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

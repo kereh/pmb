@@ -20,7 +20,7 @@ class RolesResource extends Resource
     protected static ?string $model = Roles::class;
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';
     protected static ?string $navigationGroup = 'Admin & Calon Mahasiswa';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -28,7 +28,11 @@ class RolesResource extends Resource
             ->schema([
                 TextInput::make('role')
                     ->required()
-                    ->unique('roles', 'role')
+                    ->unique()
+                    ->validationMessages([
+                        'unique' => ':attribute sudah ada!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ])
             ]);
     }
 

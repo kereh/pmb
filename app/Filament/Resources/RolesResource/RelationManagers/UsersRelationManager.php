@@ -25,15 +25,52 @@ class UsersRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Section::make('Admin')
-                    ->description('Buat user dengan sebagai admin')
-                    ->schema([
-                        TextInput::make('nama'),
-                        TextInput::make('email'),
-                        TextInput::make('username'),
-                        TextInput::make('password')->password()->revealable(),
-                    ])->columns(2),
-            ]);
+                TextInput::make('nama')
+                    ->minLength(3)
+                    ->string()
+                    ->required()
+                    ->validationMessages([
+                        'string' => ':attribute tidak boleh berisi angka!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                TextInput::make('email')
+                    ->email()
+                    ->unique(ignoreRecord: true)
+                    ->required()
+                    ->validationMessages([
+                        'unique' => ':attribute sudah digunakan!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                TextInput::make('username')
+                    ->minLength(4)
+                    ->unique(ignoreRecord: true)
+                    ->required()
+                    ->validationMessages([
+                        'unique' => ':attribute sudah digunakan!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                TextInput::make('password')
+                    ->password()
+                    ->revealable()
+                    ->minLength(4)
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn ($livewire) => ($livewire instanceof CreateRecord))
+                    ->validationMessages([
+                        'min:4' => ':attribute minimal 4 karakter!',
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                Select::make('role_id')
+                    ->relationship('roles', 'role')
+                    ->label('Role')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong!'
+                    ]),
+                Select::make('seleksi_id')
+                    ->relationship('seleksi', 'status')
+                    ->label('Seleksi Status')
+            ])->columns(3);
     }
 
     public function table(Table $table): Table
@@ -82,9 +119,9 @@ class UsersRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(UserExporter::class),
             ]);
     }
 }

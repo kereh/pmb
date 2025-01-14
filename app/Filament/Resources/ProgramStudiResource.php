@@ -18,8 +18,11 @@ class ProgramStudiResource extends Resource
 {
     protected static ?string $model = ProgramStudi::class;
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationLabel = 'Program Studi';
+    protected static ?string $navigationGroup = 'Akademik';
+    protected static ?string $pluralLabel = 'Program Studi';
     protected static ?string $slug = 'program-studi';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -33,10 +36,14 @@ class ProgramStudiResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama')->label('Program Studi'),
+                TextColumn::make('nama')
+                    ->label('Program Studi')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Dibuat Pada')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 //

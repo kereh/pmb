@@ -26,7 +26,9 @@ class DataResource extends Resource
     protected static ?string $model = Data::class;
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
     protected static ?string $navigationLabel = 'Data Calon Mahasiswa';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Akademik';
+    protected static ?string $pluralLabel = 'Data';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -50,22 +52,42 @@ class DataResource extends Resource
                     ->label('Email'),
                 TextColumn::make('nomor_hp')
                     ->label('Nomor HP'),
+                TextColumn::make('alamat')
+                    ->label('Alamat'),
+                TextColumn::make('tempat_lahir')
+                    ->label('Tempat Lahir'),
+                TextColumn::make('tanggal_lahir')
+                    ->label('Tanggal Lahir')
+                    ->dateTime('d F Y'),
+                TextColumn::make('agama')
+                    ->label('Agama'),
+                TextColumn::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->badge()
+                    ->getStateUsing(function ($record) {
+                        return match ($record->jenis_kelamin) {
+                            'L' => 'Laki-laki',
+                            'P' => 'Perempuan',
+                        };
+                    }),
+                
                 TextColumn::make('program_studi.nama')
                     ->label('Program Studi'),
                 TextColumn::make('users.payment.status')
                     ->label('Status Pembayaran')
-                    ->getStateUsing(function ($record) {
-                        if (!$record->users->payment) {
-                            return 'Belum Lunas';
-                        }
-
-                        return $record->users->payment->status == 1 ? 'Lunas' : 'Belum Lunas';
-                    })
                     ->badge()
-                    ->colors([
-                        'success' => 'Lunas',
-                        'danger' => 'Belum Lunas'
-                    ]),
+                    ->getStateUsing(function ($record) {
+                        return match ($record->users->payment->status) {
+                            0 => 'Belum Lunas',
+                            1 => 'Lunas',
+                        };
+                    })
+                    ->color(function ($record) {
+                        return match ($record->users->payment->status) {
+                            0 => 'danger',
+                            1 => 'success',
+                        };
+                    }),
             ])
             ->filters([
                 //
