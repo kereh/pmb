@@ -5,6 +5,7 @@ namespace App\Filament\Resources\DataResource\Pages;
 use App\Filament\Resources\DataResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Components\Tab;
 
 class ListData extends ListRecords
 {
@@ -15,5 +16,9 @@ class ListData extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    public function getTabs(): array {
+        return [];
     }
 }

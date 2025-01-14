@@ -10,12 +10,14 @@ use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -34,60 +36,118 @@ class DataResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('nama'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('program_studi.nama')
+                    ->label('Program Studi'),
+                Group::make('users.seleksi.status')
+                    ->label('Status Penerimaan'),
+                Group::make('users.payment.status')
+                    ->getTitleFromRecordUsing(fn (object $record): string => match($record->users->payment->status) {
+                        0 => 'Belum Lunas',
+                        1 => 'Lunas',
+                    })
+                    ->label('Status Pembayaran'),
+            ])
             ->columns([
                 ImageColumn::make('pas_foto')
                     ->label('Pas Foto')
                     ->disk('public')
-                    ->circular(),
+                    ->alignCenter()
+                    ->circular()
+                    ->toggleable()
+                    ->sortable(),
+                IconColumn::make('ijazah_atau_skl')
+                    ->label('Ijazah/SKL')
+                    ->url(fn ($record) => $record->ijazah_atau_skl, shouldOpenInNewTab: true)
+                    ->color('success')
+                    ->icon('heroicon-o-document-text')
+                    ->tooltip('Lihat Ijazah/SKL')
+                    ->alignCenter()
+                    ->toggleable(),
+                IconColumn::make('kip')
+                    ->label('KIP')
+                    ->getStateUsing(fn ($record) => $record->kip ? 'Available' : 'Not Available')
+                    ->url(fn ($record) => $record->kip, shouldOpenInNewTab: true)
+                    ->color(fn ($record) => $record->kip ? 'success' : 'danger')
+                    ->icon(fn ($record) => $record->kip ? 'heroicon-o-document-text' : 'heroicon-o-x-mark')
+                    ->tooltip(fn ($record) => $record->kip ? 'Lihat Kartu KIP' : 'Kartu KIP Kosong')
+                    ->alignCenter()
+                    ->toggleable(),
                 TextColumn::make('nama')
-                    ->label('Nama'),
+                    ->label('Nama')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('users.email')
-                    ->label('Email'),
+                    ->label('Email')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('nomor_hp')
-                    ->label('Nomor HP'),
+                    ->label('Nomor HP')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('kewarganegaraan')
+                    ->label('Kewarganegaraan')
+                    ->toggleable(),
                 TextColumn::make('alamat')
-                    ->label('Alamat'),
+                    ->label('Alamat')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('tempat_lahir')
-                    ->label('Tempat Lahir'),
+                    ->label('Tempat Lahir')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('tanggal_lahir')
                     ->label('Tanggal Lahir')
-                    ->dateTime('d F Y'),
+                    ->dateTime('d F Y')
+                    ->toggleable(),
                 TextColumn::make('agama')
-                    ->label('Agama'),
+                    ->label('Agama')
+                    ->toggleable(),
                 TextColumn::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
                     ->badge()
-                    ->getStateUsing(function ($record) {
-                        return match ($record->jenis_kelamin) {
-                            'L' => 'Laki-laki',
-                            'P' => 'Perempuan',
-                        };
-                    }),
-                
+                    ->getStateUsing(fn (object $record): string => $record->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan')
+                    ->toggleable(),
+                TextColumn::make('pendidikan_terakhir')
+                    ->label('Pendidikan Terakhir')
+                    ->toggleable(),
                 TextColumn::make('program_studi.nama')
-                    ->label('Program Studi'),
+                    ->label('Program Studi')
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('users.payment.status')
                     ->label('Status Pembayaran')
                     ->badge()
-                    ->getStateUsing(function ($record) {
-                        return match ($record->users->payment->status) {
-                            0 => 'Belum Lunas',
-                            1 => 'Lunas',
-                        };
+                    ->getStateUsing(fn (object $record): string => match($record->users->payment->status) {
+                        0 => 'Belum Lunas',
+                        1 => 'Lunas',
                     })
-                    ->color(function ($record) {
-                        return match ($record->users->payment->status) {
-                            0 => 'danger',
-                            1 => 'success',
-                        };
-                    }),
+                    ->color(fn (object $record): string => match($record->users->payment->status) {
+                        0 => 'danger',
+                        1 => 'success',
+                    })
+                    ->toggleable(),
+                TextColumn::make('users.seleksi.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (object $record): string => match($record->users->seleksi->status) {
+                        'Tahap Seleksi' => 'primary',
+                        'Tidak Lulus' => 'danger',
+                        'Lulus' => 'success',
+                    })
+                    ->toggleable(),
             ])
             ->filters([
                 //
@@ -95,7 +155,6 @@ class DataResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

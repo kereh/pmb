@@ -53,11 +53,10 @@ class FormDokumen extends Component {
     }
 
     public function saveKip() {
-        if ($this->uploadKip) {
-
+        if (isset($this->uploadKip)) {
             $this->validateOnly('uploadKip');
     
-            $this->uploadIjazah->storeAs('kip', $this->user->id . '.pdf', 'public');
+            $this->uploadKip->storeAs('kip', $this->user->id . '.pdf', 'public');
     
             $this->uploadedKip = Storage::disk('public')->url('kip/'. $this->user->id . '.pdf');
     

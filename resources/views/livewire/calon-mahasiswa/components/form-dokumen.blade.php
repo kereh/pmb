@@ -35,7 +35,7 @@
                                 <p>Ijazah atau Surat Keterangan Lulus</p>
                                 <div class="input-group">
                                     <input class="form-control @error('uploadIjazah') is-invalid @enderror"
-                                        type="file" wire:model.blur="uploadIjazah"
+                                        type="file" wire:model.defer="uploadIjazah"
                                         {{ $uploadedData ? 'disabled' : '' }}>
                                     <button class="btn btn-primary" type="button" wire:click="saveIjazah"
                                         {{ $uploadedData ? 'disabled' : '' }}>
@@ -60,7 +60,7 @@
                             <small class="text-danger">*Kosongkan jika tidak punya</small>
                             <div class="input-group">
                                 <input type="file" class="form-control @error('uploadKip') is-invalid @enderror"
-                                    wire:model.blur="uploadKip" {{ $uploadedData ? 'disabled' : '' }}>
+                                    wire:model.defer="uploadKip" {{ $uploadedData ? 'disabled' : '' }}>
                                 <button class="btn btn-primary" type="button" wire:click="saveKip"
                                     {{ $uploadedData ? 'disabled' : '' }}>
                                     Upload

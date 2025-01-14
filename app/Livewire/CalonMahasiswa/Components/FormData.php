@@ -95,7 +95,7 @@ class FormData extends Component {
         
         DB::transaction(function () use ($validated) {
 
-            $this->user->data->create($validated);
+            $this->user->data()->create($validated);
 
             $orderId = Str::uuid();
     
@@ -110,7 +110,7 @@ class FormData extends Component {
     
             $snapToken = $this->createPayment($paymentData);
     
-            $this->user->payment->create([
+            $this->user->payment()->create([
                 'user_id' => $this->user->id,
                 'order_id' => $orderId,
                 'snap_token' => $snapToken,
