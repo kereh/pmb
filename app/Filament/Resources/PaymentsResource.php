@@ -71,6 +71,10 @@ class PaymentsResource extends Resource
                 TextColumn::make('bank')
                     ->label('BANK')
                     ->searchable(),
+                TextColumn::make('waktu_pembayaran')
+                    ->label('Waktu Pembayaran')
+                    ->dateTime()
+                    ->searchable(),
                 TextColumn::make('price')
                     ->money('IDR')
                     ->searchable()

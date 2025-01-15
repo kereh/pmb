@@ -22,24 +22,23 @@ class CalonMahasiswaDashboardData extends Component {
 
     public function mount() {
         $user = $this->user;
-        
         $checkUploadedPasFoto = Storage::disk('public')->exists('pas_foto/' . $user->id . '.png');
         $checkUploadedIjazah = Storage::disk('public')->exists('ijazah/' . $user->id . '.pdf');
         $checkUploadedKip = Storage::disk('public')->exists('kip/' . $user->id . '.pdf');
         $checkUploadedData = $user->data;
-
+        
         $this->uploadedPasFoto = $checkUploadedPasFoto
             ? Storage::disk('public')->url('pas_foto/' . $user->id . '.png')
             : null;
-
+        
         $this->uploadedIjazah = $checkUploadedIjazah
             ? Storage::disk('public')->url('ijazah/' . $user->id . '.pdf')
             : null;
-
+        
         $this->uploadedKip = $checkUploadedKip
             ? Storage::disk('public')->url('kip/' . $user->id . '.pdf')
             : null;
-
+        
         $this->uploadedData = $checkUploadedData
             ? true
             : false;

@@ -42,8 +42,7 @@ class FormData extends Component {
 
     #[Validate('required', message: 'Nomor Hp Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'Nomor Hp Harus Berisi Angka')]
-    #[Validate('min:10', message: 'Nomor Hp Harus Berisi Minimal 10 Digit')]
-    #[Validate('max:13', message: 'Nomor Hp Tidak Boleh Lebih Dari 13 Digit')]
+    #[Validate('digits_between:10,13', message: 'Nomor Hp tidak valid')]
     #[Validate('unique:data,nomor_hp', message: 'Nomor Hp Tidak Boleh Lebih Dari 13 Digit')]
     public $nomor_hp;
 

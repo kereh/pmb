@@ -40,7 +40,7 @@ class FormDokumen extends Component {
     public function saveIjazah() {
         $this->validateOnly('uploadIjazah');
 
-        $this->uploadIjazah->storeAs('ijazah', $this->user->id . '.pdf', 'public');
+        $this->uploadIjazah->storePubliclyAs('ijazah', $this->user->id . '.pdf', 'public');
 
         $this->uploadedIjazah = Storage::disk('public')->url('ijazah/'. $this->user->id . '.pdf');
 
@@ -56,7 +56,7 @@ class FormDokumen extends Component {
         if (isset($this->uploadKip)) {
             $this->validateOnly('uploadKip');
     
-            $this->uploadKip->storeAs('kip', $this->user->id . '.pdf', 'public');
+            $this->uploadKip->storePubliclyAs('kip', $this->user->id . '.pdf', 'public');
     
             $this->uploadedKip = Storage::disk('public')->url('kip/'. $this->user->id . '.pdf');
     
