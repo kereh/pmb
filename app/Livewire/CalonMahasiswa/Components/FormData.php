@@ -28,7 +28,7 @@ class FormData extends Component {
 
     #[Validate('required', message: 'Nama Ibu Kandung Tidak Boleh Kosong')]
     #[Validate('string', message: 'Nama Hanya Berisi Huruf')]
-    #[Validate('max:100', message: 'Nama Tidak Boleh Lebih Dari 100 karakter')]
+    #[Validate('max:50', message: 'Nama Tidak Boleh Lebih Dari 100 karakter')]
     public $nama_ibu_kandung;
 
     #[Validate('required', message: 'Tanggal Lahir Tidak Boleh Kosong')]
@@ -43,7 +43,7 @@ class FormData extends Component {
     #[Validate('required', message: 'Nomor Hp Tidak Boleh Kosong')]
     #[Validate('numeric', message: 'Nomor Hp Harus Berisi Angka')]
     #[Validate('min:10', message: 'Nomor Hp Harus Berisi Minimal 10 Digit')]
-    #[Validate('min:13', message: 'Nomor Hp Tidak Boleh Lebih Dari 13 Digit')]
+    #[Validate('max:13', message: 'Nomor Hp Tidak Boleh Lebih Dari 13 Digit')]
     #[Validate('unique:data,nomor_hp', message: 'Nomor Hp Tidak Boleh Lebih Dari 13 Digit')]
     public $nomor_hp;
 

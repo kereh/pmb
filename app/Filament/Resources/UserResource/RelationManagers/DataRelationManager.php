@@ -6,6 +6,10 @@ use Filament\Resources\RelationManagers\RelationManager;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\DatePicker;
 
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -24,9 +28,134 @@ class DataRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
+                TextInput::make('nama')
+                    ->label('Nama Calon')
+                    ->minLength(3)
+                    ->string()
                     ->required()
-                    ->maxLength(255),
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong',
+                        'string' => ':attribute harus berbentuk huruf',
+                        'min:3' => ':attribute minimal 3 karakter',
+                    ]),
+                TextInput::make('nik')
+                    ->label('NIK')
+                    ->rules(['digits:16'])
+                    ->numeric()
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong',
+                        'digits:16' => ':attribute harus 16 digit angka',
+                        'numeric' => ':attribute harus berbentuk angka',
+                        'unique:data' => ':attribute sudah digunakan',
+                    ]),
+                TextInput::make('nisn')
+                    ->label('NISN')
+                    ->rules(['digits:10'])
+                    ->numeric()
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong',
+                        'digits:10' => ':attribute harus 10 digit angka',
+                        'numeric' => ':attribute harus berbentuk angka',
+                        'unique:data' => ':attribute sudah digunakan',
+                    ]),
+                TextInput::make('nama_ibu_kandung')
+                    ->label('Ibu Kandung')
+                    ->string()
+                    ->required()
+                    ->maxLength(50)
+                    ->validationMessages([
+                        'string' => ':attribute harus berbentuk huruf',
+                        'required' => ':attribute tidak boleh kosong',
+                        'max:50' => ':attribute tidak boleh lebih dari 50 karakter',
+                    ]),
+                DatePicker::make('tanggal_lahir')
+                    ->label('Tanggal Lahir')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
+                TextInput::make('tempat_lahir')
+                    ->label('Tempat Lahir')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
+                Textarea::make('alamat')
+                    ->label('Alamat')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
+                TextInput::make('nomor_hp')
+                    ->label('Nomor HP')
+                    ->required()
+                    ->numeric()
+                    ->minLength(10)
+                    ->maxLength(13)
+                    ->unique(ignoreRecord: true)
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong',
+                        'numeric' => ':attribute harus berbentuk angka',
+                        'min:10' => ':attribute minimal 10 karakter',
+                        'max:13' => ':attribute maxksimal 13 karakter',
+                        'unique:data' => ':attribute sudah digunakan',
+                    ]),
+                Select::make('jenis_kelamin')
+                    ->options([
+                        'L' => 'Laki-laki',
+                        'P' => 'Perempuan',
+                    ])
+                    ->label('Jenis Kelamin')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
+                Select::make('pendidikan_terakhir')
+                    ->options([
+                        'SMA' => 'Sekolah Menengah Atas (SMA)',
+                        'SMK' => 'Sekolah Menengah Kejuruan (SMK)',
+                        'MA' => 'Madrasah Aliyah (MA)',
+                        'MAK' => 'Madrasah Aliyah Kejuruan (MAK)',
+                    ])
+                    ->label('Pendidikan Terakhir')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
+                Select::make('agama')
+                    ->options([
+                        'Kristen Protestan' => 'Kristen Protestan',
+                        'Kristen Katolik' => 'Kristen Katolik',
+                        'Islam' => 'Islam',
+                        'Hindu' => 'Hindu',
+                        'Buddha' => 'Buddha',
+                    ])
+                    ->label('Agama')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
+                Select::make('kewarganegaraan')
+                    ->options([
+                        'WNI' => 'Warga Negara Indonesia',
+                        'WNA' => 'Warga Negara Asing',
+                    ])
+                    ->label('Kewarganegaraan')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
+                Select::make('program_studi_id')
+                    ->label('Program Studi')
+                    ->relationship('program_studi', 'nama')
+                    ->required()
+                    ->validationMessages([
+                        'required' => ':attribute tidak boleh kosong'
+                    ]),
             ]);
     }
 
@@ -130,9 +259,6 @@ class DataRelationManager extends RelationManager
             ])
             ->filters([
                 //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

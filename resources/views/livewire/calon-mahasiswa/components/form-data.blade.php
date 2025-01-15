@@ -180,7 +180,8 @@
                         <div class="row col-12">
                             <div class="alert {{ $status['type'] }} alert-dismissible show fade mt-3">
                                 <i class="bi bi-check-circle"></i>
-                                {{ $status['message'] }} Lanjutkan ke <a href="{{ route('calon_mahasiswa') }}"
+                                {{ $status['message'] }} Lanjutkan ke <a
+                                    href="{{ route('calon_mahasiswa.pembayaran') }}"
                                     class="underline">PEMBAYARAN</a>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>

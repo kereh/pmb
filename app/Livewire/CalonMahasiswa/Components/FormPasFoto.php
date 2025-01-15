@@ -14,7 +14,7 @@ class FormPasFoto extends Component {
     #[Validate('required', message: 'Pas Foto Harus Diisi!')]
     #[Validate('image', message: 'Pas Foto Harus Berupa Gambar!')]
     #[Validate('max:1024', message: 'Ukuran Pas Foto Tidak Boleh Lebih Dari 1 MB!')]
-    #[Validate('dimensions:ratio=3/4', message: 'Rasio Pas Foto Harus Berukuran 3x4!')]
+    #[Validate('dimensions:width=300,height=400', message: 'Rasio Pas Foto Harus Berukuran 3x4!')]
     #[Validate('mimes:png', message: 'Pas Foto Harus Berformat PNG!')]
     public $pasFotoUpload;
     public $pasFotoPreview;

@@ -65,6 +65,12 @@ class PaymentsResource extends Resource
                 TextColumn::make('users.nama')
                     ->searchable()
                     ->label('Nama Calon'),
+                TextColumn::make('jenis_pembayaran')
+                    ->label('Jenis Pembayaran')
+                    ->searchable(),
+                TextColumn::make('bank')
+                    ->label('BANK')
+                    ->searchable(),
                 TextColumn::make('price')
                     ->money('IDR')
                     ->searchable()
@@ -121,5 +127,10 @@ class PaymentsResource extends Resource
             'create' => Pages\CreatePayments::route('/create'),
             'edit' => Pages\EditPayments::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

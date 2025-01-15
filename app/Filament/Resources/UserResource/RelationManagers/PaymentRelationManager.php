@@ -2,11 +2,16 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use Filament\Resources\RelationManagers\RelationManager;
+
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Forms\Components\Select;
+
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -18,9 +23,13 @@ class PaymentRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('order_id')
+                Forms\Components\Select::make('status')
+                    ->label('Status Pembayaran')
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                        0 => 'Belum Lunas',
+                        1 => 'Lunas',
+                    ]),
             ]);
     }
 
@@ -29,26 +38,36 @@ class PaymentRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('order_id')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('ID')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('order_id')
+                TextColumn::make('order_id')
                     ->searchable()
                     ->label('Order ID')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('snap_token')
+                TextColumn::make('snap_token')
                     ->searchable()
                     ->label('Snap Token')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('users.nama')
+                TextColumn::make('users.nama')
                     ->searchable()
                     ->label('Nama Calon'),
-                Tables\Columns\TextColumn::make('price')
+                TextColumn::make('waktu_pembayaran')
+                    ->dateTime('d F Y, H:i:s')
+                    ->label('Waktu Pembayaran'),
+                TextColumn::make('jenis_pembayaran')
+                    ->label('Jenis Pembayaran')
+                    ->searchable(),
+                TextColumn::make('bank')
+                    ->label('BANK')
+                    ->searchable(),
+                TextColumn::make('price')
                     ->money('IDR')
                     ->searchable()
                     ->label('Biaya'),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
+                    ->label('Status Pembayaran')
                     ->badge()
                     ->getStateUsing(function ($record) {
                         return match ($record->status) {
@@ -63,11 +82,11 @@ class PaymentRelationManager extends RelationManager
                         };
                     })
                     ->label('Status Pembayaran'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -75,12 +94,8 @@ class PaymentRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -35,14 +35,16 @@ class UserResource extends Resource {
                     ->string()
                     ->required()
                     ->validationMessages([
+                        'min:3' => ':attribute minimal 3 karakter',
                         'string' => ':attribute tidak boleh berisi angka!',
-                        'required' => ':attribute tidak boleh kosong!'
+                        'required' => ':attribute tidak boleh kosong!',
                     ]),
                 TextInput::make('email')
                     ->email()
                     ->unique(ignoreRecord: true)
                     ->required()
                     ->validationMessages([
+                        'email' => ':attribute email tidak valid',
                         'unique' => ':attribute sudah digunakan!',
                         'required' => ':attribute tidak boleh kosong!'
                     ]),
@@ -51,6 +53,7 @@ class UserResource extends Resource {
                     ->unique(ignoreRecord: true)
                     ->required()
                     ->validationMessages([
+                        'min:4' => ':attribute minimal 3 karakter',
                         'unique' => ':attribute sudah digunakan!',
                         'required' => ':attribute tidak boleh kosong!'
                     ]),
@@ -121,7 +124,6 @@ class UserResource extends Resource {
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
