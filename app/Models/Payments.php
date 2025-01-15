@@ -13,6 +13,9 @@ class Payments extends Model {
         'user_id',
         'order_id',
         'snap_token',
+        'jenis_pembayaran',
+        'bank',
+        'waktu_pembayaran',
         'price',
         'status',
     ];

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('order_id');
             $table->string('snap_token');
             $table->string('price');
+            $table->string('jenis_pembayaran')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('waktu_pembayaran')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });
