@@ -12,7 +12,8 @@ use Filament\Forms\Components\Select;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -99,23 +100,30 @@ class UsersRelationManager extends RelationManager
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-                TextColumn::make('roles.role')
-                    ->label('Role')
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('created_at')
-                    ->label('Mendaftar')
+                    ->label('Mendaftar Pada')
                     ->sortable()
                     ->toggleable()
-                    ->dateTime(),
+                    ->dateTime('d F Y'),
+                TextColumn::make('seleksi.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (object $record): string => match($record->seleksi->status) {
+                        'Tahap Seleksi' => 'primary',
+                        'Tidak Lulus' => 'danger',
+                        'Lulus' => 'success',
+                    })
+                    ->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

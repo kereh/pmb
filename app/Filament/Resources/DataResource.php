@@ -10,11 +10,6 @@ use App\Models\Data;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Infolists\Components\Section as InfoSection;
-
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
@@ -23,9 +18,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
-use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\Group as ComponentsGroup;
-use Filament\Infolists\Components\IconEntry;
+
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -47,7 +40,7 @@ class DataResource extends Resource
     protected static ?string $navigationLabel = 'Data Calon Mahasiswa';
     protected static ?string $navigationGroup = 'Akademik';
     protected static ?string $pluralLabel = 'Data';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -251,13 +244,10 @@ class DataResource extends Resource
             ->columns([
                 ImageColumn::make('pas_foto')
                     ->label('Pas Foto')
-                    ->alignCenter()
-                    ->size(55)
                     ->toggleable()
                     ->sortable()
-                    ->extraImgAttributes([
-                        'class' => 'rounded-lg'
-                    ]),
+                    ->alignCenter()
+                    ->extraImgAttributes(['class' => 'rounded-lg w-[300px] h-[400px]']),
                 TextColumn::make('nama')
                     ->label('Nama')
                     ->searchable()
@@ -404,87 +394,5 @@ class DataResource extends Resource
     public static function canCreate(): bool
     {
         return false;
-    }
-
-    public static function infolist(Infolist $infolist): Infolist
-    {
-        return $infolist
-            ->schema([
-                InfoSection::make('Dokumen')
-                    ->description('Pas Foto, Ijazah/SKL & KIP')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                ComponentsGroup::make([
-                                    ImageEntry::make('pas_foto')
-                                        ->square()
-                                        ->hiddenLabel()
-                                        ->size(200)
-                                        ->extraImgAttributes([
-                                            'class' => 'rounded-lg object-fill'
-                                        ])
-                                ])->extraAttributes([
-                                    'class' => 'flex justify-center items-center w-full h-full'
-                                ]),
-                                ComponentsGroup::make([
-                                    TextEntry::make('nama')
-                                        ->label('Nama Calon'),
-                                    TextEntry::make('program_studi.nama')
-                                        ->label('Program Studi')
-                                        ->badge()
-                                        ->color('primary'),
-                                    TextEntry::make('users.created_at')
-                                        ->label('Mendaftar Pada')
-                                        ->dateTime('d F Y')
-                                        ->badge()
-                                        ->color('success'),
-                                    IconEntry::make('ijazah_atau_skl')
-                                        ->label('Ijazah/SKL')
-                                        ->url(fn ($record) => asset($record->ijazah_atau_skl), shouldOpenInNewTab: true)
-                                        ->color('success')
-                                        ->icon('heroicon-o-document-text')
-                                        ->tooltip('Click Untuk Melihat Ijazah/SKL'),
-                                    IconEntry::make('kip')
-                                        ->label('KIP')
-                                        ->getStateUsing(fn ($record) => $record->kip ? 'Available' : 'Not Available')
-                                        ->url(fn ($record) => asset($record->kip), shouldOpenInNewTab: true)
-                                        ->color(fn ($record) => $record->kip ? 'success' : 'danger')
-                                        ->icon(fn ($record) => $record->kip ? 'heroicon-o-document-text' : 'heroicon-o-x-mark')
-                                        ->tooltip(fn ($record) => $record->kip ? 'Click Untuk Melihat Kartu KIP' : 'Kartu KIP Kosong'),
-                                    TextEntry::make('users.seleksi.status')
-                                        ->label('Status Penerimaan')
-                                        ->badge()
-                                        ->color(fn (object $record): string => match($record->users->seleksi->status) {
-                                            'Tahap Seleksi' => 'primary',
-                                            'Tidak Lulus' => 'danger',
-                                            'Lulus' => 'success',
-                                        }),
-                                ])->columns(3),
-                            ])
-                ])->collapsible(),
-                InfoSection::make('Info')
-                    ->description('Data Diri & Pembayaran')
-                    ->schema([
-                        ComponentsGroup::make()
-                            ->schema([
-                                TextEntry::make('nama')
-                                    ->label('Nama Calon'),
-                                TextEntry::make('nama_ibu_kandung')
-                                    ->label('Ibu Kandung'),
-                                TextEntry::make('users.email')
-                                    ->label('Email'),
-                                TextEntry::make('nomor_hp')
-                                    ->label('Nomor HP'),
-                                TextEntry::make('tanggal_lahir')
-                                    ->label('Tanggal Lahir')
-                                    ->dateTime('d F Y'),
-                                TextEntry::make('tempat_lahir')
-                                    ->label('Tempat Lahir'),
-                                TextEntry::make('alamat')
-                                    ->label('Alamat'),
-                                TextEntry::make('agama'),
-                            ])->columns(4),
-                    ])->collapsible()
-            ]);
     }
 }

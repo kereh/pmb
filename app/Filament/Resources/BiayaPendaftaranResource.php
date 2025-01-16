@@ -23,7 +23,7 @@ class BiayaPendaftaranResource extends Resource
     protected static ?string $navigationGroup = 'Keuangan';
     protected static ?string $pluralLabel = 'Biaya Pendaftaran';
     protected static ?string $slug = 'biaya-pendaftaran';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {

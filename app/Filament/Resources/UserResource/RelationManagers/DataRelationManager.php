@@ -22,6 +22,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\ActionsPosition;
 
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -211,11 +213,10 @@ class DataRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('pas_foto')
                     ->label('Pas Foto')
-                    ->alignCenter()
-                    ->circular()
-                    ->size(55)
                     ->toggleable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter()
+                    ->extraImgAttributes(['class' => 'rounded-lg w-[300px] h-[400px]']),
                 TextColumn::make('nama')
                     ->label('Nama')
                     ->searchable()
@@ -324,8 +325,14 @@ class DataRelationManager extends RelationManager
             ])
             ->actions([
                 ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->after(function ($record) {
+                            if ($record->pas_foto) Storage::disk('public')->delete($record->pas_foto);
+                            if ($record->ijazah) Storage::disk('public')->delete($record->ijazah);
+                            if ($record->kip) Storage::disk('public')->delete($record->kip);
+                        }),
                 ])->icon('heroicon-m-ellipsis-horizontal'),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
