@@ -34,7 +34,6 @@ class FormPasFoto extends Component {
         $this->pasFotoUpload->storePubliclyAs('pas_foto', $this->user->id . '.png', 'public');
 
         $this->uploadedPasFoto = Storage::url('pas_foto/' . $this->user->id . '.png');
-        dd($this->uploadedPasFoto);
         $this->pasFotoPreview = $this->pasFotoUpload->temporaryUrl();
 
         session()->flash('statusPasFoto', [

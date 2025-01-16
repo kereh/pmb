@@ -78,7 +78,7 @@ class User extends Authenticatable implements FilamentUser, HasName {
         return $this->hasOne(Data::class, 'user_id');
     }
 
-    public function payment(): HasOne {
+    public function payments(): HasOne {
         return $this->hasOne(Payments::class, 'user_id');
     }
 }

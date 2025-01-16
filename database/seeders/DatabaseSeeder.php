@@ -82,12 +82,12 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
             [
-                'status' => 'Tidak Diterima',
+                'status' => 'Tidak Lulus',
                 'created_at' => now()->format('Y-m-d H:m:s'),
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
             [
-                'status' => 'Diterima',
+                'status' => 'Lulus',
                 'created_at' => now()->format('Y-m-d H:m:s'),
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],

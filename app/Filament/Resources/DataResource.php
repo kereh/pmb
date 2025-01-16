@@ -29,6 +29,7 @@ use Filament\Tables\Actions\ActionGroup;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class DataResource extends Resource
@@ -55,8 +56,10 @@ class DataResource extends Resource
                             ->image()
                             ->previewable()
                             ->imageEditor()
+                            ->deletable()
                             ->rules(['mimes:png'])
-                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.png'),
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.png')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
                         FileUpload::make('ijazah_atau_skl')
                             ->label('Ijazah/SKL')
                             ->disk('public')
@@ -64,7 +67,8 @@ class DataResource extends Resource
                             ->previewable()
                             ->maxSize(1024)
                             ->acceptedFileTypes(['application/pdf'])
-                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf'),
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
                         FileUpload::make('kip')
                             ->label('KIP')
                             ->disk('public')
@@ -72,7 +76,8 @@ class DataResource extends Resource
                             ->previewable()
                             ->maxSize(1024)
                             ->acceptedFileTypes(['application/pdf'])
-                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf'),
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
                     ])->columns(3),
 
                 Section::make('Data Calon')
@@ -238,12 +243,12 @@ class DataResource extends Resource
             ->columns([
                 ImageColumn::make('pas_foto')
                     ->label('Pas Foto')
-                    ->disk('public')
                     ->alignCenter()
                     ->circular()
                     ->size(55)
                     ->toggleable()
-                    ->sortable(),
+                    ->sortable()
+                    ->getStateUsing(fn ($record) => asset($record->pas_foto)),
                 TextColumn::make('nama')
                     ->label('Nama')
                     ->searchable()
@@ -333,25 +338,16 @@ class DataResource extends Resource
                     ->label('Program Studi')
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('users.payment.status')
+                TextColumn::make('users.payments.status')
                     ->label('Status Pembayaran')
                     ->badge()
-                    ->getStateUsing(fn (object $record): string => match($record->users->payment->status) {
+                    ->getStateUsing(fn (object $record): string => match($record->users->payments->status) {
                         0 => 'Belum Lunas',
                         1 => 'Lunas',
                     })
-                    ->color(fn (object $record): string => match($record->users->payment->status) {
+                    ->color(fn (object $record): string => match($record->users->payments->status) {
                         0 => 'danger',
                         1 => 'success',
-                    })
-                    ->toggleable(),
-                TextColumn::make('users.seleksi.status')
-                    ->label('Status')
-                    ->badge()
-                    ->color(fn (object $record): string => match($record->users->seleksi->status) {
-                        'Tahap Seleksi' => 'primary',
-                        'Tidak Lulus' => 'danger',
-                        'Lulus' => 'success',
                     })
                     ->toggleable(),
             ])

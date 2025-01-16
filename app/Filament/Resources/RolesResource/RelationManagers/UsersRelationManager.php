@@ -98,15 +98,20 @@ class UsersRelationManager extends RelationManager
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-                TextColumn::make('roles.role')
-                    ->label('Role')
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('created_at')
-                    ->label('Mendaftar')
+                    ->label('Mendaftar Pada')
                     ->sortable()
                     ->toggleable()
-                    ->dateTime(),
+                    ->dateTime('d F Y'),
+                TextColumn::make('seleksi.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (object $record): string => match($record->seleksi->status) {
+                        'Tahap Seleksi' => 'primary',
+                        'Tidak Lulus' => 'danger',
+                        'Lulus' => 'success',
+                    })
+                    ->toggleable(),
             ])
             ->filters([
                 //

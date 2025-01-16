@@ -20,12 +20,11 @@ class CalonMahasiswaDashboardPembayaran extends Component {
 
     #[Layout('components.layouts.layout-calon-mahasiswa')]
     public $title = 'Pembayaran';
-
     public $isExpired;
 
     public function mount() {
         try {
-            $response = (object)Transaction::status($this->user->payment->order_id);
+            $response = (object)Transaction::status($this->user->payments->order_id);
             $this->isExpired = $response->transaction_status == 'expire' ? true : false;
 
         } catch (\Throwable $th) {
@@ -47,7 +46,7 @@ class CalonMahasiswaDashboardPembayaran extends Component {
 
         $snapToken = $this->createPayment($paymentData);
 
-        $this->user->payment()->update([
+        $this->user->payments()->update([
             'order_id' => $orderId,
             'snap_token' => $snapToken,
         ]);

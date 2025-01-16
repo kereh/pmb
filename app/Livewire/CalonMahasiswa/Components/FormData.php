@@ -109,7 +109,7 @@ class FormData extends Component {
     
             $snapToken = $this->createPayment($paymentData);
     
-            $this->user->payment()->create([
+            $this->user->payments()->create([
                 'user_id' => $this->user->id,
                 'order_id' => $orderId,
                 'snap_token' => $snapToken,

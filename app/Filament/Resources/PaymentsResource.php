@@ -24,7 +24,7 @@ class PaymentsResource extends Resource
 {
     protected static ?string $model = Payments::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationGroup = 'Keuangan';
     protected static ?int $navigationSort = 1;
 
@@ -65,16 +65,17 @@ class PaymentsResource extends Resource
                 TextColumn::make('users.nama')
                     ->searchable()
                     ->label('Nama Calon'),
+                TextColumn::make('waktu_pembayaran')
+                    ->label('Waktu Pembayaran')
+                    ->dateTime()
+                    ->searchable(),
                 TextColumn::make('jenis_pembayaran')
                     ->label('Jenis Pembayaran')
                     ->searchable(),
                 TextColumn::make('bank')
                     ->label('BANK')
-                    ->searchable(),
-                TextColumn::make('waktu_pembayaran')
-                    ->label('Waktu Pembayaran')
-                    ->dateTime()
-                    ->searchable(),
+                    ->searchable()
+                    ->getStateUsing(fn ($record) => strtoupper($record->bank)),
                 TextColumn::make('price')
                     ->money('IDR')
                     ->searchable()

@@ -45,13 +45,13 @@
                     data="{{ $user->data ? 'Lengkap' : 'Belum Lengkap' }}" />
 
                 {{-- status transaksi --}}
-                @if (!$user->payment)
+                @if (!$user->payments)
                     <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa.pembayaran" color="red"
                         icon="iconly-boldWallet" text="Status Pembayaran" data="Belum Lunas" />
                 @else
                     <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa.pembayaran"
-                        color="{{ $user->payment->status ? 'green' : 'red' }}" icon="iconly-boldWallet"
-                        text="Status Pembayaran" data="{{ $user->payment->status ? 'Lunas' : 'Belum Lunas' }}" />
+                        color="{{ $user->payments->status ? 'green' : 'red' }}" icon="iconly-boldWallet"
+                        text="Status Pembayaran" data="{{ $user->payments->status ? 'Lunas' : 'Belum Lunas' }}" />
                 @endif
 
                 {{-- status jurusan pilihan --}}

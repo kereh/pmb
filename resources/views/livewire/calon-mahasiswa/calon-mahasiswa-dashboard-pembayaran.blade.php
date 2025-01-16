@@ -28,7 +28,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
                         </div>
-                    @elseif ($this->user->payment->status)
+                    @elseif ($this->user->payments->status)
                         <div class="alert alert-success">
                             <i class="bi bi-check-circle"></i>
                             Pembayaran Berhasil! Silahkan cek email anda <strong>{{ $this->user->email }}</strong>
@@ -47,7 +47,7 @@
                                 <tr>
                                     <td>ID Pembayaran</td>
                                     <td>:</td>
-                                    <td>{{ $this->user->payment->order_id }}</td>
+                                    <td>{{ $this->user->payments->order_id }}</td>
                                 </tr>
                                 <tr>
                                     <td>Nama Pendaftar</td>
@@ -81,15 +81,15 @@
                                     <td>:</td>
                                     <td>
                                         <span
-                                            class="badge {{ $this->user->payment->status ? 'bg-success' : ($isExpired ? 'bg-warning' : 'bg-danger') }}">
-                                            {{ $this->user->payment->status ? 'Lunas' : ($isExpired ? 'Expired' : 'Belum Lunas') }}
+                                            class="badge {{ $this->user->payments->status ? 'bg-success' : ($isExpired ? 'bg-warning' : 'bg-danger') }}">
+                                            {{ $this->user->payments->status ? 'Lunas' : ($isExpired ? 'Expired' : 'Belum Lunas') }}
                                         </span>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    @if (!$this->user->payment->status)
+                    @if (!$this->user->payments->status)
                         @if ($isExpired)
                             <div class="container row d-flex justify-content-end">
                                 <button class="btn btn-warning w-auto" wire:click="update" wire:target="update"
@@ -124,10 +124,10 @@
                     const payButton = document.getElementById('pay-button');
                     payButton.disabled = true;
 
-                    snap.pay('{{ $this->user->payment->snap_token ?? '' }}', {
+                    snap.pay('{{ $this->user->payments->snap_token ?? '' }}', {
                         onSuccess: () => {
                             window.location.href =
-                                "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payment->order_id ?? '') }}";
+                                "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payments->order_id ?? '') }}";
                         },
                     });
                 };

@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BiayaPendaftaranResource extends Resource
 {
     protected static ?string $model = BiayaPendaftaran::class;
-    protected static ?string $navigationIcon = 'heroicon-o-wallet';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Biaya Pendaftaran';
     protected static ?string $navigationGroup = 'Keuangan';
     protected static ?string $pluralLabel = 'Biaya Pendaftaran';
@@ -29,7 +29,7 @@ class BiayaPendaftaranResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('biaya')->numeric()->step(100),
+                TextInput::make('biaya')->numeric(),
             ]);
     }
 

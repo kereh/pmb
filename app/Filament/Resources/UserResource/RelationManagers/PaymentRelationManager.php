@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PaymentRelationManager extends RelationManager
 {
-    protected static string $relationship = 'payment';
+    protected static string $relationship = 'payments';
 
     public function form(Form $form): Form
     {
@@ -61,7 +61,8 @@ class PaymentRelationManager extends RelationManager
                     ->searchable(),
                 TextColumn::make('bank')
                     ->label('BANK')
-                    ->searchable(),
+                    ->searchable()
+                    ->getStateUsing(fn ($record) => strtoupper($record->bank)),
                 TextColumn::make('price')
                     ->money('IDR')
                     ->searchable()

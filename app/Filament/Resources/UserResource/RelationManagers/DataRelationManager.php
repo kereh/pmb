@@ -44,22 +44,28 @@ class DataRelationManager extends RelationManager
                             ->image()
                             ->previewable()
                             ->imageEditor()
+                            ->deletable()
                             ->rules(['mimes:png'])
-                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.png'),
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.png')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
                         FileUpload::make('ijazah_atau_skl')
                             ->label('Ijazah/SKL')
                             ->disk('public')
                             ->directory('ijazah')
+                            ->previewable()
                             ->maxSize(1024)
                             ->acceptedFileTypes(['application/pdf'])
-                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf'),
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
                         FileUpload::make('kip')
                             ->label('KIP')
                             ->disk('public')
                             ->directory('kip')
+                            ->previewable()
                             ->maxSize(1024)
                             ->acceptedFileTypes(['application/pdf'])
-                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf'),
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
                     ])->columns(3),
 
                 Section::make('Data Calon')
@@ -194,6 +200,7 @@ class DataRelationManager extends RelationManager
                                 'required' => ':attribute tidak boleh kosong'
                             ]),
                     ])->columns(3),
+
             ])->columns(2);
     }
 
@@ -204,7 +211,6 @@ class DataRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('pas_foto')
                     ->label('Pas Foto')
-                    ->disk('public')
                     ->alignCenter()
                     ->circular()
                     ->size(55)
@@ -299,26 +305,18 @@ class DataRelationManager extends RelationManager
                     ->label('Program Studi')
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('users.payment.status')
+                TextColumn::make('users.payments.status')
                     ->label('Status Pembayaran')
                     ->badge()
-                    ->getStateUsing(fn (object $record): string => match($record->users->payment->status) {
+                    ->getStateUsing(fn (object $record): string => match($record->users->payments->status) {
                         0 => 'Belum Lunas',
                         1 => 'Lunas',
                     })
-                    ->color(fn (object $record): string => match($record->users->payment->status) {
+                    ->color(fn (object $record): string => match($record->users->payments->status) {
                         0 => 'danger',
                         1 => 'success',
                     })
-                    ->toggleable(),
-                TextColumn::make('users.seleksi.status')
-                    ->label('Status')
-                    ->badge()
-                    ->color(fn (object $record): string => match($record->users->seleksi->status) {
-                        'Tahap Seleksi' => 'primary',
-                        'Tidak Lulus' => 'danger',
-                        'Lulus' => 'success',
-                    })
+                    ->alignCenter()
                     ->toggleable(),
             ])
             ->filters([

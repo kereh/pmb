@@ -22,7 +22,7 @@ class ProgramStudiResource extends Resource
     protected static ?string $navigationGroup = 'Akademik';
     protected static ?string $pluralLabel = 'Program Studi';
     protected static ?string $slug = 'program-studi';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {

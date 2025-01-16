@@ -17,14 +17,16 @@ use Filament\Forms\Form;
 
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource {
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Admin & Calon Mahasiswa';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Akademik';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -83,9 +85,18 @@ class UserResource extends Resource {
     public static function table(Table $table): Table
     {
         return $table
-            ->groups([
-                Group::make('roles.role')
-                    ->label('Role')
+        ->groups([
+                Group::make('created_at')
+                    ->label('Tahun Pembuatan Akun')
+                    ->date()
+                    ->groupQueryUsing(fn (Builder $query) 
+                        => $query->whereBetween('created_at', [
+                                now()->subYear()->startOfYear(), 
+                                now()->endOfYear(),
+                            ]
+                        )),
+                Group::make('seleksi.status')
+                    ->label('Status Penerimaan'),
             ])
             ->columns([
                 TextColumn::make('id')
@@ -108,23 +119,30 @@ class UserResource extends Resource {
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-                TextColumn::make('roles.role')
-                    ->label('Role')
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('created_at')
-                    ->label('Mendaftar')
+                    ->label('Mendaftar Pada')
                     ->sortable()
                     ->toggleable()
-                    ->dateTime(),
+                    ->dateTime('d F Y'),
+                TextColumn::make('seleksi.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (object $record): string => match($record->seleksi->status) {
+                        'Tahap Seleksi' => 'primary',
+                        'Tidak Lulus' => 'danger',
+                        'Lulus' => 'success',
+                    })
+                    ->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -132,6 +150,8 @@ class UserResource extends Resource {
                         ->exporter(UserExporter::class),
                 ])
             ])
+            ->modifyQueryUsing(fn (Builder $query) 
+                => $query->where('role_id', 2))
             ->defaultSort('created_at');
     }
 
