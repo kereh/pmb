@@ -247,8 +247,8 @@ class DataResource extends Resource
                     ->circular()
                     ->size(55)
                     ->toggleable()
-                    ->sortable()
-                    ->getStateUsing(fn ($record) => asset($record->pas_foto)),
+                    ->sortable(),
+                    // ->getStateUsing(fn ($record) => asset($record->pas_foto)),
                 TextColumn::make('nama')
                     ->label('Nama')
                     ->searchable()
@@ -357,7 +357,12 @@ class DataResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->after(function ($record) {
+                            if ($record->pas_foto) Storage::disk('public')->delete($record->pas_foto);
+                            if ($record->ijazah) Storage::disk('public')->delete($record->ijazah);
+                            if ($record->kip) Storage::disk('public')->delete($record->kip);
+                        }),
                 ])->icon('heroicon-m-ellipsis-horizontal'),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([

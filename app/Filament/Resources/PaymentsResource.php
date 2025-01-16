@@ -5,16 +5,17 @@ namespace App\Filament\Resources;
 use Filament\Resources\Resource;
 use App\Filament\Resources\PaymentsResource\Pages;
 use App\Filament\Resources\PaymentsResource\RelationManagers;
-
 use App\Models\Payments;
+
+use Filament\Notifications\Notification;
 
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
-
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -109,8 +110,22 @@ class PaymentsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('status')
+                        ->label('Ubah Status')
+                        ->action(function ($record) {
+                            $record->status = !$record->status;
+                            $record->save();
+                            
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Pembayaran Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        })
+                        ->icon('heroicon-m-arrow-path'),
+                    ])->icon('heroicon-m-ellipsis-horizontal'),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

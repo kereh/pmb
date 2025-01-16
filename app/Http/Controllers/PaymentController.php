@@ -25,14 +25,19 @@ class PaymentController extends Controller {
             $order_id = $id;
             $status_code = $payment->status_code;
             $gross_amount = $payment->gross_amount;
+
+            // dd($payment, $order_id, $status_code, $gross_amount);
+
             $payment_type = $payment->payment_type == 'echannel' ? 'Mandiri Bill' : 'Bank Transfer';
             $bank = $payment_type == 'Mandiri Bill' ? 'Bank Mandiri' : $payment->va_numbers[0]->bank;
             $waktu_pembayaran = $payment->transaction_time;
+
+            // dd($payment_type, $bank, $waktu_pembayaran);
             
             $sign = hash('sha512', $order_id . $status_code . $gross_amount . $key);
             
             if ($payment->signature_key == $sign) {
-                Auth::user()->payment()->where('order_id', $id)->update([
+                Auth::user()->payments()->where('order_id', $id)->update([
                     'status' => true,
                     'jenis_pembayaran' => $payment_type,
                     'bank' => $bank,

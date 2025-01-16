@@ -4,6 +4,8 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use Filament\Resources\RelationManagers\RelationManager;
 
+use Filament\Notifications\Notification;
+
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Select;
@@ -11,7 +13,7 @@ use Filament\Forms\Components\Select;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-
+use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -96,8 +98,22 @@ class PaymentRelationManager extends RelationManager
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('status')
+                        ->label('Ubah Status')
+                        ->action(function ($record) {
+                            $record->status = !$record->status;
+                            $record->save();
+                            
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Pembayaran Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        })
+                        ->icon('heroicon-m-arrow-path'),
+                    ])->icon('heroicon-m-ellipsis-horizontal'),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

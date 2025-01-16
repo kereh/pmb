@@ -108,13 +108,14 @@ class FormData extends Component {
             );
     
             $snapToken = $this->createPayment($paymentData);
-    
-            $this->user->payments()->create([
-                'user_id' => $this->user->id,
-                'order_id' => $orderId,
-                'snap_token' => $snapToken,
-                'price' => $this->biayaPendaftaran->biaya,
-            ]);
+            $this->user->payments()->updateOrCreate(
+                ['user_id' => $this->user->id],
+                [
+                    'order_id' => $orderId,
+                    'snap_token' => $snapToken,
+                    'price' => $this->biayaPendaftaran->biaya,
+                ]
+            );
     
             session()->flash('status', [
                 'type' => 'alert-success', 
