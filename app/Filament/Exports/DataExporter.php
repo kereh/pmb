@@ -45,7 +45,7 @@ class DataExporter extends Exporter
                 ->label('Program Studi'),
             ExportColumn::make('users.payment.status')
                 ->label('Status Pembayaran')
-                ->getStateUsing(fn (object $record): string => match($record->users->payment->status) {
+                ->getStateUsing(fn (object $record): string => match($record->users->payments->status) {
                     0 => 'Belum Lunas',
                     1 => 'Lunas',
                 }),
