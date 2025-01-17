@@ -223,13 +223,13 @@ class DataResource extends Resource
             ->groups([
                 Group::make('users.created_at')
                     ->label('Tahun Pembuatan Akun')
-                    ->date()
                     ->groupQueryUsing(fn (Builder $query) 
                         => $query->whereBetween('users.created_at', [
                                 now()->subYear()->startOfYear(), 
                                 now()->endOfYear(),
                             ]
-                        )),
+                        ))
+                    ->date(),
                 Group::make('program_studi.nama')
                     ->label('Program Studi'),
                 Group::make('users.seleksi.status')

@@ -129,6 +129,10 @@
                             window.location.href =
                                 "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payments->order_id ?? '') }}";
                         },
+                        onPending: () => {
+                            window.location.href =
+                                "{{ route('calon_mahasiswa.pembayaran') }}";
+                        },
                     });
                 };
             }
