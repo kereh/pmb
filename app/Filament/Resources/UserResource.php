@@ -8,7 +8,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Models\User;
-
+use Filament\Forms\Components\DatePicker;
 use Filament\Resources\Resource;
 
 use Filament\Forms\Components\Select;
@@ -18,6 +18,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\ActionsPosition;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -86,15 +87,6 @@ class UserResource extends Resource {
     {
         return $table
         ->groups([
-                Group::make('created_at')
-                    ->label('Tahun Pembuatan Akun')
-                    ->date()
-                    ->groupQueryUsing(fn (Builder $query) 
-                        => $query->whereBetween('created_at', [
-                                now()->subYear()->startOfYear(), 
-                                now()->endOfYear(),
-                            ]
-                        )),
                 Group::make('seleksi.status')
                     ->label('Status Penerimaan'),
             ])
@@ -135,7 +127,24 @@ class UserResource extends Resource {
                     ->toggleable(),
             ])
             ->filters([
-                //
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari Tanggal'),
+                        DatePicker::make('created_until')
+                            ->label('Sampai Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -146,7 +155,6 @@ class UserResource extends Resource {
                         ->action(function ($record) {
                             $record->seleksi_id = 1;
                             $record->save();
-
                             Notification::make()
                                 ->title('Berhasil')
                                 ->body('Status Seleksi Berhasil Diubah!')
@@ -229,7 +237,7 @@ class UserResource extends Resource {
                 ])
             ])
             ->modifyQueryUsing(fn (Builder $query) 
-                => $query->where('role_id', 2))
+                => $query->where('role_id', 2)->latest())
             ->defaultSort('created_at');
     }
 

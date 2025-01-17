@@ -20,13 +20,14 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 
 use Filament\Tables;
+use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Grouping\Group;
-use Filament\Tables\Table;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\Filter;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -221,15 +222,6 @@ class DataResource extends Resource
     {
         return $table
             ->groups([
-                Group::make('users.created_at')
-                    ->label('Tahun Pembuatan Akun')
-                    ->groupQueryUsing(fn (Builder $query) 
-                        => $query->whereBetween('users.created_at', [
-                                now()->subYear()->startOfYear(), 
-                                now()->endOfYear(),
-                            ]
-                        ))
-                    ->date(),
                 Group::make('program_studi.nama')
                     ->label('Program Studi'),
                 Group::make('users.seleksi.status')
@@ -351,7 +343,24 @@ class DataResource extends Resource
                     ->toggleable(),
             ])
             ->filters([
-                //
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari Tanggal'),
+                        DatePicker::make('created_until')
+                            ->label('Sampai Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 ActionGroup::make([

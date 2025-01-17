@@ -125,12 +125,7 @@ class PaymentsResource extends Resource
                         })
                         ->icon('heroicon-m-arrow-path'),
                     ])->icon('heroicon-m-ellipsis-horizontal'),
-            ], position: ActionsPosition::BeforeColumns)
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ], position: ActionsPosition::BeforeColumns);
     }
 
     public static function getRelations(): array
