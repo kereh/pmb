@@ -6,6 +6,7 @@ use App\Filament\Resources\ProgramStudiResource\Pages;
 use App\Filament\Resources\ProgramStudiResource\RelationManagers;
 use App\Models\ProgramStudi;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -28,7 +29,9 @@ class ProgramStudiResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('nama')
+                    ->label('Nama Program Studi')
+                    ->required(),
             ]);
     }
 
@@ -39,10 +42,6 @@ class ProgramStudiResource extends Resource
                 TextColumn::make('nama')
                     ->label('Program Studi')
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->label('Dibuat Pada')
-                    ->dateTime()
                     ->sortable(),
             ])
             ->filters([

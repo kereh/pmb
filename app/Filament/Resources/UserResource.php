@@ -22,6 +22,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class UserResource extends Resource {
     protected static ?string $model = User::class;
