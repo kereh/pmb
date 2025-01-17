@@ -14,7 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-
+use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\ActionsPosition;
@@ -139,15 +139,93 @@ class UserResource extends Resource {
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('seleksi')
+                        ->label('Tahap Seleksi')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('info')
+                        ->action(function ($record) {
+                            $record->seleksi_id = 1;
+                            $record->save();
+
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
+                    Tables\Actions\Action::make('lulus')
+                        ->label('Lulus')
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->action(function ($record) {
+                            $record->seleksi_id = 3;
+                            $record->save();
+
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
+                    Tables\Actions\Action::make('tidak_lulus')
+                        ->label('Tidak Lulus')
+                        ->icon('heroicon-o-x-mark')
+                        ->color('danger')
+                        ->action(function ($record) {
+                            $record->seleksi_id = 2;
+                            $record->save();
+
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])
-                ], position: ActionsPosition::BeforeColumns)
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('seleksi')
+                        ->label('Tahap Seleksi')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('info')
+                        ->action(function ($records) {
+                            $records->each->update(['seleksi_id' => 1]);
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
+                    Tables\Actions\BulkAction::make('lulus')
+                        ->label('Lulus')
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->action(function ($records) {
+                            $records->each->update(['seleksi_id' => 3]);
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
+                    Tables\Actions\BulkAction::make('tidak_lulus')
+                        ->label('Tidak Lulus')
+                        ->icon('heroicon-o-x-mark')
+                        ->color('danger')
+                        ->action(function ($records) {
+                            $records->each->update(['seleksi_id' => 2]);
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
                     Tables\Actions\ExportBulkAction::make()
                         ->exporter(UserExporter::class),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ])
             ])
             ->modifyQueryUsing(fn (Builder $query) 

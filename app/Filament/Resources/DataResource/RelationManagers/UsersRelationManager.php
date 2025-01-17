@@ -16,6 +16,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Notifications\Notification;
 
 class UsersRelationManager extends RelationManager
 {
@@ -78,7 +79,7 @@ class UsersRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('user_id')
+            ->recordTitleAttribute('nama')
             ->columns([
                 TextColumn::make('id')
                     ->label('ID Pengguna')
@@ -120,14 +121,51 @@ class UsersRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('seleksi')
+                        ->label('Tahap Seleksi')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('info')
+                        ->action(function ($record) {
+                            $record->seleksi_id = 1;
+                            $record->save();
+
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
+                    Tables\Actions\Action::make('lulus')
+                        ->label('Lulus')
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->action(function ($record) {
+                            $record->seleksi_id = 3;
+                            $record->save();
+
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
+                    Tables\Actions\Action::make('tidak_lulus')
+                        ->label('Tidak Lulus')
+                        ->icon('heroicon-o-x-mark')
+                        ->color('danger')
+                        ->action(function ($record) {
+                            $record->seleksi_id = 2;
+                            $record->save();
+
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Status Seleksi Berhasil Diubah!')
+                                ->success()
+                                ->send();
+                        }),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])
-                ], position: ActionsPosition::BeforeColumns)
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ], position: ActionsPosition::BeforeColumns);
     }
 }

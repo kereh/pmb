@@ -13,11 +13,8 @@ use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
-use Filament\Support\Enums\FontWeight;
 
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -53,13 +50,20 @@ class ViewData extends ViewRecord
                                 Group::make([
                                     TextEntry::make('program_studi.nama')
                                         ->label('Program Studi Pilihan')
+                                        ->icon('heroicon-o-academic-cap')
                                         ->badge(),
                                     TextEntry::make('users.created_at')
                                         ->label('Mendaftar Pada')
                                         ->dateTime('d F Y')
+                                        ->icon('heroicon-o-user-plus')
                                         ->badge(),
                                     TextEntry::make('users.seleksi.status')
                                         ->label('Status Penerimaan')
+                                        ->color(fn ($record) => match($record->users->seleksi_id) {
+                                            1 => 'primary',
+                                            2 => 'danger',
+                                            3 => 'success',
+                                        })
                                         ->badge(),
                                     TextEntry::make('ijazah_atau_skl')
                                         ->label('Ijazah/SKL')
@@ -89,7 +93,40 @@ class ViewData extends ViewRecord
                                     ->columns(3)
                                     ->columnSpan(['sm' => 0, 'md' => 2]),
                         ]),
-                    ])->collapsible(),
+                    ]),
+
+                Section::make()
+                    ->schema([
+                        TextEntry::make('nama'),
+                        TextEntry::make('nama_ibu_kandung')
+                            ->label('Ibu Kandung'),
+                        TextEntry::make('tanggal_lahir')
+                            ->label('Tanggal Lahir')
+                            ->dateTime('d F Y'),
+                        TextEntry::make('nik')
+                            ->label('NIK')
+                            ->copyable()
+                            ->icon('heroicon-o-document-duplicate'),
+                        TextEntry::make('nisn')
+                            ->label('NISN')
+                            ->copyable()
+                            ->icon('heroicon-o-document-duplicate'),
+                        TextEntry::make('jenis_kelamin')
+                            ->label('Jenis Kelamin')
+                            ->getStateUsing(fn ($record) => match($record->jenis_kelamin) {
+                                'L' => 'Laki-laki',
+                                'P' => 'Perempuan',
+                            }),
+                        TextEntry::make('agama'),
+                        TextEntry::make('kewarganegaraan'),
+                        TextEntry::make('pendidikan_terakhir'),
+                    ])->columns(3),
+                
+                Section::make()
+                    ->schema([
+                        TextEntry::make('alamat'),
+                        TextEntry::make('tempat_lahir'),
+                    ])->columns(2)
             ]);
     }
 }

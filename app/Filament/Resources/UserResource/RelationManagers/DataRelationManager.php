@@ -334,13 +334,6 @@ class DataRelationManager extends RelationManager
                             if ($record->kip) Storage::disk('public')->delete($record->kip);
                         }),
                 ])->icon('heroicon-m-ellipsis-horizontal'),
-            ], position: ActionsPosition::BeforeColumns)
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ExportBulkAction::make()
-                        ->exporter(DataExporter::class),
-                ]),
-            ]);
+            ], position: ActionsPosition::BeforeColumns);
     }
 }
