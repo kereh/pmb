@@ -121,7 +121,7 @@ class UserResource extends Resource {
                     ->label('Status')
                     ->badge()
                     ->color(fn (object $record): string => match($record->seleksi->status) {
-                        'Tahap Seleksi' => 'primary',
+                        'Tahap Seleksi' => 'warning',
                         'Tidak Lulus' => 'danger',
                         'Lulus' => 'success',
                     })
@@ -152,7 +152,7 @@ class UserResource extends Resource {
                     Tables\Actions\Action::make('seleksi')
                         ->label('Tahap Seleksi')
                         ->icon('heroicon-o-arrow-path')
-                        ->color('info')
+                        ->color('warning')
                         ->action(function ($record) {
                             $record->seleksi_id = 1;
                             $record->save();

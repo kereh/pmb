@@ -51,16 +51,18 @@ class ViewData extends ViewRecord
                                     TextEntry::make('program_studi.nama')
                                         ->label('Program Studi Pilihan')
                                         ->icon('heroicon-o-academic-cap')
-                                        ->badge(),
+                                        ->badge()
+                                        ->color('info'),
                                     TextEntry::make('users.created_at')
                                         ->label('Mendaftar Pada')
                                         ->dateTime('d F Y')
                                         ->icon('heroicon-o-user-plus')
-                                        ->badge(),
+                                        ->badge()
+                                        ->color('gray'),
                                     TextEntry::make('users.seleksi.status')
                                         ->label('Status Penerimaan')
                                         ->color(fn ($record) => match($record->users->seleksi_id) {
-                                            1 => 'primary',
+                                            1 => 'warning',
                                             2 => 'danger',
                                             3 => 'success',
                                         })
@@ -70,7 +72,6 @@ class ViewData extends ViewRecord
                                         ->badge()
                                         ->color('success')
                                         ->icon('heroicon-m-document-text')
-                                        ->tooltip('Click Untuk Melihat Ijazah/SKL')
                                         ->getStateUsing(fn ($record) => $record->ijazah_atau_skl ? 'Lihat Ijazah/SKL' : '')
                                         ->url(fn ($record) => asset($record->ijazah_atau_skl), shouldOpenInNewTab: true),
                                     TextEntry::make('kip')
@@ -78,7 +79,6 @@ class ViewData extends ViewRecord
                                         ->badge()
                                         ->color(fn ($record) => $record->kip ? 'success' : 'danger')
                                         ->icon('heroicon-m-document-text')
-                                        ->tooltip('Click Untuk Kartu KIP')
                                         ->getStateUsing(fn ($record) => $record->kip ? 'Lihat Kartu KIP' : 'Kartu KIP Tidak Tersedia')
                                         ->url(fn ($record) => $record->kip ? asset($record->kip) : '', shouldOpenInNewTab: true),
                                     TextEntry::make('users.payments.status')
@@ -93,9 +93,10 @@ class ViewData extends ViewRecord
                                     ->columns(3)
                                     ->columnSpan(['sm' => 0, 'md' => 2]),
                         ]),
-                    ]),
+                    ])->collapsible(),
 
                 Section::make()
+                    ->description('Info Tambahan')
                     ->schema([
                         TextEntry::make('nama'),
                         TextEntry::make('nama_ibu_kandung')
@@ -106,27 +107,42 @@ class ViewData extends ViewRecord
                         TextEntry::make('nik')
                             ->label('NIK')
                             ->copyable()
+                            ->badge()
                             ->icon('heroicon-o-document-duplicate'),
                         TextEntry::make('nisn')
                             ->label('NISN')
                             ->copyable()
+                            ->badge()
                             ->icon('heroicon-o-document-duplicate'),
+                        TextEntry::make('kewarganegaraan'),
+                        TextEntry::make('agama'),
                         TextEntry::make('jenis_kelamin')
                             ->label('Jenis Kelamin')
                             ->getStateUsing(fn ($record) => match($record->jenis_kelamin) {
                                 'L' => 'Laki-laki',
                                 'P' => 'Perempuan',
                             }),
-                        TextEntry::make('agama'),
-                        TextEntry::make('kewarganegaraan'),
                         TextEntry::make('pendidikan_terakhir'),
-                    ])->columns(3),
-                
-                Section::make()
-                    ->schema([
-                        TextEntry::make('alamat'),
+                        TextEntry::make('nomor_hp')
+                            ->label('Nomor HP')
+                            ->badge()
+                            ->icon('heroicon-o-phone')
+                            ->copyable(),
+                        TextEntry::make('users.email')
+                            ->label('Email')
+                            ->badge()
+                            ->icon('heroicon-o-envelope-open')
+                            ->copyable(),
                         TextEntry::make('tempat_lahir'),
-                    ])->columns(2)
+                        Section::make()
+                            ->description('Alamat')
+                            ->schema([
+                                TextEntry::make('alamat')
+                                    ->hiddenLabel(),
+                            ]),
+                    ])
+                    ->collapsible()
+                    ->columns(3)
             ]);
     }
 }
