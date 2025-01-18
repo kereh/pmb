@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],  
             [
-                'nama' => 'D4 Keperawatan Anestesiologi',
+                'nama' => 'D4 Anestesiologi',
                 'created_at' => now()->format('Y-m-d H:m:s'),
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
@@ -105,9 +105,9 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => Str::uuid(),
                 'nama' => 'Admin PMB',
-                'email' => 'admin@gmail.com',
+                'email' => 'orewaizumi@gmail.com',
                 'username' => 'admin',
-                'password' => Hash::make('admin'),
+                'password' => Hash::make('adminpmb132'),
                 'role_id' => 1,
                 'seleksi_id' => null,
                 'created_at' => now()->format('Y-m-d H:m:s'),
