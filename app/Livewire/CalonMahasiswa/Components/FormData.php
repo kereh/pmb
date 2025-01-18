@@ -14,7 +14,7 @@ use App\createPaymentDTO;
 class FormData extends Component {
     use CreatePaymentTrait;
 
-    #[Validate('required', message: 'Tanggal Lahir Tidak Boleh Kosong')]
+    #[Validate('required', message: 'Jurusan Tidak Boleh Kosong')]
     public $jurusan;
 
     #[Validate('required', message: 'Tanggal Lahir Tidak Boleh Kosong')]
@@ -43,6 +43,18 @@ class FormData extends Component {
 
     #[Validate('nullable')]
     public $rekomendasi;
+
+    #[Validate('required', message: 'Jenis kelamin Harus Diisi')]
+    public $jenis_kelamin;
+
+    #[Validate('required', message: 'Agama Harus Diisi')]
+    public $agama;
+
+    #[Validate('required', message: 'Program Studi Pilihan Pertama Harus Diisi')]
+    public $program_studi_pertama;
+
+    #[Validate('required', message: 'Program Studi Pilihan Kedua Harus Diisi')]
+    public $program_studi_kedua;
 
     #[Reactive]
     public $uploadedPasFoto;
@@ -114,22 +126,16 @@ class FormData extends Component {
         $this->dispatch('submited');
     }
 
-    public function payment() {}
+    public function changeProgramStudiPertamaSelected($value) {
+        $this->program_studi_pertama = $value;
+    }
 
-    public function changeProgramStudiSelected($value) {
-        $this->program_studi_id = $value;
+    public function changeProgramStudiKeduaSelected($value) {
+        $this->program_studi_kedua = $value;
     }
     
     public function changeJenisKelaminSelected($value) {
         $this->jenis_kelamin = $value;
-    }
-    
-    public function changePendidikanTerakhirSelected($value) {
-        $this->pendidikan_terakhir = $value;
-    }
-    
-    public function changeKewargaNegaraanSelected($value) {
-        $this->kewarganegaraan = $value;
     }
     
     public function changeAgamaSelected($value) {

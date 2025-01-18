@@ -48,7 +48,7 @@ class CalonMahasiswaDashboardData extends Component {
             : null;
 
         $this->uploadedKk = $checkUploadedKk
-            ? Storage::disk('public')->url('kip/' . $user->id . '.pdf')
+            ? Storage::disk('public')->url('kk/' . $user->id . '.pdf')
             : null;
         
         $this->uploadedData = $checkUploadedData

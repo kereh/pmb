@@ -32,7 +32,7 @@
                 <div class="row w-full d-flex row-gap-4 flex-columns">
 
                     {{-- ijazah --}}
-                    <div class="col-12 w-100 w-lg-75">
+                    <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label class="mb-2">Scan Ijazah</label>
                             <small class="text-danger">*Kosongkan jika tidak punya</small>
@@ -46,88 +46,80 @@
                                 </button>
                             </div>
                             @if ($uploadedIjazah)
-                                <p class="mt-3">Ijazah yang sudah diupload :
-                                    <a href="{{ $uploadedIjazah }}" class="badge bg-success" target="_blank">Lihat
-                                        Disini</a>
-                                </p>
+                                <a href="{{ $uploadedIjazah }}" class="badge bg-success mt-2" target="_blank">Periksa
+                                    Ijazah Disini</a>
                             @endif
                         </div>
                     </div>
-                </div>
-                {{-- end ijazah --}}
+                    {{-- end ijazah --}}
 
-                {{-- KIP --}}
-                <div class="col-12 w-100 w-lg-75">
-                    <div class="form-group">
-                        <label class="mb-2">Scan KIP</label>
-                        <small class="text-danger">*Kosongkan jika tidak punya</small>
-                        <div class="input-group">
-                            <input type="file" class="form-control @error('uploadKip') is-invalid @enderror"
-                                wire:model.defer="uploadKip" accept="application/pdf"
-                                {{ $uploadedData ? 'disabled' : '' }}>
-                            <button class="btn btn-primary" type="button" wire:click="saveKip"
-                                {{ $uploadedData ? 'disabled' : '' }}>
-                                Upload
-                            </button>
-                        </div>
-                        @if ($uploadedKip)
-                            <p class="mt-3">KIP yang sudah diupload :
-                                <a href="{{ $uploadedKip }}" class="badge bg-success" target="_blank">Lihat
+                    {{-- KIP --}}
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label class="mb-2">Scan KIP</label>
+                            <small class="text-danger">*Kosongkan jika tidak punya</small>
+                            <div class="input-group">
+                                <input type="file" class="form-control @error('uploadKip') is-invalid @enderror"
+                                    wire:model.defer="uploadKip" accept="application/pdf"
+                                    {{ $uploadedData ? 'disabled' : '' }}>
+                                <button class="btn btn-primary" type="button" wire:click="saveKip"
+                                    {{ $uploadedData ? 'disabled' : '' }}>
+                                    Upload
+                                </button>
+                            </div>
+                            @if ($uploadedKip)
+                                <a href="{{ $uploadedKip }}" class="badge bg-success mt-2" target="_blank">Periksa KIP
                                     Disini</a>
-                            </p>
-                        @endif
-                    </div>
-                </div>
-                {{-- end kip --}}
-
-                {{-- KTP --}}
-                <div class="col-12 w-100 w-lg-75">
-                    <div class="form-group">
-                        <label class="mb-2">Scan KTP/Akte Kelahiran</label>
-                        <small class="text-danger">*</small>
-                        <div class="input-group">
-                            <input type="file" class="form-control @error('uploadKtp') is-invalid @enderror"
-                                wire:model.defer="uploadKtp" accept="application/pdf"
-                                {{ $uploadedData ? 'disabled' : '' }} required>
-                            <button class="btn btn-primary" type="button" wire:click="saveKtp"
-                                {{ $uploadedData ? 'disabled' : '' }}>
-                                Upload
-                            </button>
+                            @endif
                         </div>
-                        @if ($uploadedKtp)
-                            <p class="mt-3">KTP yang sudah diupload :
-                                <a href="{{ $uploadedKtp }}" class="badge bg-success" target="_blank">Lihat
-                                    Disini</a>
-                            </p>
-                        @endif
                     </div>
-                </div>
-                {{-- end ktp --}}
+                    {{-- end kip --}}
 
-                {{-- KK --}}
-                <div class="col-12 w-100 w-lg-75">
-                    <div class="form-group">
-                        <label class="mb-2">Scan Kartu Keluarga</label>
-                        <small class="text-danger">*</small>
-                        <div class="input-group">
-                            <input type="file" class="form-control @error('uploadKk') is-invalid @enderror"
-                                wire:model.defer="uploadKk" accept="application/pdf"
-                                {{ $uploadedData ? 'disabled' : '' }} required>
-                            <button class="btn btn-primary" type="button" wire:click="saveKk"
-                                {{ $uploadedData ? 'disabled' : '' }}>
-                                Upload
-                            </button>
+                    {{-- KTP --}}
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label class="mb-2">Scan KTP/Akte Kelahiran</label>
+                            <small class="text-danger">*</small>
+                            <div class="input-group">
+                                <input type="file" class="form-control @error('uploadKtp') is-invalid @enderror"
+                                    wire:model.defer="uploadKtp" accept="application/pdf"
+                                    {{ $uploadedData ? 'disabled' : '' }} required>
+                                <button class="btn btn-primary" type="button" wire:click="saveKtp"
+                                    {{ $uploadedData ? 'disabled' : '' }}>
+                                    Upload
+                                </button>
+                            </div>
+                            @if ($uploadedKtp)
+                                <a href="{{ $uploadedKtp }}" class="badge bg-success mt-2" target="_blank">Periksa KTP
+                                    Disini</a>
+                            @endif
                         </div>
-                        @if ($uploadedKk)
-                            <p class="mt-3">Kartu Keluarga yang sudah diupload :
-                                <a href="{{ $uploadedKk }}" class="badge bg-success" target="_blank">Lihat
-                                    Disini</a>
-                            </p>
-                        @endif
                     </div>
-                </div>
-                {{-- end kk --}}
+                    {{-- end ktp --}}
 
+                    {{-- KK --}}
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label class="mb-2">Scan Kartu Keluarga</label>
+                            <small class="text-danger">*</small>
+                            <div class="input-group">
+                                <input type="file" class="form-control @error('uploadKk') is-invalid @enderror"
+                                    wire:model.defer="uploadKk" accept="application/pdf"
+                                    {{ $uploadedData ? 'disabled' : '' }} required>
+                                <button class="btn btn-primary" type="button" wire:click="saveKk"
+                                    {{ $uploadedData ? 'disabled' : '' }}>
+                                    Upload
+                                </button>
+                            </div>
+                            @if ($uploadedKk)
+                                <a href="{{ $uploadedKk }}" class="badge bg-success mt-2" target="_blank">Periksa
+                                    Kartu Keluarga
+                                    Disini</a>
+                            @endif
+                        </div>
+                    </div>
+                    {{-- end kk --}}
+                </div>
             </div>
         </div>
     </div>

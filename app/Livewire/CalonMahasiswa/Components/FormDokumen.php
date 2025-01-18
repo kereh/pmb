@@ -46,8 +46,8 @@ class FormDokumen extends Component {
         $this->uploadedData = $uploadedData;
         $this->uploadedIjazah = $uploadedIjazah;
         $this->uploadedKip = $uploadedKip;
-        $this->uploadedKip = $uploadedKtp;
-        $this->uploadedKip = $uploadedKk;
+        $this->uploadedKtp = $uploadedKtp;
+        $this->uploadedKk = $uploadedKk;
     }
 
     public function saveIjazah() {
@@ -99,20 +99,21 @@ class FormDokumen extends Component {
             ]);
         }
 
-
         $this->dispatch('ktp', val: $this->uploadedKtp);
     }
 
     public function saveKk() {
         $this->validateOnly('uploadKk');
 
-        $this->uploadKk->storePubliclyAs('kk', $this->user->id . '.pdf', 'public');
-        $this->uploadedKk = Storage::disk('public')->url('kk/'. $this->user->id . '.pdf');
+       if (isset($this->uploadKk)) {
+            $this->uploadKk->storePubliclyAs('kk', $this->user->id . '.pdf', 'public');
+            $this->uploadedKk = Storage::disk('public')->url('kk/'. $this->user->id . '.pdf');
 
-        session()->flash('statusDokumen', [
-            'type' => 'alert-success',
-            'message' => 'Kartu Keluarga Berhasil Diupload'
-        ]);
+            session()->flash('statusDokumen', [
+                'type' => 'alert-success',
+                'message' => 'Kartu Keluarga Berhasil Diupload'
+            ]);
+        }
 
         $this->dispatch('kk', val: $this->uploadedKk);
     }
