@@ -28,38 +28,44 @@
                     <div class="form-group">
                         <label class="form-label @error('jurusan') is-invalid @enderror">Jurusan Saat
                             Sekolah</label>
+                        <small class="text-danger">* Jangan disingkat</small>
                         <input type="text"class="form-control @error('jurusan') is-invalid @enderror"
                             placeholder="{{ $user->data ? $user->data->jurusan : '' }}" wire:model.defer="jurusan"
-                            {{ $user->data ? 'disabled' : '' }}>
+                            {{ $user->data ? 'disabled' : '' }} @required(true)>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="form-group">
                         <label class="form-label @error('tanggal_lahir') is-invalid @enderror">Tanggal
                             Lahir</label>
+                        <span class="text-danger">*</span>
                         <input type="text"
                             class="form-control mb-3 flatpickr-no-config flatpickr-input @error('tanggal_lahir') is-invalid @enderror"
                             readonly="readonly" wire:model.defer="tanggal_lahir"
                             placeholder="{{ $user->data ? $user->data->tanggal_lahir : 'Masukan Tanggal Lahir' }}"
-                            {{ $user->data ? 'disabled' : '' }}>
+                            {{ $user->data ? 'disabled' : '' }} @required(true)>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="form-group">
                         <label class="form-label @error('no_telp_pribadi') is-invalid @enderror">Nomor
                             Telepon Pribadi</label>
+                        <span class="text-danger">*</span>
                         <input type="text" class="form-control @error('no_telp_pribadi') is-invalid @enderror"
                             placeholder="{{ $user->data ? $user->data->no_telp_pribadi : '' }}"
-                            wire:model.defer="no_telp_pribadi" {{ $user->data ? 'disabled' : '' }}>
+                            wire:model.defer="no_telp_pribadi" {{ $user->data ? 'disabled' : '' }}
+                            @required(true)>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="form-group">
                         <label class="form-label @error('no_telp_orang_tua') is-invalid @enderror">Nomor
                             Telepon Orang Tua</label>
+                        <span class="text-danger">*</span>
                         <input type="text" class="form-control @error('no_telp_orang_tua') is-invalid @enderror"
                             placeholder="{{ $user->data ? $user->data->no_telp_orang_tua : '' }}"
-                            wire:model.defer="no_telp_orang_tua" {{ $user->data ? 'disabled' : '' }}>
+                            wire:model.defer="no_telp_orang_tua" {{ $user->data ? 'disabled' : '' }}
+                            @required(true)>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
@@ -67,10 +73,12 @@
                         <label class="form-label @error('asal_daerah_provinsi') is-invalid @enderror">Asal
                             Daerah
                             Provinsi</label>
+                        <span class="text-danger">*</span>
                         <input type="text"
                             class="form-control @error('asal_daerah_provinsi') is-invalid @enderror"
                             placeholder="{{ $user->data ? $user->data->asal_daerah_provinsi : '' }}"
-                            wire:model.defer="asal_daerah_provinsi" {{ $user->data ? 'disabled' : '' }}>
+                            wire:model.defer="asal_daerah_provinsi" {{ $user->data ? 'disabled' : '' }}
+                            @required(true)>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
@@ -78,19 +86,22 @@
                         <label class="form-label @error('asal_daerah_kabupaten_kota') is-invalid @enderror">Asal
                             Daerah
                             Kabupaten/Kota</label>
+                        <span class="text-danger">*</span>
                         <input type="text"
                             class="form-control @error('asal_daerah_kabupaten_kota') is-invalid @enderror"
                             placeholder="{{ $user->data ? $user->data->asal_daerah_kabupaten_kota : '' }}"
-                            wire:model.defer="asal_daerah_kabupaten_kota" {{ $user->data ? 'disabled' : '' }}>
+                            wire:model.defer="asal_daerah_kabupaten_kota" {{ $user->data ? 'disabled' : '' }}
+                            @required(true)>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="form-group mb-3">
                         <label class="form-label @error('asal_sekolah') is-invalid @enderror">Asal
                             Sekolah</label>
+                        <span class="text-danger">*</span>
                         <input type="text" class="form-control @error('asal_sekolah') is-invalid @enderror"
                             placeholder="{{ $user->data ? $user->data->asal_sekolah : '' }}"
-                            wire:model.defer="asal_sekolah" {{ $user->data ? 'disabled' : '' }}>
+                            wire:model.defer="asal_sekolah" {{ $user->data ? 'disabled' : '' }} @required(true)>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
@@ -106,9 +117,10 @@
                     <div class="form-group">
                         <label class="form-label @error('jenis_kelamin') is-invalid @enderror">Jenis
                             Kelamin</label>
+                        <span class="text-danger">*</span>
                         <select class="form-select @error('jenis_kelamin') is-invalid @enderror"
                             wire:change="changeJenisKelaminSelected($event.target.value)"
-                            {{ $user->data ? 'disabled' : '' }}>
+                            {{ $user->data ? 'disabled' : '' }} @required(true)>
                             <option selected>
                                 {{ $user->data ? $user->data->jenis_kelamin : 'Pilih Jenis Kelamin' }}
                             </option>
@@ -120,9 +132,10 @@
                 <div class="col-md-4 col-12">
                     <div class="form-group">
                         <label class="form-label @error('agama') is-invalid @enderror">Agama</label>
+                        <span class="text-danger">*</span>
                         <select class="form-select @error('agama') is-invalid @enderror"
                             wire:change="changeAgamaSelected($event.target.value)"
-                            {{ $user->data ? 'disabled' : '' }}>
+                            {{ $user->data ? 'disabled' : '' }} @required(true)>
                             <option selected>{{ $user->data ? $user->data->agama : 'Pilih Agama' }}
                             <option value="Kristen Protestan">Kristen Protestan</option>
                             <option value="Kristen Katolik">Kristen Katolik</option>
@@ -136,9 +149,10 @@
                     <div class="form-group">
                         <label class="form-label @error('program_studi_pertama') is-invalid @enderror">Pilih
                             Program Studi 1</label>
+                        <span class="text-danger">*</span>
                         <select class="form-select @error('program_studi_pertama') is-invalid @enderror"
-                            wire:change="changeProgramStudiSelected($event.target.value)"
-                            {{ $user->data ? 'disabled' : '' }}>
+                            wire:change="changeProgramStudiPertamaSelected($event.target.value)"
+                            {{ $user->data ? 'disabled' : '' }} @required(true)>
                             <option selected>
                                 {{ $user->data ? $user->data->program_studi_pertama->nama : 'Pilih Program Studi 1' }}
                             </option>
@@ -153,9 +167,10 @@
                     <div class="form-group">
                         <label class="form-label @error('program_studi_kedua') is-invalid @enderror">Pilih
                             Program Studi 2</label>
+                        <span class="text-danger">*</span>
                         <select class="form-select @error('program_studi_kedua') is-invalid @enderror"
-                            wire:change="changeProgramStudiSelected($event.target.value)"
-                            {{ $user->data ? 'disabled' : '' }}>
+                            wire:change="changeProgramStudiKeduaSelected($event.target.value)"
+                            {{ $user->data ? 'disabled' : '' }} @required(true)>
                             <option selected>
                                 {{ $user->data ? $user->data->program_studi_kedua->nama : 'Pilih Program Studi' }}
                             </option>
