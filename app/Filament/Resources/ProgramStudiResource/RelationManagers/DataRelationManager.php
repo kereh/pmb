@@ -1,28 +1,27 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\RelationManagers;
+namespace App\Filament\Resources\ProgramStudiResource\RelationManagers;
 
-use App\Filament\Exports\DataExporter;
 use Filament\Resources\RelationManagers\RelationManager;
 
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
 
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Enums\ActionsPosition;
-
-use Illuminate\Support\Facades\Storage;
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\Filter;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -210,34 +209,44 @@ class DataRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('nama')
-            ->heading('')
+            ->heading('Data Calon Mahasiswa')
+            ->description('Tabel Relasi Data Calon Mahasiswa')
             ->columns([
                 ImageColumn::make('pas_foto')
                     ->label('Pas Foto')
                     ->toggleable()
+                    ->sortable()
                     ->alignCenter()
                     ->extraImgAttributes(['class' => 'rounded-lg w-[300px] h-[400px]']),
                 TextColumn::make('nama')
                     ->label('Nama')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('nik')
                     ->label('NIK')
+                    ->searchable()
                     ->toggleable()
                     ->copyable()
                     ->copyMessage('NIK Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin NIK'),
+                    ->tooltip('Click Untuk Menyalin NIK')
+                    ->sortable(),
                 TextColumn::make('nisn')
                     ->label('NISN')
+                    ->searchable()
                     ->toggleable()
                     ->copyable()
                     ->copyMessage('NISN Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin NISN'),
+                    ->tooltip('Click Untuk Menyalin NISN')
+                    ->sortable(),
                 TextColumn::make('nama_ibu_kandung')
                     ->label('Ibu Kandung')
+                    ->searchable()
                     ->toggleable()
                     ->copyable()
                     ->copyMessage('Nama Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin Nama'),
+                    ->tooltip('Click Untuk Menyalin Nama')
+                    ->sortable(),
                 IconColumn::make('ijazah_atau_skl')
                     ->label('Ijazah/SKL')
                     ->url(fn ($record) => asset($record->ijazah_atau_skl), shouldOpenInNewTab: true)
@@ -246,6 +255,7 @@ class DataRelationManager extends RelationManager
                     ->tooltip('Click Untuk Melihat Ijazah/SKL')
                     ->alignCenter()
                     ->toggleable(),
+                // TextColumn::make('kip'),
                 IconColumn::make('kip')
                     ->label('KIP')
                     ->getStateUsing(fn ($record) => $record->kip ? 'Available' : 'Not Available')
@@ -257,19 +267,27 @@ class DataRelationManager extends RelationManager
                     ->toggleable(),
                 TextColumn::make('users.email')
                     ->label('Email')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('nomor_hp')
                     ->label('Nomor HP')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('kewarganegaraan')
                     ->label('Kewarganegaraan')
                     ->toggleable(),
                 TextColumn::make('alamat')
                     ->label('Alamat')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('tempat_lahir')
                     ->label('Tempat Lahir')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('tanggal_lahir')
                     ->label('Tanggal Lahir')
                     ->dateTime('d F Y')
@@ -287,7 +305,8 @@ class DataRelationManager extends RelationManager
                     ->toggleable(),
                 TextColumn::make('program_studi.nama')
                     ->label('Program Studi')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('users.payments.status')
                     ->label('Status Pembayaran')
                     ->badge()
@@ -299,11 +318,27 @@ class DataRelationManager extends RelationManager
                         0 => 'danger',
                         1 => 'success',
                     })
-                    ->alignCenter()
                     ->toggleable(),
             ])
             ->filters([
-                //
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari Tanggal'),
+                        DatePicker::make('created_until')
+                            ->label('Sampai Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 ActionGroup::make([
@@ -316,6 +351,13 @@ class DataRelationManager extends RelationManager
                             if ($record->kip) Storage::disk('public')->delete($record->kip);
                         }),
                 ])->icon('heroicon-m-ellipsis-horizontal'),
-            ], position: ActionsPosition::BeforeColumns);
+            ], position: ActionsPosition::BeforeColumns)
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ExportBulkAction::make()
+                        ->exporter(DataExporter::class),
+                ]),
+            ]);
     }
 }

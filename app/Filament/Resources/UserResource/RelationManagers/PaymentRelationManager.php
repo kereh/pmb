@@ -39,35 +39,29 @@ class PaymentRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('order_id')
+            ->heading('')
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')
-                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('order_id')
-                    ->searchable()
                     ->label('Order ID')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('snap_token')
-                    ->searchable()
                     ->label('Snap Token')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('users.nama')
-                    ->searchable()
                     ->label('Nama Calon'),
                 TextColumn::make('waktu_pembayaran')
                     ->dateTime('d F Y, H:i:s')
                     ->label('Waktu Pembayaran'),
                 TextColumn::make('jenis_pembayaran')
-                    ->label('Jenis Pembayaran')
-                    ->searchable(),
+                    ->label('Jenis Pembayaran'),
                 TextColumn::make('bank')
                     ->label('BANK')
-                    ->searchable()
                     ->getStateUsing(fn ($record) => strtoupper($record->bank)),
                 TextColumn::make('price')
                     ->money('IDR')
-                    ->searchable()
                     ->label('Biaya'),
                 TextColumn::make('status')
                     ->label('Status Pembayaran')

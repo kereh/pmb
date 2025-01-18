@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProgramStudiResource\Pages;
-use App\Filament\Resources\ProgramStudiResource\RelationManagers;
+use App\Filament\Resources\ProgramStudiResource\RelationManagers\DataRelationManager;
 use App\Models\ProgramStudi;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -43,6 +43,10 @@ class ProgramStudiResource extends Resource
                     ->label('Program Studi')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('data_count')
+                    ->counts('data')
+                    ->label('Jumlah Pendaftar')
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -61,7 +65,7 @@ class ProgramStudiResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            DataRelationManager::class,
         ];
     }
 

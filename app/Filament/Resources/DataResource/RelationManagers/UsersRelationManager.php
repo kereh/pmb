@@ -80,30 +80,23 @@ class UsersRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('nama')
+            ->heading('Calon Mahasiswa')
+            ->description('Tabel Relasi Calon Mahasiswa')
             ->columns([
                 TextColumn::make('id')
                     ->label('ID Pengguna')
-                    ->searchable()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('nama')
                     ->label('Nama Pengguna')
-                    ->searchable()
-                    ->sortable()
                     ->toggleable(),
                 TextColumn::make('email')
                     ->label('Email Pengguna')
-                    ->searchable()
-                    ->sortable()
                     ->toggleable(),
                 TextColumn::make('username')
                     ->label('Username')
-                    ->searchable()
-                    ->sortable()
                     ->toggleable(),
                 TextColumn::make('created_at')
                     ->label('Mendaftar Pada')
-                    ->sortable()
                     ->toggleable()
                     ->dateTime('d F Y'),
                 TextColumn::make('seleksi.status')
