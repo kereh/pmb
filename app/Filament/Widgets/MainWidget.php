@@ -8,17 +8,24 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Payments;
 use App\Models\ProgramStudi;
 use App\Models\User;
+
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+
 use Filament\Support\Enums\IconPosition;
 
 class MainWidget extends BaseWidget
 {
     protected function getStats(): array
     {
-        $uang_masuk = Payments::sum('price');
+        $uang_masuk = Payments::whereBetween('created_at', [
+            now()->startOfYear(),
+            now()->endOfYear(),
+        ])->sum('price');
 
         return [
             Stat::make('Uang Masuk', 'Rp. ' . number_format($uang_masuk, 0, ',', '.'))
-                ->description('Jumlah uang yang masuk')
+                ->description('Uang masuk dalam setahun')
                 ->descriptionIcon('heroicon-m-wallet', IconPosition::Before)
                 ->color('primary'),
             
@@ -29,7 +36,8 @@ class MainWidget extends BaseWidget
             
             Stat::make('Program Studi', ProgramStudi::count())
                 ->description('Jumlah Program Studi')
-                ->descriptionIcon('heroicon-m-academic-cap', IconPosition::Before),
+                ->descriptionIcon('heroicon-m-academic-cap', IconPosition::Before)
+                ->color('warning'),
         ];
     }
 }
