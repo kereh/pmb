@@ -14,84 +14,71 @@ use App\createPaymentDTO;
 class FormData extends Component {
     use CreatePaymentTrait;
 
-    #[Validate('required', message: 'NIK Tidak Boleh Kosong')]
-    #[Validate('numeric', message: 'NIK Harus Berisi Angka')]
-    #[Validate('digits:16', message: 'NIK harus terdiri dari 16 digit')]
-    #[Validate('unique:data', message: 'NIK sudah terpakai')]
-    public $nik;
-
-    #[Validate('required', message: 'NISN Tidak Boleh Kosong')]
-    #[Validate('numeric', message: 'NISN Harus Berisi Angka')]
-    #[Validate('digits:10', message: 'NISN harus terdiri dari 10 digit')]
-    #[Validate('unique:data', message: 'NISN sudah terpakai')]
-    public $nisn;
-
-    #[Validate('required', message: 'Nama Ibu Kandung Tidak Boleh Kosong')]
-    #[Validate('string', message: 'Nama Hanya Berisi Huruf')]
-    #[Validate('max:50', message: 'Nama Tidak Boleh Lebih Dari 100 karakter')]
-    public $nama_ibu_kandung;
+    #[Validate('required', message: 'Tanggal Lahir Tidak Boleh Kosong')]
+    public $jurusan;
 
     #[Validate('required', message: 'Tanggal Lahir Tidak Boleh Kosong')]
     public $tanggal_lahir;
 
-    #[Validate('required', message: 'Tempat Lahir Tidak Boleh Kosong')]
-    public $tempat_lahir;
+    #[Validate('required', message: 'Nomor Telepon Tidak Boleh Kosong')]
+    #[Validate('numeric', message: 'Nomor Telepon Harus Berisi Angka')]
+    #[Validate('digits_between:10,13', message: 'Nomor Telepon tidak valid')]
+    #[Validate('unique:data,no_telp_pribadi', message: 'Nomor Telepon Tidak Boleh Lebih Dari 13 Digit')]
+    public $no_telp_pribadi;
 
-    #[Validate('required', message: 'Alamat Lahir Tidak Boleh Kosong')]
-    public $alamat;
+    #[Validate('required', message: 'Nomor Telepon Orang Tua Tidak Boleh Kosong')]
+    #[Validate('numeric', message: 'Nomor Telepon Orang Tua Harus Berisi Angka')]
+    #[Validate('digits_between:10,13', message: 'Nomor Telepon Orang Tua tidak valid')]
+    #[Validate('unique:data,no_telp_orang_tua', message: 'Nomor Telepon Orang Tua Tidak Boleh Lebih Dari 13 Digit')]
+    public $no_telp_orang_tua;
 
-    #[Validate('required', message: 'Nomor Hp Tidak Boleh Kosong')]
-    #[Validate('numeric', message: 'Nomor Hp Harus Berisi Angka')]
-    #[Validate('digits_between:10,13', message: 'Nomor Hp tidak valid')]
-    #[Validate('unique:data,nomor_hp', message: 'Nomor Hp Tidak Boleh Lebih Dari 13 Digit')]
-    public $nomor_hp;
+    #[Validate('required', message: 'Asal Daerah Propinsi Tidak Boleh Kosong')]
+    public $asal_daerah_provinsi;
 
-    #[Validate('required', message: 'Jenis Kelamin Tidak Boleh Kosong')]
-    public $jenis_kelamin;
+    #[Validate('required', message: 'Asal Daerah Kabupaten/Kota Tidak Boleh Kosong')]
+    public $asal_daerah_kabupaten_kota;
 
-    #[Validate('required', message: 'Pendidikan Terakhir Tidak Boleh Kosong')]
-    public $pendidikan_terakhir;
+    #[Validate('required', message: 'Asal Sekolah Tidak Boleh Kosong')]
+    public $asal_sekolah;
 
-    #[Validate('required', message: 'Agama Tidak Boleh Kosong')]
-    public $agama;
-
-    #[Validate('required', message: 'Kewarganegaraan Tidak Boleh Kosong')]
-    public $kewarganegaraan;
-
-    #[Validate('required', message: 'Program Studi Tidak Boleh Kosong')]
-    public $program_studi_id;
-
-    #[Validate('required', message: 'Nama Tidak Boleh Kosong')]
-    public $nama;
+    #[Validate('nullable')]
+    public $rekomendasi;
 
     #[Reactive]
     public $uploadedPasFoto;
-    
     #[Reactive]
     public $uploadedIjazah;
-    
     #[Reactive]
     public $uploadedKip;
+    #[Reactive]
+    public $uploadedKtp;
+    #[Reactive]
+    public $uploadedKk;
     
     public $user;
     public $programStudi;
     public $biayaPendaftaran;
 
-    public function mount($user, $uploadedPasFoto, $uploadedIjazah, $uploadedKip) {
+    public function mount($user, $uploadedPasFoto, $uploadedIjazah, $uploadedKip, $uploadedKtp, $uploadedKk) {
         $this->user = $user;
         $this->uploadedPasFoto = $uploadedPasFoto;
         $this->uploadedIjazah = $uploadedIjazah;
         $this->uploadedKip = $uploadedKip;
+        $this->uploadedKtp = $uploadedKtp;
+        $this->uploadedKk = $uploadedKk;
         $this->nama = $this->user->nama;
     }
 
     public function store() {
         $validated = $this->validate();
-        $validated['user_id'] = $this->user->id;
         $validated['pas_foto'] = $this->uploadedPasFoto;
-        $validated['ijazah_atau_skl'] = $this->uploadedIjazah;
+        $validated['ijazah'] = $this->uploadedIjazah;
         $validated['kip'] = $this->uploadedKip;
+        $validated['ktp'] = $this->uploadedKtp;
+        $validated['kk'] = $this->uploadedKk;
         
+        dd($validated);
+
         DB::transaction(function () use ($validated) {
 
             $this->user->data()->create($validated);

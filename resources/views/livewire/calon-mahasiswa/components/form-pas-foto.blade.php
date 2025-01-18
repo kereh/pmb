@@ -8,7 +8,7 @@
             </p>
             @error('pasFotoUpload')
                 <div class="alert alert-danger alert-dismissible show fade mt-3">
-                    <i class="bi bi-file-excel"></i>
+                    <i class="bi bi-x-octagon"></i>
                     {{ $message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -41,7 +41,7 @@
                     <div class="col-12">
                         <div class="form-group w-100 d-flex justify-content-center">
                             <input class="form-control w-100 w-md-50" type="file" wire:model="pasFotoUpload"
-                                {{ $uploadedData ? 'disabled' : '' }}>
+                                accept="image/png" {{ $uploadedData ? 'disabled' : '' }}>
                         </div>
                     </div>
                 </div>

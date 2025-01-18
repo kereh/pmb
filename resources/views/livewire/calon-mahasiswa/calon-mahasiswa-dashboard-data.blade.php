@@ -26,8 +26,8 @@
     <div class="page-content">
         <livewire:calon-mahasiswa.components.form-pas-foto :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" :uploadedData="$uploadedData" />
         <livewire:calon-mahasiswa.components.form-dokumen :user="$this->user" :uploadedIjazah="$uploadedIjazah" :uploadedKip="$uploadedKip"
-            :uploadedData="$uploadedData" />
+            :uploadedKtp="$uploadedKtp" :uploadedKk="$uploadedKk" :uploadedData="$uploadedData" />
         <livewire:calon-mahasiswa.components.form-data :user="$this->user" :uploadedPasFoto="$uploadedPasFoto" :uploadedIjazah="$uploadedIjazah"
-            :uploadedKip="$uploadedKip" :programStudi="$this->programStudi" :biayaPendaftaran="$this->biayaPendaftaran" />
+            :uploadedKip="$uploadedKip" :uploadedKtp="$uploadedKtp" :uploadedKk="$uploadedKk" :programStudi="$this->programStudi" :biayaPendaftaran="$this->biayaPendaftaran" />
     </div>
 </div>

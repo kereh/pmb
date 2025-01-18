@@ -14,22 +14,29 @@ return new class extends Migration
         Schema::create('data', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
-            $table->string('nik')->unique();
-            $table->string('nisn')->unique();
-            $table->string('pas_foto');
             $table->string('nama');
-            $table->string('nama_ibu_kandung');
+            $table->string('jurusan');
             $table->string('tanggal_lahir');
-            $table->string('tempat_lahir');
-            $table->string('alamat');
-            $table->string('nomor_hp');
+            $table->string('no_telp_pribadi');
+            $table->string('no_telp_orang_tua');
+            $table->string('asal_daerah_provinsi');
+            $table->string('asal_daerah_kabupaten_kota');
+            $table->string('asal_sekolah');
+            $table->string('rekomendasi')->nullable();
+
+
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->enum('agama', ['Kristen Protestan', 'Kristen Katolik', 'Islam', 'Hindu', 'Buddha']);
-            $table->enum('pendidikan_terakhir', ['SMA', 'SMK', 'MA', 'MAK']);
-            $table->enum('kewarganegaraan', ['WNI', 'WNA']);
-            $table->foreignId('program_studi_id')->nullable()->references('id')->on('program_studi')->onDelete('cascade');
-            $table->string('ijazah_atau_skl');
+
+            $table->string('pas_foto');
+            $table->string('ijazah_skl')->nullable();
+            $table->string('ktp_akte');
+            $table->string('kartu_keluarga');
             $table->string('kip')->nullable();
+
+            $table->foreignId('program_studi_pertama')->nullable()->references('id')->on('program_studi')->onDelete('cascade');
+            $table->foreignId('program_studi_kedua')->nullable()->references('id')->on('program_studi')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

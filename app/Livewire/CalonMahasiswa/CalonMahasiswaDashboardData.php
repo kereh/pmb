@@ -18,6 +18,8 @@ class CalonMahasiswaDashboardData extends Component {
     public $uploadedPasFoto;
     public $uploadedIjazah;
     public $uploadedKip;
+    public $uploadedKtp;
+    public $uploadedKk;
     public $uploadedData = false;
 
     public function mount() {
@@ -25,6 +27,8 @@ class CalonMahasiswaDashboardData extends Component {
         $checkUploadedPasFoto = Storage::disk('public')->exists('pas_foto/' . $user->id . '.png');
         $checkUploadedIjazah = Storage::disk('public')->exists('ijazah/' . $user->id . '.pdf');
         $checkUploadedKip = Storage::disk('public')->exists('kip/' . $user->id . '.pdf');
+        $checkUploadedKtp = Storage::disk('public')->exists('ktp/' . $user->id . '.pdf');
+        $checkUploadedKk = Storage::disk('public')->exists('kk/' . $user->id . '.pdf');
         $checkUploadedData = $user->data;
         
         $this->uploadedPasFoto = $checkUploadedPasFoto
@@ -36,6 +40,14 @@ class CalonMahasiswaDashboardData extends Component {
             : null;
         
         $this->uploadedKip = $checkUploadedKip
+            ? Storage::disk('public')->url('kip/' . $user->id . '.pdf')
+            : null;
+
+        $this->uploadedKtp = $checkUploadedKtp
+            ? Storage::disk('public')->url('ktp/' . $user->id . '.pdf')
+            : null;
+
+        $this->uploadedKk = $checkUploadedKk
             ? Storage::disk('public')->url('kip/' . $user->id . '.pdf')
             : null;
         
@@ -72,6 +84,16 @@ class CalonMahasiswaDashboardData extends Component {
     #[On('kip')]
     public function kipListener($val) {
         $this->uploadedKip = $val;
+    }
+
+    #[On('ktp')]
+    public function ktpListener($val) {
+        $this->uploadedKtp = $val;
+    }
+
+    #[On('kk')]
+    public function kkListener($val) {
+        $this->uploadedKk = $val;
     }
 
     #[On('data-submited')]
