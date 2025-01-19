@@ -211,65 +211,60 @@ class DataRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('nama')
             ->heading('')
+            ->columnToggleFormMaxHeight('350px')
             ->columns([
                 ImageColumn::make('pas_foto')
                     ->label('Pas Foto')
                     ->toggleable()
+                    ->sortable()
                     ->alignCenter()
                     ->extraImgAttributes(['class' => 'rounded-lg w-[300px] h-[400px]']),
                 TextColumn::make('nama')
                     ->label('Nama')
-                    ->toggleable(),
-                TextColumn::make('nik')
-                    ->label('NIK')
+                    ->searchable()
                     ->toggleable()
-                    ->copyable()
-                    ->copyMessage('NIK Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin NIK'),
-                TextColumn::make('nisn')
-                    ->label('NISN')
+                    ->sortable(),
+                TextColumn::make('program_studi.nama')
+                    ->label('Program Studi')
+                    ->listWithLineBreaks()
+                    ->badge()
                     ->toggleable()
-                    ->copyable()
-                    ->copyMessage('NISN Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin NISN'),
-                TextColumn::make('nama_ibu_kandung')
-                    ->label('Ibu Kandung')
-                    ->toggleable()
-                    ->copyable()
-                    ->copyMessage('Nama Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin Nama'),
-                IconColumn::make('ijazah_atau_skl')
-                    ->label('Ijazah/SKL')
-                    ->url(fn ($record) => asset($record->ijazah_atau_skl), shouldOpenInNewTab: true)
-                    ->color('success')
-                    ->icon('heroicon-o-document-text')
-                    ->tooltip('Click Untuk Melihat Ijazah/SKL')
-                    ->alignCenter()
-                    ->toggleable(),
-                IconColumn::make('kip')
-                    ->label('KIP')
-                    ->getStateUsing(fn ($record) => $record->kip ? 'Available' : 'Not Available')
-                    ->url(fn ($record) => asset($record->kip), shouldOpenInNewTab: true)
-                    ->color(fn ($record) => $record->kip ? 'success' : 'danger')
-                    ->icon(fn ($record) => $record->kip ? 'heroicon-o-document-text' : 'heroicon-o-x-mark')
-                    ->tooltip(fn ($record) => $record->kip ? 'Click Untuk Melihat Kartu KIP' : 'Kartu KIP Kosong')
-                    ->alignCenter()
-                    ->toggleable(),
+                    ->sortable(),
                 TextColumn::make('users.email')
                     ->label('Email')
-                    ->toggleable(),
-                TextColumn::make('nomor_hp')
-                    ->label('Nomor HP')
-                    ->toggleable(),
-                TextColumn::make('kewarganegaraan')
-                    ->label('Kewarganegaraan')
-                    ->toggleable(),
-                TextColumn::make('alamat')
-                    ->label('Alamat')
-                    ->toggleable(),
-                TextColumn::make('tempat_lahir')
-                    ->label('Tempat Lahir')
-                    ->toggleable(),
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('no_telp_pribadi')
+                    ->label('Nomor Telp')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                TextColumn::make('no_telp_orang_tua')
+                    ->label('Nomor Telp Orang Tua')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                TextColumn::make('asal_daerah_provinsi')
+                    ->label('Daerah Propinsi')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('asal_daerah_kabupaten_kota')
+                    ->label('Daerah Kabupaten/Kota')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('asal_sekolah')
+                    ->label('Asal Sekolah')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('jurusan')
+                    ->label('Jurusan Sebelumnya')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('tanggal_lahir')
                     ->label('Tanggal Lahir')
                     ->dateTime('d F Y')
@@ -282,15 +277,51 @@ class DataRelationManager extends RelationManager
                     ->badge()
                     ->getStateUsing(fn (object $record): string => $record->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan')
                     ->toggleable(),
-                TextColumn::make('pendidikan_terakhir')
-                    ->label('Pendidikan Terakhir')
+                TextColumn::make('rekomendasi')
+                    ->label('Rekomendasi')
+                    ->getStateUsing(fn ($record) => $record->rekomendasi ?? '-')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                IconColumn::make('ijazah')
+                    ->label('Ijazah')
+                    ->url(fn ($record) => asset($record->ijazah), shouldOpenInNewTab: true)
+                    ->color('success')
+                    ->icon('heroicon-m-document-text')
+                    ->tooltip('Click Untuk Melihat Ijazah')
+                    ->alignCenter()
                     ->toggleable(),
-                TextColumn::make('program_studi.nama')
-                    ->label('Program Studi')
+                IconColumn::make('kip')
+                    ->label('KIP')
+                    ->getStateUsing(fn ($record) => $record->kip ? 'Available' : 'Not Available')
+                    ->url(fn ($record) => asset($record->kip), shouldOpenInNewTab: true)
+                    ->color(fn ($record) => $record->kip ? 'success' : 'danger')
+                    ->icon(fn ($record) => $record->kip ? 'heroicon-m-document-text' : 'heroicon-m-x-mark')
+                    ->tooltip(fn ($record) => $record->kip ? 'Click Untuk Melihat Kartu KIP' : 'Kartu KIP Kosong')
+                    ->alignCenter()
+                    ->toggleable(),
+                IconColumn::make('ktp')
+                    ->label('KTP/Akte Kelahiran')
+                    ->getStateUsing(fn ($record) => $record->ktp ? 'Available' : 'Not Available')
+                    ->url(fn ($record) => asset($record->ktp), shouldOpenInNewTab: true)
+                    ->color(fn ($record) => $record->ktp ? 'success' : 'danger')
+                    ->icon(fn ($record) => $record->ktp ? 'heroicon-m-document-text' : 'heroicon-m-x-mark')
+                    ->tooltip(fn ($record) => $record->ktp ? 'Click Untuk Melihat KTP/Akte kelahiran' : 'KTP/Akte kelahiran Kosong')
+                    ->alignCenter()
+                    ->toggleable(),
+                IconColumn::make('kk')
+                    ->label('Kartu Keluarga')
+                    ->getStateUsing(fn ($record) => $record->kk ? 'Available' : 'Not Available')
+                    ->url(fn ($record) => asset($record->kk), shouldOpenInNewTab: true)
+                    ->color(fn ($record) => $record->kk ? 'success' : 'danger')
+                    ->icon(fn ($record) => $record->kk ? 'heroicon-m-document-text' : 'heroicon-m-x-mark')
+                    ->tooltip(fn ($record) => $record->kk ? 'Click Untuk Melihat Kartu Keluarga' : 'Kartu Keluarga Kosong')
+                    ->alignCenter()
                     ->toggleable(),
                 TextColumn::make('users.payments.status')
                     ->label('Status Pembayaran')
                     ->badge()
+                    ->alignCenter()
                     ->getStateUsing(fn (object $record): string => match($record->users->payments->status) {
                         0 => 'Belum Lunas',
                         1 => 'Lunas',
@@ -299,7 +330,6 @@ class DataRelationManager extends RelationManager
                         0 => 'danger',
                         1 => 'success',
                     })
-                    ->alignCenter()
                     ->toggleable(),
             ])
             ->filters([
@@ -314,6 +344,8 @@ class DataRelationManager extends RelationManager
                             if ($record->pas_foto) Storage::disk('public')->delete($record->pas_foto);
                             if ($record->ijazah) Storage::disk('public')->delete($record->ijazah);
                             if ($record->kip) Storage::disk('public')->delete($record->kip);
+                            if ($record->ktp) Storage::disk('public')->delete($record->ktp);
+                            if ($record->kk) Storage::disk('public')->delete($record->kk);
                         }),
                 ])->icon('heroicon-m-ellipsis-horizontal'),
             ], position: ActionsPosition::BeforeColumns);
