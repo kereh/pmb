@@ -62,7 +62,7 @@ class DataResource extends Resource
                             ->rules(['mimes:png'])
                             ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.png')
                             ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
-                        FileUpload::make('ijazah_atau_skl')
+                        FileUpload::make('ijazah')
                             ->label('Ijazah/SKL')
                             ->disk('public')
                             ->directory('ijazah')
@@ -75,6 +75,24 @@ class DataResource extends Resource
                             ->label('KIP')
                             ->disk('public')
                             ->directory('kip')
+                            ->previewable()
+                            ->maxSize(1024)
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
+                        FileUpload::make('ktp')
+                            ->label('KTP/Akte Kelahiran')
+                            ->disk('public')
+                            ->directory('ktp')
+                            ->previewable()
+                            ->maxSize(1024)
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->getUploadedFileNameForStorageUsing(fn ($record) => $record->users->id . '.pdf')
+                            ->deleteUploadedFileUsing(fn ($file) => Storage::disk('public')->delete($file)),
+                        FileUpload::make('kk')
+                            ->label('Kartu keluarga')
+                            ->disk('public')
+                            ->directory('kk')
                             ->previewable()
                             ->maxSize(1024)
                             ->acceptedFileTypes(['application/pdf'])
@@ -221,13 +239,12 @@ class DataResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->columnToggleFormMaxHeight('350px')
             ->groups([
-                Group::make('program_studi.nama')
-                    ->label('Program Studi'),
                 Group::make('users.seleksi.status')
                     ->label('Status Penerimaan'),
-                Group::make('users.payment.status')
-                    ->getTitleFromRecordUsing(fn (object $record): string => match($record->users->payment->status) {
+                Group::make('users.payments.status')
+                    ->getTitleFromRecordUsing(fn (object $record): string => match($record->users->payments->status) {
                         0 => 'Belum Lunas',
                         1 => 'Lunas',
                     })
@@ -245,68 +262,44 @@ class DataResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('nik')
-                    ->label('NIK')
-                    ->searchable()
+                TextColumn::make('program_studi.nama')
+                    ->label('Program Studi')
+                    ->listWithLineBreaks()
+                    ->badge()
                     ->toggleable()
-                    ->copyable()
-                    ->copyMessage('NIK Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin NIK')
                     ->sortable(),
-                TextColumn::make('nisn')
-                    ->label('NISN')
-                    ->searchable()
-                    ->toggleable()
-                    ->copyable()
-                    ->copyMessage('NISN Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin NISN')
-                    ->sortable(),
-                TextColumn::make('nama_ibu_kandung')
-                    ->label('Ibu Kandung')
-                    ->searchable()
-                    ->toggleable()
-                    ->copyable()
-                    ->copyMessage('Nama Berhasil Disalin')
-                    ->tooltip('Click Untuk Menyalin Nama')
-                    ->sortable(),
-                IconColumn::make('ijazah_atau_skl')
-                    ->label('Ijazah/SKL')
-                    ->url(fn ($record) => asset($record->ijazah_atau_skl), shouldOpenInNewTab: true)
-                    ->color('success')
-                    ->icon('heroicon-o-document-text')
-                    ->tooltip('Click Untuk Melihat Ijazah/SKL')
-                    ->alignCenter()
-                    ->toggleable(),
-                // TextColumn::make('kip'),
-                IconColumn::make('kip')
-                    ->label('KIP')
-                    ->getStateUsing(fn ($record) => $record->kip ? 'Available' : 'Not Available')
-                    ->url(fn ($record) => asset($record->kip), shouldOpenInNewTab: true)
-                    ->color(fn ($record) => $record->kip ? 'success' : 'danger')
-                    ->icon(fn ($record) => $record->kip ? 'heroicon-o-document-text' : 'heroicon-o-x-mark')
-                    ->tooltip(fn ($record) => $record->kip ? 'Click Untuk Melihat Kartu KIP' : 'Kartu KIP Kosong')
-                    ->alignCenter()
-                    ->toggleable(),
                 TextColumn::make('users.email')
                     ->label('Email')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('nomor_hp')
-                    ->label('Nomor HP')
+                TextColumn::make('no_telp_pribadi')
+                    ->label('Nomor Telp')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                TextColumn::make('no_telp_orang_tua')
+                    ->label('Nomor Telp Orang Tua')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                TextColumn::make('asal_daerah_provinsi')
+                    ->label('Daerah Propinsi')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('kewarganegaraan')
-                    ->label('Kewarganegaraan')
-                    ->toggleable(),
-                TextColumn::make('alamat')
-                    ->label('Alamat')
+                TextColumn::make('asal_daerah_kabupaten_kota')
+                    ->label('Daerah Kabupaten/Kota')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('tempat_lahir')
-                    ->label('Tempat Lahir')
+                TextColumn::make('asal_sekolah')
+                    ->label('Asal Sekolah')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('jurusan')
+                    ->label('Jurusan Sebelumnya')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
@@ -322,16 +315,51 @@ class DataResource extends Resource
                     ->badge()
                     ->getStateUsing(fn (object $record): string => $record->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan')
                     ->toggleable(),
-                TextColumn::make('pendidikan_terakhir')
-                    ->label('Pendidikan Terakhir')
-                    ->toggleable(),
-                TextColumn::make('program_studi.nama')
-                    ->label('Program Studi')
-                    ->toggleable()
+                TextColumn::make('rekomendasi')
+                    ->label('Rekomendasi')
+                    ->getStateUsing(fn ($record) => $record->rekomendasi ?? '-')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+                IconColumn::make('ijazah')
+                    ->label('Ijazah')
+                    ->url(fn ($record) => asset($record->ijazah), shouldOpenInNewTab: true)
+                    ->color('success')
+                    ->icon('heroicon-m-document-text')
+                    ->tooltip('Click Untuk Melihat Ijazah')
+                    ->alignCenter()
+                    ->toggleable(),
+                IconColumn::make('kip')
+                    ->label('KIP')
+                    ->getStateUsing(fn ($record) => $record->kip ? 'Available' : 'Not Available')
+                    ->url(fn ($record) => asset($record->kip), shouldOpenInNewTab: true)
+                    ->color(fn ($record) => $record->kip ? 'success' : 'danger')
+                    ->icon(fn ($record) => $record->kip ? 'heroicon-m-document-text' : 'heroicon-m-x-mark')
+                    ->tooltip(fn ($record) => $record->kip ? 'Click Untuk Melihat Kartu KIP' : 'Kartu KIP Kosong')
+                    ->alignCenter()
+                    ->toggleable(),
+                IconColumn::make('ktp')
+                    ->label('KTP/Akte Kelahiran')
+                    ->getStateUsing(fn ($record) => $record->ktp ? 'Available' : 'Not Available')
+                    ->url(fn ($record) => asset($record->ktp), shouldOpenInNewTab: true)
+                    ->color(fn ($record) => $record->ktp ? 'success' : 'danger')
+                    ->icon(fn ($record) => $record->ktp ? 'heroicon-m-document-text' : 'heroicon-m-x-mark')
+                    ->tooltip(fn ($record) => $record->ktp ? 'Click Untuk Melihat KTP/Akte kelahiran' : 'KTP/Akte kelahiran Kosong')
+                    ->alignCenter()
+                    ->toggleable(),
+                IconColumn::make('kk')
+                    ->label('Kartu Keluarga')
+                    ->getStateUsing(fn ($record) => $record->kk ? 'Available' : 'Not Available')
+                    ->url(fn ($record) => asset($record->kk), shouldOpenInNewTab: true)
+                    ->color(fn ($record) => $record->kk ? 'success' : 'danger')
+                    ->icon(fn ($record) => $record->kk ? 'heroicon-m-document-text' : 'heroicon-m-x-mark')
+                    ->tooltip(fn ($record) => $record->kk ? 'Click Untuk Melihat Kartu Keluarga' : 'Kartu Keluarga Kosong')
+                    ->alignCenter()
+                    ->toggleable(),
                 TextColumn::make('users.payments.status')
                     ->label('Status Pembayaran')
                     ->badge()
+                    ->alignCenter()
                     ->getStateUsing(fn (object $record): string => match($record->users->payments->status) {
                         0 => 'Belum Lunas',
                         1 => 'Lunas',
@@ -371,6 +399,8 @@ class DataResource extends Resource
                             if ($record->pas_foto) Storage::disk('public')->delete($record->pas_foto);
                             if ($record->ijazah) Storage::disk('public')->delete($record->ijazah);
                             if ($record->kip) Storage::disk('public')->delete($record->kip);
+                            if ($record->ktp) Storage::disk('public')->delete($record->ktp);
+                            if ($record->kk) Storage::disk('public')->delete($record->kk);
                         }),
                 ])->icon('heroicon-m-ellipsis-horizontal'),
             ], position: ActionsPosition::BeforeColumns)
