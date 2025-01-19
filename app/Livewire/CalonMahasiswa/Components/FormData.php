@@ -14,6 +14,9 @@ use App\createPaymentDTO;
 class FormData extends Component {
     use CreatePaymentTrait;
 
+    #[Validate('required', message: 'Nama Tidak Boleh Kosong')]
+    public $nama;
+
     #[Validate('required', message: 'Jurusan Tidak Boleh Kosong')]
     public $jurusan;
 
@@ -88,12 +91,26 @@ class FormData extends Component {
         $validated['kip'] = $this->uploadedKip;
         $validated['ktp'] = $this->uploadedKtp;
         $validated['kk'] = $this->uploadedKk;
+
+        if ($this->program_studi_pertama == $this->program_studi_kedua) {
+            return session()->flash('status', [
+                'type' => 'alert-danger', 
+                'icon' => 'bi-x-octagon',
+                'message' => 'Program Studi Pilihan 1 & 2 Tidak Boleh Sama!'
+                ]
+            );
+        }
+
         
-        dd($validated);
-
         DB::transaction(function () use ($validated) {
+            $prodi_1 = $validated['program_studi_pertama'];
+            $prodi_2 = $validated['program_studi_kedua'];
 
-            $this->user->data()->create($validated);
+            unset($validated['program_studi_pertama']);
+            unset($validated['program_studi_kedua']);
+
+            $data = $this->user->data()->create($validated);
+            $data->program_studi()->attach([$prodi_1, $prodi_2]);
 
             $orderId = Str::uuid();
     
@@ -102,11 +119,12 @@ class FormData extends Component {
                 gross_amount: (int)$this->biayaPendaftaran->biaya,
                 first_name: $this->user->nama,
                 email: $this->user->email,
-                phone: $this->user->data->nomor_hp,
-                address: $this->user->data->alamat,
+                phone: $this->user->data->no_telp_pribadi,
+                address: $this->user->data->asal_daerah_kabupaten_kota,
             );
     
             $snapToken = $this->createPayment($paymentData);
+
             $this->user->payments()->updateOrCreate(
                 ['user_id' => $this->user->id],
                 [
@@ -118,6 +136,7 @@ class FormData extends Component {
     
             session()->flash('status', [
                 'type' => 'alert-success', 
+                'icon' => 'bi-check-circle',
                 'message' => 'Data Berhasil Disubmit!'
                 ]
             );

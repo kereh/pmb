@@ -29,13 +29,13 @@ return new class extends Migration
             $table->enum('agama', ['Kristen Protestan', 'Kristen Katolik', 'Islam', 'Hindu', 'Buddha']);
 
             $table->string('pas_foto');
-            $table->string('ijazah_skl')->nullable();
-            $table->string('ktp_akte');
-            $table->string('kartu_keluarga');
+            $table->string('ijazah')->nullable();
+            $table->string('ktp');
+            $table->string('kk');
             $table->string('kip')->nullable();
 
-            $table->foreignId('program_studi_pertama')->nullable()->references('id')->on('program_studi')->onDelete('cascade');
-            $table->foreignId('program_studi_kedua')->nullable()->references('id')->on('program_studi')->onDelete('cascade');
+            // $table->foreignId('program_studi_pertama')->nullable()->references('id')->on('program_studi')->onDelete('cascade');
+            // $table->foreignId('program_studi_kedua')->nullable()->references('id')->on('program_studi')->onDelete('cascade');
 
             $table->timestamps();
         });

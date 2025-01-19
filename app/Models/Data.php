@@ -15,6 +15,6 @@ class Data extends Model {
     }
 
     public function program_studi(): BelongsToMany {
-        return $this->belongsToMany(ProgramStudi::class, 'program_studi_id');
+        return $this->belongsToMany(ProgramStudi::class, 'data_prodi_pivot', 'data_id', 'program_studi_id');
     }
 }

@@ -62,12 +62,17 @@
                                 <tr>
                                     <td>Kontak</td>
                                     <td>:</td>
-                                    <td>{{ $this->user->data->nomor_hp }}</td>
+                                    <td>{{ $this->user->data->no_telp_pribadi }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Program Studi</td>
+                                    <td>Program Studi 1</td>
                                     <td>:</td>
-                                    <td>{{ $this->user->data->program_studi->nama }}</td>
+                                    <td>{{ $this->user->data->program_studi[0]->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Program Studi 2</td>
+                                    <td>:</td>
+                                    <td>{{ $this->user->data->program_studi[1]->nama }}</td>
                                 </tr>
                                 <tr>
                                     <td>Biaya Pendaftaran</td>

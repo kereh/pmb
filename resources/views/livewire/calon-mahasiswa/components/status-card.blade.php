@@ -1,4 +1,4 @@
-<div class="col-12 col-md-6 col-lg-3" role="button">
+<div class="col-12 col-md-4" role="button">
     <a href="{{ route($route) }}" wire:navigate>
         <div class="card w-full shadow">
             <div class="card-body px-4 py-4-5">

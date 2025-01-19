@@ -29,8 +29,9 @@
                         <div class="w-100">
                             <p>Segera bergabung ke Group Whatsapp PMB UNSRIT untuk mendapatkan informasi yang lebih
                                 lanjut.
-                                Anda bisa langsung bergabung lewat <a
-                                    href="https://chat.whatsapp.com/KAAux4EZqrnH9pBlwlqg7W" target="_blank">link ini</a>
+                                Anda bisa langsung bergabung dengan <a
+                                    href="https://chat.whatsapp.com/KAAux4EZqrnH9pBlwlqg7W" target="_blank">click
+                                    disini</a>
                             </p>
                         </div>
                     </div>
@@ -53,16 +54,20 @@
                         color="{{ $user->payments->status ? 'green' : 'red' }}" icon="iconly-boldWallet"
                         text="Status Pembayaran" data="{{ $user->payments->status ? 'Lunas' : 'Belum Lunas' }}" />
                 @endif
-
-                {{-- status jurusan pilihan --}}
-                <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
-                    color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi"
-                    data="{{ $user->data->program_studi->nama ?? 'Belum Memilih' }}" />
-
                 {{-- status penerimaan --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
                     color="{{ $user->seleksi->status == 'Diterima' ? 'green' : 'red' }}" icon="iconly-boldInfo-Circle"
                     text="Status Penerimaan" data="{{ $user->seleksi->status }}" />
+            </div>
+            <div class="row">
+                {{-- status jurusan pilihan --}}
+                <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
+                    color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi 1"
+                    data="{{ $user->data->program_studi[0]->nama ?? 'Belum Memilih' }}" />
+
+                <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
+                    color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi 2"
+                    data="{{ $user->data->program_studi[1]->nama ?? 'Belum Memilih' }}" />
             </div>
         </section>
     </div>

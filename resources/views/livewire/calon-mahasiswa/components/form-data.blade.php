@@ -2,7 +2,8 @@
     <div class="card shadow">
         <div class="card-header">
             <h4 class="card-title">Form Pengisian Data</h4>
-            <p class="card-subtitle w-100 w-lg-75">Silhakan masukan data yang valid untuk melanjutkan pendaftaran</p>
+            <p class="card-subtitle w-100 w-lg-75">Silhakan masukan data yang valid untuk melanjutkan pendaftaran.
+                Program studi pilihan 1 dan 2 tidak boleh sama</p>
             @if ($errors->any())
                 <div class="alert alert-danger alert-dismissible show fade mt-3">
                     <ul>
@@ -154,7 +155,7 @@
                             wire:change="changeProgramStudiPertamaSelected($event.target.value)"
                             {{ $user->data ? 'disabled' : '' }} @required(true)>
                             <option selected>
-                                {{ $user->data ? $user->data->program_studi_pertama->nama : 'Pilih Program Studi 1' }}
+                                {{ $user->data ? $user->data->program_studi[0]->nama : 'Pilih Program Studi 1' }}
                             </option>
                             @foreach ($programStudi as $item)
                                 <option value="{{ $item->id }}" wire:key="{{ $item->id }}">
@@ -172,7 +173,7 @@
                             wire:change="changeProgramStudiKeduaSelected($event.target.value)"
                             {{ $user->data ? 'disabled' : '' }} @required(true)>
                             <option selected>
-                                {{ $user->data ? $user->data->program_studi_kedua->nama : 'Pilih Program Studi' }}
+                                {{ $user->data ? $user->data->program_studi[1]->nama : 'Pilih Program Studi' }}
                             </option>
                             @foreach ($programStudi as $item)
                                 <option value="{{ $item->id }}" wire:key="{{ $item->id }}">
@@ -192,9 +193,8 @@
             @if ($status = Session::get('status'))
                 <div class="row col-12">
                     <div class="alert {{ $status['type'] }} alert-dismissible show fade mt-3">
-                        <i class="bi bi-check-circle"></i>
-                        {{ $status['message'] }} Lanjutkan ke <a href="{{ route('calon_mahasiswa.pembayaran') }}"
-                            class="underline">PEMBAYARAN</a>
+                        <i class="bi {{ $status['icon'] }}"></i>
+                        {{ $status['message'] }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"
                             aria-label="Close"></button>
                     </div>
