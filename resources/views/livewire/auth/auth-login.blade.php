@@ -3,7 +3,7 @@
     <div class="row h-100">
         <div class="col-lg-5 col-12">
             <div id="auth-left">
-                <h1 class="auth-title">PMB UNSRIT</h1>
+                <h4 class="auth-title">Penerimaan Mahasiswa Baru UNSRIT</h4>
                 <p class="auth-subtitle mb-5">Silahkan login menggunakan akun yang sudah didaftarkan.</p>
                 @if ($status = Session::get('status'))
                     <div class="alert alert-dismissible {{ $status['type'] }} show fade">

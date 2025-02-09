@@ -40,6 +40,7 @@
         </div>
         <section class="section">
             <div class="row">
+
                 {{-- kelengkapan berkas --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa.data"
                     color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldFolder" text="kelengkapan Berkas"
@@ -54,11 +55,14 @@
                         color="{{ $user->payments->status ? 'green' : 'red' }}" icon="iconly-boldWallet"
                         text="Status Pembayaran" data="{{ $user->payments->status ? 'Lunas' : 'Belum Lunas' }}" />
                 @endif
+
                 {{-- status penerimaan --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
-                    color="{{ $user->seleksi->status == 'Diterima' ? 'green' : 'red' }}" icon="iconly-boldInfo-Circle"
-                    text="Status Penerimaan" data="{{ $user->seleksi->status }}" />
+                    color="{{ $user->seleksi->status == 'Lulus' ? 'green' : ($user->seleksi->status == 'Tahap Seleksi' ? 'warning' : 'danger') }}"
+                    icon="iconly-boldInfo-Circle" text="Status Penerimaan" data="{{ $user->seleksi->status }}" />
+
             </div>
+
             <div class="row">
                 {{-- status jurusan pilihan --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
