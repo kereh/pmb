@@ -58,8 +58,8 @@
 
                 {{-- status penerimaan --}}
                 <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
-                    color="{{ $user->seleksi->status == 'Lulus' ? 'green' : ($user->seleksi->status == 'Tahap Seleksi' ? 'warning' : 'danger') }}"
-                    icon="iconly-boldInfo-Circle" text="Status Penerimaan" data="{{ $user->seleksi->status }}" />
+                    color="{{ $user->seleksi->status == 'Lulus' ? 'green' : 'red' }}" icon="iconly-boldInfo-Circle"
+                    text="Status Penerimaan" data="{{ $user->seleksi->status }}" />
 
             </div>
 
