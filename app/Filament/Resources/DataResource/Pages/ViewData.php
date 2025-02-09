@@ -48,11 +48,6 @@ class ViewData extends ViewRecord
                                     ->columnSpan(['sm' => 0])
                                     ->extraAttributes(['class' => 'flex justify-center items-center h-full']),
                                 Group::make([
-                                    TextEntry::make('program_studi.nama')
-                                        ->label('Program Studi Pilihan')
-                                        ->icon('heroicon-o-academic-cap')
-                                        ->badge()
-                                        ->color('info'),
                                     TextEntry::make('users.created_at')
                                         ->label('Mendaftar Pada')
                                         ->dateTime('d F Y')
@@ -67,15 +62,15 @@ class ViewData extends ViewRecord
                                             3 => 'success',
                                         })
                                         ->badge(),
-                                    TextEntry::make('ijazah_atau_skl')
+                                    TextEntry::make('ijazah')
                                         ->label('Ijazah/SKL')
                                         ->badge()
                                         ->color('success')
                                         ->icon('heroicon-m-document-text')
-                                        ->getStateUsing(fn ($record) => $record->ijazah_atau_skl ? 'Lihat Ijazah/SKL' : '')
-                                        ->url(fn ($record) => asset($record->ijazah_atau_skl), shouldOpenInNewTab: true),
+                                        ->getStateUsing(fn ($record) => $record->ijazah ? 'Lihat Ijazah/SKL' : '')
+                                        ->url(fn ($record) => asset($record->ijazah), shouldOpenInNewTab: true),
                                     TextEntry::make('kip')
-                                        ->label('Kartu KIP')
+                                        ->label('KIP')
                                         ->badge()
                                         ->color(fn ($record) => $record->kip ? 'success' : 'danger')
                                         ->icon('heroicon-m-document-text')
@@ -89,6 +84,20 @@ class ViewData extends ViewRecord
                                             1 => 'success',
                                         })
                                         ->badge(),
+                                    TextEntry::make('kk')
+                                        ->label('Kartu Keluarga')
+                                        ->badge()
+                                        ->color(fn ($record) => $record->kk ? 'success' : 'danger')
+                                        ->icon('heroicon-m-document-text')
+                                        ->getStateUsing(fn ($record) => $record->kk ? 'Lihat Kartu Keluarga' : 'Kartu Keluarga Tidak Tersedia')
+                                        ->url(fn ($record) => $record->kk ? asset($record->kk) : '', shouldOpenInNewTab: true),
+                                    TextEntry::make('ktp')
+                                        ->label('KTP')
+                                        ->badge()
+                                        ->color(fn ($record) => $record->ktp ? 'success' : 'danger')
+                                        ->icon('heroicon-m-document-text')
+                                        ->getStateUsing(fn ($record) => $record->ktp ? 'Lihat KTP' : 'KTP Tidak Tersedia')
+                                        ->url(fn ($record) => $record->ktp ? asset($record->ktp) : '', shouldOpenInNewTab: true),
                                 ])
                                     ->columns(3)
                                     ->columnSpan(['sm' => 0, 'md' => 2]),
@@ -99,22 +108,21 @@ class ViewData extends ViewRecord
                     ->description('Info Tambahan')
                     ->schema([
                         TextEntry::make('nama'),
-                        TextEntry::make('nama_ibu_kandung')
-                            ->label('Ibu Kandung'),
+                        TextEntry::make('users.email')
+                            ->label('Email')
+                            ->copyable(),
+                        TextEntry::make('no_telp_pribadi')
+                            ->label('Nomor HP (Pribadi)')
+                            ->copyable(),
+                        TextEntry::make('no_telp_orang_tua')
+                            ->label('Nomor HP (Orang Tua)')
+                            ->copyable(),
+                        // TextEntry::make('program_studi.nama')
+                        //     ->label('Program Studi Pilihan')
+                        //     ->listWithLineBreaks(),
                         TextEntry::make('tanggal_lahir')
                             ->label('Tanggal Lahir')
                             ->dateTime('d F Y'),
-                        TextEntry::make('nik')
-                            ->label('NIK')
-                            ->copyable()
-                            ->badge()
-                            ->icon('heroicon-o-document-duplicate'),
-                        TextEntry::make('nisn')
-                            ->label('NISN')
-                            ->copyable()
-                            ->badge()
-                            ->icon('heroicon-o-document-duplicate'),
-                        TextEntry::make('kewarganegaraan'),
                         TextEntry::make('agama'),
                         TextEntry::make('jenis_kelamin')
                             ->label('Jenis Kelamin')
@@ -122,24 +130,20 @@ class ViewData extends ViewRecord
                                 'L' => 'Laki-laki',
                                 'P' => 'Perempuan',
                             }),
-                        TextEntry::make('pendidikan_terakhir'),
-                        TextEntry::make('nomor_hp')
-                            ->label('Nomor HP')
-                            ->badge()
-                            ->icon('heroicon-o-phone')
-                            ->copyable(),
-                        TextEntry::make('users.email')
-                            ->label('Email')
-                            ->badge()
-                            ->icon('heroicon-o-envelope-open')
-                            ->copyable(),
-                        TextEntry::make('tempat_lahir'),
+                        TextEntry::make('asal_sekolah')
+                            ->label('Asal Sekolah'),
+                        TextEntry::make('jurusan')
+                            ->label('Jurusan Sebelumnya'),
                         Section::make()
                             ->description('Alamat')
                             ->schema([
-                                TextEntry::make('alamat')
-                                    ->hiddenLabel(),
-                            ]),
+                                TextEntry::make('asal_daerah_provinsi')
+                                    ->label('Asal Daerah Provinsi'),
+                                TextEntry::make('asal_daerah_kabupaten_kota')
+                                    ->label('Asal Daerah Provinsi'),
+                            ])
+                            ->collapsible()
+                            ->columns(2),
                     ])
                     ->collapsible()
                     ->columns(3)
