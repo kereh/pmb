@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => Str::uuid(),
                 'nama' => 'Admin PMB',
-                'email' => 'orewaizumi@gmail.com',
+                'email' => 'adminpmb@gmail.com',
                 'username' => 'admin',
                 'password' => Hash::make('adminpmb132'),
                 'role_id' => 1,
@@ -115,10 +115,10 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id' => Str::uuid(),
-                'nama' => 'Ronaldo Kereh',
-                'email' => 'kreh.whoami@gmail.com',
-                'username' => 'kereh',
-                'password' => Hash::make('kereh'),
+                'nama' => 'Musa Tijow',
+                'email' => 'musa@gmail.com',
+                'username' => 'musa',
+                'password' => Hash::make('musa'),
                 'role_id' => 2,
                 'seleksi_id' => 1,
                 'created_at' => now()->format('Y-m-d H:m:s'),

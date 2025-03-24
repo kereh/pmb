@@ -76,6 +76,13 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item {{ request()->routeIs('calon_mahasiswa.cetak') ? 'active' : '' }}">
+                    <a href="{{ route('calon_mahasiswa.cetak') }}" class="sidebar-link" wire:navigate>
+                        <i class="bi bi-credit-card"></i>
+                        <span>Cetak Kartu Ujian</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item">
                     <a href="https://chat.whatsapp.com/KAAux4EZqrnH9pBlwlqg7W" class="sidebar-link" target="_blank">
                         <i class="bi bi-whatsapp"></i>

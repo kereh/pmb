@@ -63,16 +63,20 @@
 
             </div>
 
-            <div class="row">
-                {{-- status jurusan pilihan --}}
-                <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
-                    color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi 1"
-                    data="{{ $user->data->program_studi[0]->nama ?? 'Belum Memilih' }}" />
+            {{-- status jurusan pilihan --}}
+            {{-- <div class="row w-full">
+                <div class="col-md-6 w-full">
+                    <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
+                        color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi 1"
+                        data="{{ $user->data->program_studi[0]->nama ?? 'Belum Memilih' }}" />
+                </div>
+                <div class="col-md-6">
+                    <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
+                        color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi 2"
+                        data="{{ $user->data->program_studi[1]->nama ?? 'Belum Memilih' }}" />
+                </div>
 
-                <livewire:calon-mahasiswa.components.status-card route="calon_mahasiswa"
-                    color="{{ $user->data ? 'green' : 'red' }}" icon="iconly-boldWork" text="Program Studi 2"
-                    data="{{ $user->data->program_studi[1]->nama ?? 'Belum Memilih' }}" />
-            </div>
+            </div> --}}
         </section>
     </div>
 </div>

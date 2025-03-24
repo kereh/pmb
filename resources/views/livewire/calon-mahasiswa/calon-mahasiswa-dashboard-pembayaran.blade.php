@@ -129,7 +129,7 @@
                     const payButton = document.getElementById('pay-button');
                     payButton.disabled = true;
 
-                    snap.pay('{{ $this->user->payments->snap_token ?? '' }}', {
+                    snap.pay('{{ $this->user->payments->snap_token ?? "" }}', {
                         onSuccess: () => {
                             window.location.href =
                                 "{{ route('calon_mahasiswa.pembayaran.verify', $this->user->payments->order_id ?? '') }}";
