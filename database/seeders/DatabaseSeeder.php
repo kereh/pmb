@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
                 'nama' => 'Admin PMB',
                 'email' => 'adminpmb@gmail.com',
                 'username' => 'admin',
-                'password' => Hash::make('adminpmb132'),
+                'password' => Hash::make('admin'),
                 'role_id' => 1,
                 'seleksi_id' => null,
                 'created_at' => now()->format('Y-m-d H:m:s'),
