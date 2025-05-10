@@ -19,7 +19,6 @@ class CalonMahasiswaKartu extends Component {
     }
 
     public function cetak() {
-
         // $this->user->data->pas_foto_base64 = 'data:image/jpeg;base64,' . 
         //             base64_encode(file_get_contents($this->user->data->pas_foto));
 

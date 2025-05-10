@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="page-content">
-        @if ($user->payments->status)
+        @if ($user->payments && $user->payments->status)
             <div class="alert alert-success">
                 <i class="bi bi-check-circle"></i>
                 Anda Bisa Cetak Kartu
@@ -28,8 +28,9 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-center align-items-center flex-column">
-                                    <h4 class="mt-3">{{$user->nama}}</h4>
-                                    <p class="text-small text-center">ID Ujian <span class="d-block">{{$user->id}}</span></p>
+                                    <h4 class="mt-3">{{ $user->nama }}</h4>
+                                    <p class="text-small text-center">ID Ujian <span
+                                            class="d-block">{{ $user->id }}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -40,11 +41,11 @@
                                 <form wire:submit.prevent="cetak">
                                     <div class="form-group">
                                         <label for="name" class="form-label">Pilihan 1</label>
-                                        <p>{{ $user->data->program_studi[0]->nama }}</p>
+                                        <p>{{ $user->data->program_studi[0]->nama ?? 'Tidak ada data' }}</p>
                                     </div>
                                     <div class="form-group">
                                         <label for="email" class="form-label">Pilihan 2</label>
-                                        <p>{{ $user->data->program_studi[1]->nama }}</p>
+                                        <p>{{ $user->data->program_studi[1]->nama ?? 'Tidak ada data' }}</p>
                                     </div>
                                     <div class="form-group">
                                         <label for="phone" class="form-label">Lokasi</label>
@@ -52,7 +53,8 @@
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Cetak Kartu</button>
-                                        <a role="button" href="https://www.google.com" target="_blank" class="btn btn-secondary">Website Ujian</a>
+                                        <a role="button" href="https://www.google.com" target="_blank"
+                                            class="btn btn-secondary">Website Ujian</a>
                                     </div>
                                 </form>
                             </div>
