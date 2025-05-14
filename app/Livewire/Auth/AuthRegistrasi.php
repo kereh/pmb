@@ -3,7 +3,6 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use App\Jobs\DeleteUser;
 
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -56,8 +55,6 @@ class AuthRegistrasi extends Component {
         ];
 
         $response = $this->create($data);
-
-        DeleteUser::dispatch($response->id)->delay(now()->addSeconds(5));
 
         session()->flash('status', [
             'type' => 'alert-success',
