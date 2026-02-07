@@ -7,10 +7,8 @@ use App\Filament\Resources\DataResource\Pages;
 use App\Filament\Resources\DataResource\RelationManagers\UsersRelationManager;
 use App\Models\Data;
 
-use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
@@ -30,9 +28,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Filters\Filter;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class DataResource extends Resource
 {
@@ -245,8 +241,8 @@ class DataResource extends Resource
                     ->label('Status Penerimaan'),
                 Group::make('users.payments.status')
                     ->getTitleFromRecordUsing(fn (object $record): string => match($record->users->payments->status) {
-                        0 => 'Belum Lunas',
-                        1 => 'Lunas',
+                        false => 'Belum Lunas',
+                        true => 'Lunas',
                     })
                     ->label('Status Pembayaran'),
             ])
@@ -361,12 +357,12 @@ class DataResource extends Resource
                     ->badge()
                     ->alignCenter()
                     ->getStateUsing(fn (object $record): string => match($record->users->payments->status) {
-                        0 => 'Belum Lunas',
-                        1 => 'Lunas',
+                        false => 'Belum Lunas',
+                        true => 'Lunas',
                     })
                     ->color(fn (object $record): string => match($record->users->payments->status) {
-                        0 => 'danger',
-                        1 => 'success',
+                        false => 'danger',
+                        true => 'success',
                     })
                     ->toggleable(),
             ])

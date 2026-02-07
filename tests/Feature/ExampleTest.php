@@ -1,7 +1,8 @@
 <?php
 
-it('returns a successful response', function () {
-    $response = $this->get('/');
 
-    $response->assertStatus(200);
+it('redirects to login page', function () {
+  /** @var Tests\TestCase $this */
+    $response = $this->get('/');
+    $response->assertRedirect('/login');
 });

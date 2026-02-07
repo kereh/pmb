@@ -24,36 +24,20 @@ class CalonMahasiswaDashboardData extends Component {
 
     public function mount() {
         $user = $this->user;
-        $checkUploadedPasFoto = Storage::disk('public')->exists('pas_foto/' . $user->id . '.png');
-        $checkUploadedIjazah = Storage::disk('public')->exists('ijazah/' . $user->id . '.pdf');
-        $checkUploadedKip = Storage::disk('public')->exists('kip/' . $user->id . '.pdf');
-        $checkUploadedKtp = Storage::disk('public')->exists('ktp/' . $user->id . '.pdf');
-        $checkUploadedKk = Storage::disk('public')->exists('kk/' . $user->id . '.pdf');
-        $checkUploadedData = $user->data;
-        
-        $this->uploadedPasFoto = $checkUploadedPasFoto
-            ? Storage::disk('public')->url('pas_foto/' . $user->id . '.png')
-            : null;
-        
-        $this->uploadedIjazah = $checkUploadedIjazah
-            ? Storage::disk('public')->url('ijazah/' . $user->id . '.pdf')
-            : null;
-        
-        $this->uploadedKip = $checkUploadedKip
-            ? Storage::disk('public')->url('kip/' . $user->id . '.pdf')
-            : null;
 
-        $this->uploadedKtp = $checkUploadedKtp
-            ? Storage::disk('public')->url('ktp/' . $user->id . '.pdf')
-            : null;
+        $this->uploadedPasFoto = $this->getUploadedFileUrl('pas_foto', 'png', $user->id);
+        $this->uploadedIjazah = $this->getUploadedFileUrl('ijazah', 'pdf', $user->id);
+        $this->uploadedKip = $this->getUploadedFileUrl('kip', 'pdf', $user->id);
+        $this->uploadedKtp = $this->getUploadedFileUrl('ktp', 'pdf', $user->id);
+        $this->uploadedKk = $this->getUploadedFileUrl('kk', 'pdf', $user->id);
+        $this->uploadedData = (bool) $user->data;
+    }
 
-        $this->uploadedKk = $checkUploadedKk
-            ? Storage::disk('public')->url('kk/' . $user->id . '.pdf')
+    private function getUploadedFileUrl(string $folder, string $extension, string $userId): ?string {
+        $path = "{$folder}/{$userId}.{$extension}";
+        return Storage::disk('public')->exists($path)
+            ? Storage::disk('public')->url($path)
             : null;
-        
-        $this->uploadedData = $checkUploadedData
-            ? true
-            : false;
     }
 
     #[Computed()]

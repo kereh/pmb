@@ -4,12 +4,10 @@ namespace App\Filament\Resources;
 
 use Filament\Resources\Resource;
 use App\Filament\Resources\PaymentsResource\Pages;
-use App\Filament\Resources\PaymentsResource\RelationManagers;
 use App\Models\Payments;
 
 use Filament\Notifications\Notification;
 
-use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -18,8 +16,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PaymentsResource extends Resource
 {
@@ -86,14 +82,14 @@ class PaymentsResource extends Resource
                     ->badge()
                     ->getStateUsing(function ($record) {
                         return match ($record->status) {
-                            0 => 'Belum Lunas',
-                            1 => 'Lunas',
+                            false => 'Belum Lunas',
+                            true => 'Lunas',
                         };
                     })
                     ->color(function ($record) {
                         return match ($record->status) {
-                            0 => 'danger',
-                            1 => 'success',
+                            false => 'danger',
+                            true => 'success',
                         };
                     })
                     ->label('Status Pembayaran'),
@@ -116,7 +112,7 @@ class PaymentsResource extends Resource
                         ->action(function ($record) {
                             $record->status = !$record->status;
                             $record->save();
-                            
+
                             Notification::make()
                                 ->title('Berhasil')
                                 ->body('Status Pembayaran Berhasil Diubah!')

@@ -34,7 +34,7 @@ class CalonMahasiswaDashboardPembayaran extends Component {
 
     public function update() {
         $orderId = Str::uuid();
-    
+
         $paymentData = new createPaymentDTO(
             order_id: $orderId,
             gross_amount: (int)$this->biayaPendaftaran->biaya,
@@ -52,7 +52,7 @@ class CalonMahasiswaDashboardPembayaran extends Component {
         ]);
 
         session()->flash('statusPayment', [
-            'type' => 'alert-success', 
+            'type' => 'alert-success',
             'message' => 'Pembayaran berhasil diperbarui!'
             ]
         );

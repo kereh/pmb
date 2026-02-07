@@ -2,10 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Payments;
 use Filament\Widgets\ChartWidget;
-use Flowframe\Trend\Trend;
-use Flowframe\Trend\TrendValue;
+use Illuminate\Support\Facades\DB;
 
 class PaymentsChartWidget extends ChartWidget
 {
@@ -14,22 +12,21 @@ class PaymentsChartWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Trend::model(Payments::class)
-            ->between(
-                start: now()->startOfYear(),
-                end: now()->endOfYear(),
-            )
-            ->perMonth()
-            ->sum('price');
-    
+        $data = DB::table('payments')
+            ->selectRaw("to_char(created_at, 'YYYY-MM') as date, SUM(price::numeric) as aggregate")
+            ->whereBetween('created_at', [now()->startOfYear(), now()->endOfYear()])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Uang Masuk',
-                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $data->pluck('aggregate'),
                 ],
             ],
-            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+            'labels' => $data->pluck('date'),
         ];
     }
 

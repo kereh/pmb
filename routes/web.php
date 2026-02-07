@@ -12,7 +12,6 @@ use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardHome;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardData;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaDashboardPembayaran;
 use App\Livewire\CalonMahasiswa\CalonMahasiswaKartu;
-use App\Livewire\CalonMahasiswa\CalonMahasiswaKartuCetak;
 
 // use App\Livewire\Admin\AdminDashboardHome;
 // use App\Livewire\Admin\AdminDashboardCalon;

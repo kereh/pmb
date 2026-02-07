@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('roles')->insert([
             [
-                'role' => 'admin', 
+                'role' => 'admin',
                 'created_at' => now()->format('Y-m-d H:m:s'),
                 'updated_at' => now()->format('Y-m-d H:m:s')
             ],
@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
             [
-                'nama' => 'S1 Akuntansi', 
+                'nama' => 'S1 Akuntansi',
                 'created_at' => now()->format('Y-m-d H:m:s'),
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],
@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
                 'nama' => 'S1 Ilmu Keperawatan',
                 'created_at' => now()->format('Y-m-d H:m:s'),
                 'updated_at' => now()->format('Y-m-d H:m:s'),
-            ],  
+            ],
             [
                 'nama' => 'D4 Anestesiologi',
                 'created_at' => now()->format('Y-m-d H:m:s'),
@@ -95,7 +95,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('biaya_pendaftaran')->insert([
             [
-                'biaya' => '150000', 
+                'biaya' => '150000',
                 'created_at' => now()->format('Y-m-d H:m:s'),
                 'updated_at' => now()->format('Y-m-d H:m:s'),
             ],

@@ -33,13 +33,13 @@ class FormDokumen extends Component {
 
     #[Reactive]
     public $uploadedData;
-    
+
     public $uploadedIjazah;
     public $uploadedKip;
     public $uploadedKtp;
     public $uploadedKk;
     public $user;
-    
+
 
     public function mount($user, $uploadedData, $uploadedKip, $uploadedIjazah, $uploadedKtp, $uploadedKk) {
         $this->user = $user;

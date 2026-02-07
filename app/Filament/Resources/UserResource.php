@@ -237,7 +237,7 @@ class UserResource extends Resource {
                     Tables\Actions\DeleteBulkAction::make(),
                 ])
             ])
-            ->modifyQueryUsing(fn (Builder $query) 
+            ->modifyQueryUsing(fn (Builder $query)
                 => $query->where('role_id', 2)->latest())
             ->defaultSort('created_at');
     }

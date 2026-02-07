@@ -14,7 +14,7 @@ class FormPasFoto extends Component {
     #[Validate('required', message: 'Pas Foto Harus Diisi!')]
     #[Validate('image', message: 'Pas Foto Harus Berupa Gambar!')]
     #[Validate('max:1024', message: 'Ukuran Pas Foto Tidak Boleh Lebih Dari 1 MB!')]
-    #[Validate('dimensions:width=300,height=400', message: 'Rasio Pas Foto Harus Berukuran 3x4!')]
+    // #[Validate('dimensions:width=300,height=400', message: 'Rasio Pas Foto Harus Berukuran 3x4!')]
     #[Validate('mimes:png', message: 'Pas Foto Harus Berformat PNG!')]
     public $pasFotoUpload;
     public $pasFotoPreview;
@@ -30,13 +30,13 @@ class FormPasFoto extends Component {
 
     public function save() {
         $this->validate();
-        
+
         $this->pasFotoUpload->storePubliclyAs('pas_foto', $this->user->id . '.png', 'public');
         $this->uploadedPasFoto = Storage::disk('public')->url('pas_foto/' . $this->user->id . '.png');
         $this->pasFotoPreview = $this->pasFotoUpload->temporaryUrl();
 
         session()->flash('statusPasFoto', [
-            'type' => 'alert-success', 
+            'type' => 'alert-success',
             'message' => 'Pas Foto Berhasil Diupload!'
         ]);
 
